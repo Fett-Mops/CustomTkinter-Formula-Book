@@ -83,7 +83,7 @@ class Gui:
         print(HEIGHT)
     
     def search_formula(self):
-        print(search_inp.get())
+        print(5)
     
     def set_values(self, formula):
         global unit_label, Buttons, Units
@@ -115,6 +115,7 @@ class Gui:
         ryd_loop =formula_json['formula'][f'{formula}']['formula'].replace('*', '').replace('+', '').replace('-', '').replace('=', '').replace('/', '')
         print(ryd_loop)
         Units, Buttons, inp = [], [[],[]], []
+
         for i, var in enumerate(ryd_loop)  :            
             inp_frame = customtkinter.CTkFrame(master=scr_frame, fg_color=grey)
             inp_frame.grid(row=i, column=0, sticky='nswe', pady=(0,5))
@@ -130,16 +131,22 @@ class Gui:
             else:
                 box_x = customtkinter.CTkRadioButton(master=inp_frame,text='', width=5,
                                                      corner_radius=5,
-                                                     value=i, variable=self.cal_rad_var
-                                                     )
+                                                     value=i, variable=self.cal_rad_var,
+                                                     command=lambda inp = inp : self.disable_inp(inp))
                 box_x.grid(row=0, column=0, pady=5, padx=(5,0))     
+               
                                  
 
-            var_inp = customtkinter.CTkEntry(master=inp_frame, placeholder_text='________'
+            var_inp = customtkinter.CTkEntry(master=inp_frame
                                     ,width=50, height=35,  fg_color=green, border_width=0, bg_color='transparent',
-                                    placeholder_text_color=text_col)
+                                    placeholder_text_color=text_col, )
             var_inp.grid(row = 0, column=1, pady= 5, padx=(5,0), sticky='nwes')
             inp.append(var_inp)
+            if len(inp) == 1:
+                var_inp.configure(state='disabled')
+            
+                                                     
+           
             
             
             ud_frame = customtkinter.CTkFrame(master =inp_frame,bg_color='transparent', fg_color=grey)
@@ -179,6 +186,8 @@ class Gui:
                                            text='Info', height=35,  )
             info_but.grid(row = 0, column=5, sticky='nwe', pady = 5) 
                 #video radio
+
+                        
         t_radio =customtkinter.CTkRadioButton(master=self.c_page, text='Text',corner_radius=5,
                                               value='T', variable=self.cal_rad2_var)
                                               
@@ -194,6 +203,7 @@ class Gui:
                     command= lambda val =inp, chosen = self.cal_rad_var, 
                     format = self.cal_rad2_var , formula = formula:(self.set_values_check(val,chosen,format, formula)) )
         Cal_but.grid(row = 3, column=3, sticky='nwse', pady = 15) 
+        
        
     def set_values_check(self, val, chosen, format, formula):
         format.get()
@@ -253,6 +263,13 @@ class Gui:
         else :
             pass
     
+    def disable_inp(self, inp):
+        for i , var in enumerate(inp):
+            if int(self.cal_rad_var.get()) == i:
+                print(i)
+                var.configure(state='disabled')
+            else:
+                var.configure(state=NORMAL)
     #change to list V
     #maby animate
     def sub(self,si_index, f,i):
