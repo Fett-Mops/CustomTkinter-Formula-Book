@@ -1,0 +1,37 @@
+{
+    "formula": {
+        "Uri": {
+            "search_terms": [
+                "Spannung",
+                "Strom",
+                "Wiederstand",
+                "Elektrotechnick"
+            ],
+            "formula": "U=I*R",
+            "values":[[0,1,2],[0,0,0]]
+    
+        },
+        "Leistung": {
+            "search_terms": [
+                "Spannung",
+                "Strom",
+                "Wiederstand",
+                "Elektrotechnick"
+
+            ],
+            "formula": "U=I*R",
+            "values":[[0,1,2],[0,0,0]]
+        },
+        "Kapazit\u00e4t": {
+            "search_terms": [
+                "Spannung",
+                "Strom",
+                "Wiederstand",
+                "Elektrotechnick"
+                
+            ],
+            "formula": "U=I*R",
+            "values":[[0,1,2],[0,0,0]]
+        }
+    }
+}
