@@ -139,7 +139,8 @@ class Gui:
 
             var_inp = customtkinter.CTkEntry(master=inp_frame
                                     ,width=50, height=35,  fg_color=green, border_width=0, bg_color='transparent',
-                                    placeholder_text_color=text_col, )
+                                    placeholder_text_color=text_col)
+            
             var_inp.grid(row = 0, column=1, pady= 5, padx=(5,0), sticky='nwes')
             inp.append(var_inp)
             if len(inp) == 1:
