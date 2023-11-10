@@ -29,4 +29,15 @@ To use the CustomTkinter Formula Book:
 ## Contributing
 We welcome contributions from developers of all levels, including those who are new to this project. Here's how you can contribute:
 
-1.
+1. **Fork**: Fork the project on GitHub.
+2. **Clone**: Clone the forked project to your local machine.
+3. **Create a Branch**: Create a new branch for your contributions.
+4. **Make Changes**: Make your contributions or improvements to the project.
+5. **Pull Request**: Submit a pull request back to this repository.
+
+Please review our [contribution guidelines](CONTRIBUTING.md) for more details on how to contribute effectively.
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+We look forward to your contributions and hope you find this project both educational and enjoyable. Happy coding!
