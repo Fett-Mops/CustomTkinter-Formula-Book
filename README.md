@@ -7,11 +7,11 @@ Welcome to the CustomTkinter Formula Book repository! This project is a custom-m
 - [Aims](#aims)
 - [Getting Started](#getting-started)
 - [Usage](#usage)
-- [Contributing](#contributing)
 - [License](#license)
 
 ## Aims
 The primary aim of this project is to provide a customizable and user-friendly formula book for various mathematical and scientific formulas. As a newcomer to this project, your fresh perspective and contributions are invaluable in achieving these goals. We encourage you to get involved and help us enhance this formula book.
+
 
 ## Getting Started
 If you're new to this project, follow these steps to get started:
@@ -26,16 +26,6 @@ To use the CustomTkinter Formula Book:
 2. You can browse and search for various mathematical and scientific formulas.
 3. Customize the formula book by adding or modifying formulas as needed.
 
-## Contributing
-We welcome contributions from developers of all levels, including those who are new to this project. Here's how you can contribute:
-
-1. **Fork**: Fork the project on GitHub.
-2. **Clone**: Clone the forked project to your local machine.
-3. **Create a Branch**: Create a new branch for your contributions.
-4. **Make Changes**: Make your contributions or improvements to the project.
-5. **Pull Request**: Submit a pull request back to this repository.
-
-Please review our [contribution guidelines](CONTRIBUTING.md) for more details on how to contribute effectively.
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
