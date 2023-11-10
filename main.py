@@ -19,10 +19,6 @@ root.title('Formelbüchlein')
 root.grid_columnconfigure(1, weight=1)
 root.grid_rowconfigure(1, weight=1)
 
-
-
-
-
 #colors
 red = '#E26579'
 red_b = '#D35B58'
@@ -65,7 +61,7 @@ class Gui:
         
         edit_formula_img = ImageTk.PhotoImage(Image.open("pictures/edit-formula.png").resize((50,50)))
         edit_formula_but = customtkinter.CTkButton(master=frame, image=edit_formula_img,text='', width=60,
-                                          height=60, )
+                                                height=60)
         edit_formula_but.grid(row=1 ,column=0,pady=10, padx=10)
         
         
@@ -115,7 +111,6 @@ class Gui:
         ryd_loop =formula_json['formula'][f'{formula}']['formula'].replace('*', '').replace('+', '').replace('-', '').replace('=', '').replace('/', '')
         print(ryd_loop)
         Units, Buttons, inp = [], [[],[]], []
-
         for i, var in enumerate(ryd_loop)  :            
             inp_frame = customtkinter.CTkFrame(master=scr_frame, fg_color=grey)
             inp_frame.grid(row=i, column=0, sticky='nswe', pady=(0,5))
@@ -127,9 +122,9 @@ class Gui:
         
             if formula_json['formula'][f'{formula}']['values'][1][i] == 1:
                 self.cal_inp_var[i].set(con_json[f"{formula_json['formula'][f'{formula}']['values'][0][1]}"]['value'])
-                c_box_x = customtkinter.CTkRadioButton(master=inp_frame,text='', width=5 , border_color=grey_disa,
+                box_x = customtkinter.CTkRadioButton(master=inp_frame,text='', width=5 , border_color=grey_disa,
                                                        state='disabled',corner_radius=5,)
-                c_box_x.grid(row=0, column=0, pady=5, padx=(5,0))
+                box_x.grid(row=0, column=0, pady=5, padx=(5,0))
                 var_inp = customtkinter.CTkEntry(master=inp_frame
                                     ,width=50, height=35,  fg_color=green, border_width=0, bg_color='transparent',
                                     placeholder_text_color=grey_disa,
@@ -154,6 +149,10 @@ class Gui:
                                     )
                 unit_label = customtkinter.CTkLabel(master = inp_frame,  font=font1,  fg_color=grey,
                                 text= char_json[f"{formula_json['formula'][f'{formula}']['values'][0][i]}"]['unit'])
+                if len(inp) == 1:
+                    if formula_json['formula'][f'{formula}']['values'][1][0] == 1:
+                        var_inp.configure(state='disabled')
+                    var_inp.configure(state='disabled')
             
                
                                  
@@ -161,8 +160,7 @@ class Gui:
 
             var_inp.grid(row = 0, column=1, pady= 5, padx=(5,0), sticky='nwes')
             inp.append(var_inp)
-            if len(inp) == 1:
-                var_inp.configure(state='disabled')
+
             
                                                      
            
@@ -199,7 +197,9 @@ class Gui:
             symb_label = customtkinter.CTkLabel(master = inp_frame  ,text=var, font=font1, 
                                            fg_color=grey)
             symb_label.grid(row = 0, column=4, pady= (8,5), padx=10, sticky='nwes')
-        
+            
+            
+            #info png
             info_but = customtkinter.CTkButton(master=inp_frame, 
                                            text='Info', height=35,  )
             info_but.grid(row = 0, column=5, sticky='nwe', pady = 5) 

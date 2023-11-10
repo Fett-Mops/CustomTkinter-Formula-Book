@@ -6,6 +6,7 @@
         "value": "3.14159265359",
         "category": "Mechanics",
         "pack": "Basics",
+        "unit": "",
         "locals": {
             "de": {
                 "name": "Pi"
