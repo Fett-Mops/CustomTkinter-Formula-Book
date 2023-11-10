@@ -1,2 +1,6 @@
-package-name==version
-another-package==another-version
+customtkinter           ==  5.2.1
+si-prefix               ==  1.2.2
+CTkColorPicker          ==  0.8.0
+CTkMessagebox           ==  2.5
+Pillow                  ==  9.5.0
+Tkinter
