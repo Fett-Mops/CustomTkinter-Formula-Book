@@ -6,7 +6,6 @@ import json
 import si_prefix
 import CTkMessagebox
 
-import darkdetect
 
 WIDTH, HEIGHT = int(500), int(500)
 
@@ -50,11 +49,11 @@ class Gui:
         self.s_page =  customtkinter.CTkFrame(root, fg_color='transparent')
         self.a_page =  customtkinter.CTkFrame(root, fg_color='transparent')
         self.c1_page =  customtkinter.CTkFrame(root, fg_color='transparent')
-        self.si_index = 8
+        self.si_index = [8 for _ in range(3)]
         self.si_str = si_prefix.SI_PREFIX_UNITS
         self.cal_rad_var = customtkinter.IntVar(value=0)
         self.cal_rad2_var = customtkinter.StringVar(value='T')
-        self.cal_inp_var = [customtkinter.StringVar(value=''), customtkinter.StringVar(value=''),customtkinter.StringVar(value='')]
+        self.cal_inp_var = [customtkinter.StringVar(value='') for _ in range(3)]
        
     def add_formula(self):
         global edit_formula_but, del_formula_but
@@ -120,36 +119,41 @@ class Gui:
         for i, var in enumerate(ryd_loop)  :            
             inp_frame = customtkinter.CTkFrame(master=scr_frame, fg_color=grey)
             inp_frame.grid(row=i, column=0, sticky='nswe', pady=(0,5))
-            inp_frame.grid_columnconfigure([0,1,2,4,5], weight=1)
+            inp_frame.grid_columnconfigure([0,1,2,4], weight=2)
+            inp_frame.grid_columnconfigure(5, weight=1)
             inp_frame.grid_rowconfigure([0,1,2,4,5], weight=1)  
             inp_frame.grid_columnconfigure(3, weight=2)
-            
-           
-                
-            
-              
-        
+         
         
             if formula_json['formula'][f'{formula}']['values'][1][i] == 1:
+                self.cal_inp_var[i].set(con_json[f"{formula_json['formula'][f'{formula}']['values'][0][1]}"]['value'])
                 c_box_x = customtkinter.CTkRadioButton(master=inp_frame,text='', width=5 , border_color=grey_disa,
                                                        state='disabled',corner_radius=5,)
                 c_box_x.grid(row=0, column=0, pady=5, padx=(5,0))
                 var_inp = customtkinter.CTkEntry(master=inp_frame
                                     ,width=50, height=35,  fg_color=green, border_width=0, bg_color='transparent',
-                                    placeholder_text_color=text_col,
+                                    placeholder_text_color=grey_disa,
                                     textvariable=self.cal_inp_var[i],
-                                    state='disabled')
+                                    state='disabled'
+                                    )
+                                   
+                
+                unit_label = customtkinter.CTkLabel(master = inp_frame,  font=font1,  fg_color=grey,
+                                text= con_json[f"{formula_json['formula'][f'{formula}']['values'][0][i]}"]['unit'])
             
             else:
                 box_x = customtkinter.CTkRadioButton(master=inp_frame,text='', width=5,
                                                      corner_radius=5,
                                                      value=i, variable=self.cal_rad_var,
-                                                     command=lambda inp = inp: self.disable_inp(inp, Units))
+                                                     command=lambda inp = inp: self.disable_inp(inp, formula))
                 box_x.grid(row=0, column=0, pady=5, padx=(5,0))     
                 var_inp = customtkinter.CTkEntry(master=inp_frame
                                     ,width=50, height=35,  fg_color=green, border_width=0, bg_color='transparent',
                                     placeholder_text_color=text_col,
-                                    textvariable=self.cal_inp_var[i])
+                                    textvariable=self.cal_inp_var[i]
+                                    )
+                unit_label = customtkinter.CTkLabel(master = inp_frame,  font=font1,  fg_color=grey,
+                                text= char_json[f"{formula_json['formula'][f'{formula}']['values'][0][i]}"]['unit'])
             
                
                                  
@@ -185,8 +189,7 @@ class Gui:
             Buttons[1].append(down_but)
  
  
-            unit_label = customtkinter.CTkLabel(master = inp_frame,  font=font1,  fg_color=grey,
-                                text= char_json[f"{formula_json['formula'][f'{formula}']['values'][0][i]}"]['unit'])
+
                                            
             Units.append(unit_label)
             
@@ -279,6 +282,7 @@ class Gui:
             pass
     
     def disable_inp(self, inp, C):
+        
         for i , var in enumerate(inp):
             if int(self.cal_rad_var.get()) == i:
                 var.configure(state='disabled')
@@ -290,24 +294,24 @@ class Gui:
     #maby animate
     def sub(self,si_index, f,i):
         
-        if si_index != 0:
-            self.si_index -=1
+        if si_index[i] != 0:
+            self.si_index[i] -=1
         if bool(formula_json['formula'][f'{f}']['values'][1][i]):
             Unit = con_json[f"{formula_json['formula'][f'{f}']['values'][0][i]}"]['unit']
         else:
             Unit = char_json[f"{formula_json['formula'][f'{f}']['values'][0][i]}"]['unit']
-        Units[i].configure(text = self.si_str[self.si_index] + f'{Unit}')
+        Units[i].configure(text = self.si_str[self.si_index[i]] + f'{Unit}')
             
     #change to list V        
     def add(self,si_index, f,  i):
            
-        if si_index != 16:
-            self.si_index +=1         
+        if si_index[i]  != 16:
+           self.si_index[i]  +=1         
         if bool(formula_json['formula'][f'{f}']['values'][1][i]):
             Unit = con_json[f"{formula_json['formula'][f'{f}']['values'][0][i]}"]['unit']
         else:
             Unit = char_json[f"{formula_json['formula'][f'{f}']['values'][0][i]}"]['unit']
-        Units[i].configure(text = self.si_str[self.si_index] + f'{Unit}')
+        Units[i].configure(text = self.si_str[self.si_index[i] ] + f'{Unit}')
             
     def home(self, formula_json):  
         
