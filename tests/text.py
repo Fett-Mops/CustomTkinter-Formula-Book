@@ -54,6 +54,7 @@ class Gui:
         self.si_str = si_prefix.SI_PREFIX_UNITS
         self.cal_rad_var = customtkinter.IntVar(value=0)
         self.cal_rad2_var = customtkinter.StringVar(value='T')
+        self.cal_inp_var = [customtkinter.StringVar(value=''), customtkinter.StringVar(value=''),customtkinter.StringVar(value='')]
        
     def add_formula(self):
         global edit_formula_but, del_formula_but
@@ -122,25 +123,38 @@ class Gui:
             inp_frame.grid_columnconfigure([0,1,2,4,5], weight=1)
             inp_frame.grid_rowconfigure([0,1,2,4,5], weight=1)  
             inp_frame.grid_columnconfigure(3, weight=2)
+            
+           
+                
+            
               
         
         
-            if False:
-                c_box_x = customtkinter.CTkRadioButton(master=inp_frame,text='', width=5 , border_color=grey_disa, state='disabled')
+            if formula_json['formula'][f'{formula}']['values'][1][i] == 1:
+                c_box_x = customtkinter.CTkRadioButton(master=inp_frame,text='', width=5 , border_color=grey_disa,
+                                                       state='disabled',corner_radius=5,)
                 c_box_x.grid(row=0, column=0, pady=5, padx=(5,0))
+                var_inp = customtkinter.CTkEntry(master=inp_frame
+                                    ,width=50, height=35,  fg_color=green, border_width=0, bg_color='transparent',
+                                    placeholder_text_color=text_col,
+                                    textvariable=self.cal_inp_var[i],
+                                    state='disabled')
+            
             else:
                 box_x = customtkinter.CTkRadioButton(master=inp_frame,text='', width=5,
                                                      corner_radius=5,
                                                      value=i, variable=self.cal_rad_var,
-                                                     command=lambda inp = inp : self.disable_inp(inp))
+                                                     command=lambda inp = inp: self.disable_inp(inp, Units))
                 box_x.grid(row=0, column=0, pady=5, padx=(5,0))     
+                var_inp = customtkinter.CTkEntry(master=inp_frame
+                                    ,width=50, height=35,  fg_color=green, border_width=0, bg_color='transparent',
+                                    placeholder_text_color=text_col,
+                                    textvariable=self.cal_inp_var[i])
+            
                
                                  
 
-            var_inp = customtkinter.CTkEntry(master=inp_frame
-                                    ,width=50, height=35,  fg_color=green, border_width=0, bg_color='transparent',
-                                    placeholder_text_color=text_col)
-            
+
             var_inp.grid(row = 0, column=1, pady= 5, padx=(5,0), sticky='nwes')
             inp.append(var_inp)
             if len(inp) == 1:
@@ -264,11 +278,12 @@ class Gui:
         else :
             pass
     
-    def disable_inp(self, inp):
+    def disable_inp(self, inp, C):
         for i , var in enumerate(inp):
             if int(self.cal_rad_var.get()) == i:
-                print(i)
                 var.configure(state='disabled')
+                print(self.cal_inp_var[i].get())
+                self.cal_inp_var[i].set( '')
             else:
                 var.configure(state=NORMAL)
     #change to list V

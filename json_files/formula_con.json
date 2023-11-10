@@ -1,4 +1,5 @@
-[{
+{
+    
     "0":{
         "symbol": "π",
         "name": "Pi",
@@ -9,11 +10,9 @@
             "de": {
                 "name": "Pi"
             }
+            
         }
-    }
-    
-}, 
-{
+    },
     "1": {
         "symbol": "c<sub>0</sub>",
         "name": "Vacuum speed of light",
@@ -26,9 +25,7 @@
                 "name": "Lichtgeschwindigkeit im Vakuum"
             }
         }
-    }
-}, 
-{
+    },
     "2":{
         "symbol": "G<sub>N</sub>",
         "name": "Newtonian constant of gravitation",
@@ -41,9 +38,7 @@
                 "name": "Gravitationskonstante"
             }
         }
-    }
-},
-{
+    },
     "3": {
         "symbol": "h",
         "name": "Planck constant",
@@ -56,9 +51,8 @@
                 "name": "Plancksches Wirkungsquantum"
             }
         }
-    }
-},
-{
+    },
+
     "4": {
         "symbol": "\u00ce\u00bc<sub>0</sub>",
         "name": "Magnetic constant",
@@ -71,9 +65,9 @@
                 "name": "Magnetische Feldkonstante"
             }
         }
-    }
-},
-{
+    },
+
+
     "5": {
         "symbol": "\u00ce\u00b5<sub>0</sub>",
         "name": "Electric constant",
@@ -86,9 +80,9 @@
                 "name": "Elektrische Feldkonstante"
             }
         }
-    }
-},
-{
+    },
+
+
     "6": {
         "symbol": "T<sub>a</sub>",
         "name": "Absolute zero",
@@ -101,9 +95,8 @@
                 "name": "Absoluter Nullpunkt"
             }
         }
-    }
-},
-{
+    },
+
     "7": {
         "symbol": "u",
         "name": "Unified atomic mass unit",
@@ -116,9 +109,9 @@
                 "name": "Atomare Masseeinheit"
             }
         }
-    }
-},
-{
+    },
+
+
     "8": {
         "symbol": "N<sub>A</sub>",
         "name": "Avogadro constant",
@@ -131,9 +124,9 @@
                 "name": "Avogadro-Konstante"
             }
         }
-    }
-},
-{
+    },
+
+
     "9": {
         "symbol": "k",
         "name": "Boltzmann constant",
@@ -146,9 +139,9 @@
                 "name": "Boltzmann-Konstante"
             }
         }
-    }
-},
-{
+    },
+
+
     "10": {
         "symbol": "\u00ce\u00bb<sub>C</sub>",
         "name": "Compton wavelength of an electron",
@@ -161,9 +154,9 @@
                 "name": "Compton-Wellenl\u00c3\u00a4nge des Elektrons"
             }
         }
-    }
-},
-{
+    },
+
+
     "11": {
         "symbol": "F<sub>A</sub>",
         "name": "Faraday constant",
@@ -176,9 +169,9 @@
                 "name": "Faraday-Konstante"
             }
         }
-    }
-},
-{
+    },
+
+
     "12": {
         "symbol": "N<sub>L</sub>",
         "name": "Loschmidt constant",
@@ -191,9 +184,9 @@
                 "name": "Loschmidt-Konstante"
             }
         }
-    }
-},
-{
+    },
+
+
     "13": {
         "symbol": "R<sub>H</sub>",
         "name": "Rydberg constant",
@@ -206,9 +199,9 @@
                 "name": "Rydberg-Konstante"
             }
         }
-    }
-},
-{
+    },
+
+
     "14": {
         "symbol": "R<sub>y</sub>",
         "name": "Rydberg frequency",
@@ -221,9 +214,8 @@
                 "name": "Rydberg-Frequenz"
             }
         }
-    }
-},
-{
+    },
+
     "15": {
         "symbol": "\u00cf\u0192<sub>B</sub>",
         "name": "Stefan-Boltzmann constant",
@@ -236,9 +228,9 @@
                 "name": "Stefan-Boltzmann-Konstante"
             }
         }
-    }
-},
-{
+    },
+
+
     "16": {
         "symbol": "R<sub>0</sub>",
         "name": "Gas constant",
@@ -251,9 +243,9 @@
                 "name": "Universelle Gaskonstante"
             }
         }
-    }
-},
-{
+    },
+
+
     "17": {
         "symbol": "b<sub>energy</sub>",
         "name": "Wien displacement law constant",
@@ -266,9 +258,9 @@
                 "name": "Wiensche Konstante"
             }
         }
-    }
-},
-{
+    },
+
+
     "18": {
         "symbol": "V<sub>0</sub>",
         "name": "Molar volume of an ideal gas",
@@ -281,9 +273,9 @@
                 "name": "Molares Normvolumen"
             }
         }
-    }
-},
-{
+    },
+
+
     "19": {
         "symbol": "g<sub>0</sub>",
         "name": "Standard acceleration of gravity",
@@ -296,9 +288,9 @@
                 "name": "Normfallbeschleunigung"
             }
         }
-    }
-},
-{
+    },
+
+
     "20": {
         "symbol": "T<sub>0</sub>",
         "name": "Standard temperature",
@@ -311,9 +303,9 @@
                 "name": "Normtemperatur"
             }
         }
-    }
-},
-{
+    },
+
+
     "21": {
         "symbol": "e",
         "name": "Elementary charge",
@@ -326,9 +318,9 @@
                 "name": "Elementarladung"
             }
         }
-    }
-},
-{
+    },
+
+
     "22": {
         "symbol": "m<sub>e</sub>",
         "name": "Electron mass",
@@ -341,9 +333,9 @@
                 "name": "Ruhemasse eines Elektrons"
             }
         }
-    }
-},
-{
+    },
+
+
     "23": {
         "symbol": "m<sub>n</sub>",
         "name": "Neutron mass",
@@ -356,9 +348,9 @@
                 "name": "Ruhemasse eines Neutrons"
             }
         }
-    }
-},
-{
+    },
+
+
     "24": {
         "symbol": "m<sub>p</sub>",
         "name": "Proton mass",
@@ -372,5 +364,5 @@
             }
         }
     }
+
 }
-]
