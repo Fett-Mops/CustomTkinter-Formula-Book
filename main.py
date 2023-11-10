@@ -235,7 +235,7 @@ class Gui:
             
                 if i != chosen.get():
                     try:
-                        int(val[i].get())
+                    
                         float(val[i].get())
                         values.append(val[i].get())
                     except:

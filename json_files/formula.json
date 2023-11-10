@@ -20,7 +20,7 @@
 
             ],
             "formula": "U=I*R",
-            "values":[[0,1,2],[0,0,0]]
+            "values":[[0,1,2],[0,0,1]]
         },
         "Kapazit\u00e4t": {
             "search_terms": [
