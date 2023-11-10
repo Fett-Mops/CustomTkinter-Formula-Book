@@ -1,7 +1,7 @@
 # CustomTkinter Formula Book
 
 ## Introduction
-Welcome to the CustomTkinter Formula Book repository! This project is a custom-made formula book built using the Tkinter library in Python. As the maintainer of this project and a newcomer, we're excited to have you join our community. This README will provide you with important information about the project and how to get started.
+Welcome to the CustomTkinter Formula Book repository! This project is a custom-made formula book built using the CustomTkinter library in Python. As the maintainer of this project and a newcomer, we're excited to have you join our community. This README will provide you with important information about the project and how to get started.
 
 ## Table of Contents
 - [Aims](#aims)
