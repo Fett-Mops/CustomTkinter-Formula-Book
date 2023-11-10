@@ -109,7 +109,6 @@ class Gui:
 
 
         ryd_loop =formula_json['formula'][f'{formula}']['formula'].replace('*', '').replace('+', '').replace('-', '').replace('=', '').replace('/', '')
-        print(ryd_loop)
         Units, Buttons, inp = [], [[],[]], []
         for i, var in enumerate(ryd_loop)  :            
             inp_frame = customtkinter.CTkFrame(master=scr_frame, fg_color=grey)
@@ -149,11 +148,23 @@ class Gui:
                                     )
                 unit_label = customtkinter.CTkLabel(master = inp_frame,  font=font1,  fg_color=grey,
                                 text= char_json[f"{formula_json['formula'][f'{formula}']['values'][0][i]}"]['unit'])
-                if len(inp) == 1:
-                    if formula_json['formula'][f'{formula}']['values'][1][0] == 1:
-                        var_inp.configure(state='disabled')
+                
+                # not functional for more var than three
+            if formula_json['formula'][f'{formula}']['values'][1][i] == 1:
+                print(2)
+                if len(inp) == 2:
+                    print(3)
                     var_inp.configure(state='disabled')
-            
+                    self.cal_rad_var.set(1)
+
+            else:
+                if len(inp) == 1:
+                    var_inp.configure(state='disabled')
+                        
+                        
+                
+                        
+
                
                                  
 
@@ -272,7 +283,7 @@ class Gui:
                         si_units.append('')
                     else:
                         si_units.append(Units[i].cget('text')[0])
-                    print(si_units)
+   
             
             #self.algebra?
 
@@ -286,8 +297,8 @@ class Gui:
         for i , var in enumerate(inp):
             if int(self.cal_rad_var.get()) == i:
                 var.configure(state='disabled')
-                print(self.cal_inp_var[i].get())
-                self.cal_inp_var[i].set( '')
+
+                self.cal_inp_var[i].set('')
             else:
                 var.configure(state=NORMAL)
     #change to list V

@@ -1,10 +1,12 @@
 # CustomTkinter Formula Book
 
+## Important
+for now not working here will be a pinguin picture if it is mostly functional
+
+
 ## Introduction
 Welcome to the CustomTkinter Formula Book repository! This project is a custom-made formula book built using the CustomTkinter library in Python. As the maintainer of this project and a newcomer, we're excited to have you join our community. This README will provide you with important information about the project and how to get started.
 
-## Important
-Currently not functional if it is here would be a penguin
 
 ## Table of Contents
 - [Aims](#aims)
