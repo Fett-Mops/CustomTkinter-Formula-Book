@@ -1,5 +1,9 @@
 # CustomTkinter Formula Book
 
+- [x] #739
+- [ ] https://github.com/octo-org/octo-repo/issues/740
+- [ ] Add delight to the experience when all tasks are complete :tada:
+
 ## Important
 for now not working here will be a pinguin picture if it is mostly functional
 
