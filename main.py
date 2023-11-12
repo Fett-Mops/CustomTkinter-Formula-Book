@@ -52,16 +52,122 @@ class Gui:
         self.cal_rad_var = customtkinter.IntVar(value=0)
         self.cal_rad2_var = customtkinter.StringVar(value='T')
         self.cal_inp_var = [customtkinter.StringVar(value='') for _ in range(3)]
+        self.add_check_var = customtkinter.IntVar()
         
         self.cal_rad_first = False
        
     def add_formula(self):
- 
-
-        
         self.a_page.grid(row = 0,rowspan=2, column=1, sticky='nesw', pady=(4,5), padx=(5,5))
+        self.a_page.grid_columnconfigure([0,1,2], weight=1)
+ 
+           
+        self.a_page.grid_rowconfigure(2, weight=1)  
         self.a_page.tkraise()
-        self.cal_bool= True
+  
+        
+        label_frame= customtkinter.CTkFrame(master=self.a_page)
+        label_frame.grid(row=0, column=0, columnspan=4, sticky='nswe',pady=(0,5))
+        
+        
+        name_formula = customtkinter.CTkLabel(master=label_frame,
+                                text='Button', font=font1, compound='center',
+                                )
+        name_formula.grid(row=0, column=0,columnspan=4, sticky='nswe', padx=5)
+        inp_formula = customtkinter.CTkEntry(master=self.a_page,width=50, height=35,
+                                         fg_color=green, border_width=0, bg_color='transparent',
+                                        placeholder_text_color='formula here')
+        inp_formula.grid(row=1, column=0,columnspan=3, sticky='nswe', pady=(0,5))
+        
+        helpful_frame = customtkinter.CTkFrame(master=self.a_page, fg_color='transparent')
+        helpful_frame.grid(row=1, column=3, padx=(5,0),pady=(0,5))
+        
+        
+        info_img = ImageTk.PhotoImage(Image.open("pictures\info-icon.png").resize((30,30)))
+        
+        info_format_but = customtkinter.CTkButton(master= helpful_frame, height=35, text = '',
+                                                  image=info_img, width=10)
+        info_format_but.grid(row=0, column=1, padx=(5,0))
+        
+        reload_img =ImageTk.PhotoImage(Image.open("pictures/reload.png").resize((40,40)))
+        reload_scr_frame = customtkinter.CTkButton(master=helpful_frame, image=reload_img,width=100, text = '')
+        reload_scr_frame.grid(row=0, column=0)
+        
+        #scrolable fram
+        scr_frame = customtkinter.CTkScrollableFrame(master=self.a_page)
+        scr_frame.grid(row=2, column=0, columnspan=4, sticky='nswe')
+        scr_frame.grid_columnconfigure(0, weight=1)
+        scr_frame.grid_rowconfigure(0, weight=1)   
+        
+        cal_label = customtkinter.CTkLabel(master=scr_frame,
+                                text='ajsdlfkajsdlkf', font=font1)
+        cal_label.grid(row=0, column=0, sticky='nswe', padx=5)
+        cal_label.grid_columnconfigure(0, weight=1)
+        cal_label.grid_rowconfigure(0, weight=1)
+        
+        
+        
+        
+        
+        for i in range(3):            
+            inp_frame = customtkinter.CTkFrame(master=scr_frame, fg_color=grey)
+            inp_frame.grid(row=i+1, column=0, columnspan=4,sticky='nswe', pady=(0,5))
+            inp_frame.grid_columnconfigure([0,1,2,4], weight=2)
+           
+            inp_frame.grid_rowconfigure([0,1,2,4,5], weight=1)  
+
+            
+           
+            box_x = customtkinter.CTkCheckBox(master=inp_frame,text='', width=5,
+                                                     corner_radius=5,
+                                                      variable=self.add_check_var)
+            box_x.grid(row=0, column=0, pady=5, padx=(5,0))    
+                 
+            var_inp = customtkinter.CTkEntry(master=inp_frame
+                                    ,width=50, height=35,  fg_color=green, border_width=0, bg_color='transparent',
+                                    placeholder_text_color=text_col,
+                                    textvariable=self.cal_inp_var[i]
+                                    )
+            unit_label = customtkinter.CTkLabel(master = inp_frame,  font=font1,  fg_color=grey,
+                                text= '')
+                      
+    
+            var_inp.grid(row = 0, column=1, pady= 5, padx=(5,0), sticky='nwes')
+           
+            ud_frame = customtkinter.CTkFrame(master =inp_frame,bg_color='transparent', fg_color=grey)
+            ud_frame.grid(column=2, row=0)
+        
+            ud_img=Image.open("pictures/arrow.png").resize((20,20))
+            up_img = ImageTk.PhotoImage(ud_img)
+            up_but = customtkinter.CTkButton(master=ud_frame, image=up_img, text='',  width=0, height=0,
+                                             hover=False, fg_color=grey)
+            up_but.grid(row = 0, column=0, sticky='nswe')
+           
+            down_img = ImageTk.PhotoImage(ud_img.rotate(angle=180))
+            down_but = customtkinter.CTkButton(master=ud_frame, image=down_img, text='', width=0, height=0,
+                                               hover=False, fg_color=grey)
+            down_but.grid(row = 1, column=0, sticky='nswe')                
+           
+                                           
+            
+            unit_label.grid(row = 0, column=3, pady= (8,5), padx=10, sticky='nwes')
+        
+        #change to listU
+            symb_label = customtkinter.CTkLabel(master = inp_frame  ,text='d', font=font1, 
+                                           fg_color=grey)
+            symb_label.grid(row = 0, column=4, pady= (8,5), padx=10, sticky='nwes')
+            
+            
+            #info png        
+            
+            info_but = customtkinter.CTkButton(master=inp_frame, 
+                                           text='',image=info_img,width=30,height= 30 )
+            info_but.grid(row = 0, column=5, sticky='nwe', pady = 7, padx=5) 
+
+
+        save_but = customtkinter.CTkButton(master=self.a_page, text='Speichern', height=35)
+        save_but.grid(row = 3, column=3, sticky='nwse', pady = 15) 
+       
+
     def remove_formula(self,formula):
         
         rm_message = CTkMessagebox.CTkMessagebox(master= root,message="Bist du sicher das du die Formel: "+ f'{formula}'+" löschen willst?",
@@ -118,11 +224,12 @@ class Gui:
     
             self.home()
 
- 
     def search_formula(self):
         pass
+   
     def edit_formula(self):
         pass
+   
     def set_values(self, formula):
 
         global unit_label, Buttons, Units, edit_formula_but, del_formula_but
@@ -172,9 +279,9 @@ class Gui:
             inp_frame = customtkinter.CTkFrame(master=scr_frame, fg_color=grey)
             inp_frame.grid(row=i, column=0, sticky='nswe', pady=(0,5))
             inp_frame.grid_columnconfigure([0,1,2,4], weight=2)
-            inp_frame.grid_columnconfigure(5, weight=1)
+           
             inp_frame.grid_rowconfigure([0,1,2,4,5], weight=1)  
-            inp_frame.grid_columnconfigure(3, weight=2)
+     
          
         
             if r_formula_json['formula'][f'{formula}']['values'][1][i] == 1:
@@ -229,16 +336,10 @@ class Gui:
             down_but = customtkinter.CTkButton(master=ud_frame, image=down_img, text='', width=0, height=0,
                                                hover=False, fg_color=grey,
                                                command=lambda i = i, f = formula: (self.sub(self.si_index,f,i)))
-            down_but.grid(row = 1, column=0, sticky='nswe')
-            
-                
+            down_but.grid(row = 1, column=0, sticky='nswe')                
             Buttons[1].append(down_but)
- 
- 
-
                                            
             Units.append(unit_label)
-            
             unit_label.grid(row = 0, column=3, pady= (8,5), padx=10, sticky='nwes')
         
         #change to listU
@@ -247,11 +348,11 @@ class Gui:
             symb_label.grid(row = 0, column=4, pady= (8,5), padx=10, sticky='nwes')
             
             
-            #info png
+            #info png        
+            info_img = ImageTk.PhotoImage(Image.open("pictures\info-icon.png").resize((30,30)))
             info_but = customtkinter.CTkButton(master=inp_frame, 
-                                           text='Info', height=35,  )
-            info_but.grid(row = 0, column=5, sticky='nwe', pady = 5) 
-                #video radio
+                                           text='',image=info_img,width=30,height= 30 )
+            info_but.grid(row = 0, column=5, sticky='nwe', pady = 7, padx=5) 
 
                         
         t_radio =customtkinter.CTkRadioButton(master=self.c_page, text='Text',corner_radius=5,
@@ -264,12 +365,12 @@ class Gui:
         v_radio =customtkinter.CTkRadioButton(master=self.c_page, text='Video', corner_radius=5,
                                               value='V', variable=self.cal_rad2_var)
         v_radio.grid(row=3, column=2, sticky='nswe', pady=10,padx=10)
-        
-        Cal_but = customtkinter.CTkButton(master=self.c_page, text='Berechnen', height=35,
+
+              
+        cal_but = customtkinter.CTkButton(master=self.c_page, text='Berechnen', height=35,
                     command= lambda val =inp, chosen = self.cal_rad_var, 
                     format = self.cal_rad2_var , formula = formula:(self.set_values_check(val,chosen,format, formula)) )
-        Cal_but.grid(row = 3, column=3, sticky='nwse', pady = 15) 
-        
+        cal_but.grid(row = 3, column=3, sticky='nwse', pady = 15) 
        
     def set_values_check(self, val, chosen, format, formula):
         format.get()
@@ -347,8 +448,7 @@ class Gui:
                 self.cal_inp_var[i].set('')
             else:
                 var.configure(state=NORMAL)
-    #change to list V
-    #maby animat
+
     def sub(self, si_index, f, i):
         
         if si_index[i] != 0:
@@ -358,8 +458,7 @@ class Gui:
         else:
             Unit = r_char_json[f"{r_formula_json['formula'][f'{f}']['values'][0][i]}"]['unit']
         Units[i].configure(text = self.si_str[self.si_index[i]] + f'{Unit}')
-            
-    #change to list V        
+                
     def add(self, si_index, f, i):
            
         if si_index[i]  != 16:
@@ -375,7 +474,6 @@ class Gui:
         
     def home(self):
         if self.cal_bool:
-
             del_formula_but.grid_forget()
             edit_formula_but.grid_forget() 
             add_formula_but.grid(row=0, column=0,pady=10, padx=10)
