@@ -62,18 +62,67 @@ class Gui:
         self.a_page.grid(row = 0,rowspan=2, column=1, sticky='nesw', pady=(4,5), padx=(5,5))
         self.a_page.tkraise()
         self.cal_bool= True
+    def remove_formula(self,formula):
         
- 
+        rm_message = CTkMessagebox.CTkMessagebox(master= root,message="Bist du sicher das du die Formel: "+ f'{formula}'+" löschen willst?",
+                                   justify='right', icon=False,
+                                   title='Formel Löschen', option_1='Löschen') 
+        rm_comp = customtkinter.CTkCheckBox(master = rm_message, text='Auch komponente löschen')
+        rm_comp.place(x=10,y=160)
+        
+        if rm_message.get() == 'Löschen':
+            if rm_comp.get():
+                for i, var in enumerate(r_formula_json['formula']):
+                    for i in range(3):
+                            if formula != var:
+                                if r_formula_json['formula'][f'{formula}']['values'][0][i] in r_formula_json['formula'][var]['values'][0]:
+                                    if r_formula_json['formula'][f'{formula}']['values'][1][i] != r_formula_json['formula'][var]['values'][1][i]:
+                                        if r_formula_json['formula'][f'{formula}']['values'][1][i] == 0:
+                                            print('var rm1',i)
 
+                                            r_char_json.pop(f"{r_formula_json['formula'][f'{formula}']['values'][0][i]}")
+                                            
+                                            #with open ('json_files/formula_char.json', 'w') as f:
+                                            #    json.dump(r_char_json, f, indent=4)
+                                           
+                                        else:
+                                            
+                                            r_con_json.pop(f"{r_formula_json['formula'][f'{formula}']['values'][0][i]}")
+                                            
+                                            #with open ('json_files/formula_con.json', 'w') as f:
+                                                #json.dump(r_con_json, f, indent=4)
+                                            print('con rm1',i)
+                                    
+                                else:
+                                    print('var rm2',i)
+                                    if r_formula_json['formula'][f'{formula}']['values'][1][i] == 0:
+
+                                        r_char_json.pop(f"{r_formula_json['formula'][f'{formula}']['values'][0][i]}")
+                                            
+                                            #with open ('json_files/formula_char.json', 'w') as f:
+                                            #    json.dump(r_char_json, f, indent=4)
+                                    else:
+                                        print('con rm2',i)
+                                        r_con_json.pop(f"{r_formula_json['formula'][f'{formula}']['values'][0][i]}")
+                                            
+                                        #with open ('json_files/formula_con.json', 'w') as f:
+                                            #json.dump(r_con_json, f, indent=4)
+                                    
+                
+            r_formula_json['formula'].pop(formula)
+            
+            #with open ('json_files/formula.json', 'w') as f:
+                #json.dump(r_formula_json, f, indent=4)
+            
+
+    
+            self.home()
+
+ 
+    def search_formula(self):
+        pass
     def edit_formula(self):
         pass
-    
-    def remove_formula(self):
-        print(HEIGHT)
-    
-    def search_formula(self):
-        print(5)
-    
     def set_values(self, formula):
 
         global unit_label, Buttons, Units, edit_formula_but, del_formula_but
@@ -89,7 +138,7 @@ class Gui:
         del_formula_img = ImageTk.PhotoImage(Image.open("pictures/remove-formula.png").resize((50,50)))
         del_formula_but = customtkinter.CTkButton(master=frame, image=del_formula_img,text='', width=60,
                                                   height=60, fg_color=red, hover_color=red_h,
-                                                  )
+                                                  command=lambda formula= formula :self.remove_formula(formula))
         del_formula_but.grid(row = 2, column=0,pady=10, padx=10)     
         self.cal_bool = True
             
@@ -117,7 +166,7 @@ class Gui:
         
 
 
-        ryd_loop =formula_json['formula'][f'{formula}']['formula'][0].replace('*', '').replace('+', '').replace('-', '').replace('=', '').replace('/', '')
+        ryd_loop =r_formula_json['formula'][f'{formula}']['formula'][0].replace('*', '').replace('+', '').replace('-', '').replace('=', '').replace('/', '')
         Units, Buttons, inp = [], [[],[]], []
         for i, var in enumerate(ryd_loop)  :            
             inp_frame = customtkinter.CTkFrame(master=scr_frame, fg_color=grey)
@@ -128,8 +177,8 @@ class Gui:
             inp_frame.grid_columnconfigure(3, weight=2)
          
         
-            if formula_json['formula'][f'{formula}']['values'][1][i] == 1:
-                self.cal_inp_var[i].set(con_json[f"{formula_json['formula'][f'{formula}']['values'][0][1]}"]['value'])
+            if r_formula_json['formula'][f'{formula}']['values'][1][i] == 1:
+                self.cal_inp_var[i].set(r_con_json[f"{r_formula_json['formula'][f'{formula}']['values'][0][1]}"]['value'])
                 box_x = customtkinter.CTkRadioButton(master=inp_frame,text='', width=5 , border_color=grey_disa,
                                                        state='disabled',corner_radius=5,)
                 box_x.grid(row=0, column=0, pady=5, padx=(5,0))
@@ -142,7 +191,7 @@ class Gui:
                                    
                 
                 unit_label = customtkinter.CTkLabel(master = inp_frame,  font=font1,  fg_color=grey,
-                                text= con_json[f"{formula_json['formula'][f'{formula}']['values'][0][i]}"]['unit'])
+                                text= r_con_json[f"{r_formula_json['formula'][f'{formula}']['values'][0][i]}"]['unit'])
             
             else:
                 box_x = customtkinter.CTkRadioButton(master=inp_frame,text='', width=5,
@@ -156,9 +205,9 @@ class Gui:
                                     textvariable=self.cal_inp_var[i]
                                     )
                 unit_label = customtkinter.CTkLabel(master = inp_frame,  font=font1,  fg_color=grey,
-                                text= char_json[f"{formula_json['formula'][f'{formula}']['values'][0][i]}"]['unit'])
+                                text= r_char_json[f"{r_formula_json['formula'][f'{formula}']['values'][0][i]}"]['unit'])
                         # not functional for more var than three
-            if formula_json['formula'][f'{formula}']['values'][1].index(0) == i:
+            if r_formula_json['formula'][f'{formula}']['values'][1].index(0) == i:
                 var_inp.configure(state='disabled')
                 self.cal_rad_var.set(i)
 
@@ -229,7 +278,7 @@ class Gui:
         sound = False
         icon = 'check'
         title = 'Inputs Speichern'
-        l = ['Berechnen', 'Abbrechen']
+        l = 'Berechnen'
         for i in range(len(val)):
             
                 if i != chosen.get():
@@ -240,7 +289,7 @@ class Gui:
                     except:
                         message = 'Es ist ein Fehler aufgetretten'
                         sound = True
-                        l[0] = None    
+                        l = None
                         title = 'Fehler'   
                         icon =  "cancel"                 
                         
@@ -248,9 +297,10 @@ class Gui:
                 else:
                    values.append(None)     
         mis_win = CTkMessagebox.CTkMessagebox(master= root,message=message, 
-                                              icon=icon, option_1=None, options=l,
+                                              icon=icon, option_1=l,
                                               justify='center',sound=sound,
-                                              title=title) 
+                                              title=title,
+                                              cancel_button='circle') 
         if mis_win.get() == 'Berechnen':
             self.calculate(val, chosen, format, formula)
                 
@@ -266,13 +316,13 @@ class Gui:
             scr_cal.grid(row=0, column=0, sticky='nswe')
             
             for i in range(len(Units)):
-                    if char_json[f"{formula_json['formula'][f'{formula}']['values'][0][i]}"]['unit'] == Units[i].cget('text'):
+                    if r_char_json[f"{r_formula_json['formula'][f'{formula}']['values'][0][i]}"]['unit'] == Units[i].cget('text'):
                         si_units.append(' ')
                     else:
                         si_units.append(Units[i].cget('text')[0])
                         
             
-            labels = [formula_json['formula'][f'{formula}']['formula'][0],self.sypmy_solve(formula, chosen)]
+            labels = [r_formula_json['formula'][f'{formula}']['formula'][0],self.sypmy_solve(formula, chosen)]
             #labels = [ chosen.get(),format.get(),si_units, val[0].get(),val[1].get(),val[2].get()]
             #labels = [ formula,umgestellte fomell ,umgestellete formel mit zahlen, Lösung]
             
@@ -303,10 +353,10 @@ class Gui:
         
         if si_index[i] != 0:
             self.si_index[i] -=1
-        if bool(formula_json['formula'][f'{f}']['values'][1][i]):
-            Unit = con_json[f"{formula_json['formula'][f'{f}']['values'][0][i]}"]['unit']
+        if bool(r_formula_json['formula'][f'{f}']['values'][1][i]):
+            Unit = r_con_json[f"{r_formula_json['formula'][f'{f}']['values'][0][i]}"]['unit']
         else:
-            Unit = char_json[f"{formula_json['formula'][f'{f}']['values'][0][i]}"]['unit']
+            Unit = r_char_json[f"{r_formula_json['formula'][f'{f}']['values'][0][i]}"]['unit']
         Units[i].configure(text = self.si_str[self.si_index[i]] + f'{Unit}')
             
     #change to list V        
@@ -314,16 +364,16 @@ class Gui:
            
         if si_index[i]  != 16:
            self.si_index[i]  +=1         
-        if bool(formula_json['formula'][f'{f}']['values'][1][i]):
-            Unit = con_json[f"{formula_json['formula'][f'{f}']['values'][0][i]}"]['unit']
+        if bool(r_formula_json['formula'][f'{f}']['values'][1][i]):
+            Unit = r_con_json[f"{r_formula_json['formula'][f'{f}']['values'][0][i]}"]['unit']
         else:
-            Unit = char_json[f"{formula_json['formula'][f'{f}']['values'][0][i]}"]['unit']
+            Unit = r_char_json[f"{r_formula_json['formula'][f'{f}']['values'][0][i]}"]['unit']
         Units[i].configure(text = self.si_str[self.si_index[i] ] + f'{Unit}')
 
     def sypmy_solve(self, formula, chosen):
         pass
         
-    def home(self, formula_json):
+    def home(self):
         if self.cal_bool:
 
             del_formula_but.grid_forget()
@@ -350,7 +400,7 @@ class Gui:
 
 
         
-        for i, formula in enumerate(formula_json['formula']):
+        for i, formula in enumerate(r_formula_json['formula']):
            
             frame_formula = customtkinter.CTkFrame(frame_list,width=250, height=75,fg_color=grey)
             frame_formula.grid(row=i,column=0,pady=5, padx=5, sticky='nswe')
@@ -359,10 +409,10 @@ class Gui:
 
             customtkinter.CTkButton(frame_formula,text=formula,width=85, command=lambda k = formula: (self.set_values(k))
                                     ).grid(row=0, column=0, pady = 5, padx=5,sticky='w')
-            customtkinter.CTkLabel(frame_formula, text=formula_json['formula'][formula]['formula'][0], 
+            customtkinter.CTkLabel(frame_formula, text=r_formula_json['formula'][formula]['formula'][0], 
                                  font=font1).grid(row=0, column=1, pady =(0,5), padx=5,sticky='we')
             
-            customtkinter.CTkLabel(frame_formula, text=formula_json['formula'][formula]["search_terms"][-1:], 
+            customtkinter.CTkLabel(frame_formula, text=r_formula_json['formula'][formula]["search_terms"][-1:], 
                                    font=font1).grid(row=0, column=2, pady =(0,5), padx=10,sticky='e')
             
     def settings(self):
@@ -378,17 +428,17 @@ class Gui:
         self.s_page.tkraise()
     
     def run(self):
-        global formula_json, char_json, con_json, add_formula_but
+        global r_formula_json, r_char_json, r_con_json, add_formula_but
         with open ('json_files/formula.json') as f:
-            formula_json = json.load(f)
+            r_formula_json = json.load(f)
             
         with open ('json_files/formula_char.json') as f:
-            char_json = json.load(f)
+            r_char_json = json.load(f)
             
         with open ('json_files/formula_con.json') as f:
-            con_json = json.load(f)
+            r_con_json = json.load(f)
             
-        self.home(formula_json)
+        self.home()
 
   
 
@@ -414,7 +464,7 @@ class Gui:
     #home
         home_img = ImageTk.PhotoImage(Image.open("pictures/home.png").resize((50,50)))
         home_but = customtkinter.CTkButton(master=frame, image=home_img,text='', width=60, height=60,
-                                   command=lambda: (self.home(formula_json)))
+                                   command=lambda: (self.home()))
    
         home_but.grid(row=5,column=0,pady=10, sticky='nwe', padx=10)
         

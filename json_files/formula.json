@@ -7,9 +7,22 @@
                 "Wiederstand",
                 "Elektrotechnick"
             ],
-            "formula": ["U=I*R", "U,I,R"],
-            "values":[[0,1,2],[0,0,0]]
-    
+            "formula": [
+                "U=I*R",
+                "U,I,R"
+            ],
+            "values": [
+                [
+                    0,
+                    1,
+                    2
+                ],
+                [
+                    0,
+                    0,
+                    0
+                ]
+            ]
         },
         "Leistung": {
             "search_terms": [
@@ -17,21 +30,27 @@
                 "Strom",
                 "Wiederstand",
                 "Elektrotechnick"
-
             ],
-            "formula": ["U=I*R", ["U","I","R"]],
-            "values":[[0,1,2],[0,0,0]]
-        },
-        "Kapazit\u00e4t": {
-            "search_terms": [
-                "Spannung",
-                "Strom",
-                "Wiederstand",
-                "Elektrotechnick"
-                
+            "formula": [
+                "U=I*R",
+                [
+                    "U",
+                    "I",
+                    "R"
+                ]
             ],
-            "formula": ["U=I*R", ["U","I","R"]],
-            "values":[[0,1,2],[0,0,0]]
+            "values": [
+                [
+                    0,
+                    3,
+                    2
+                ],
+                [
+                    1,
+                    0,
+                    0
+                ]
+            ]
         }
     }
 }
