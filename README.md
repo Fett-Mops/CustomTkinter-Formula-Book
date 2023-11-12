@@ -2,14 +2,14 @@
 
 ## Important
 These functions are already in the project:
-- [ ] Calculate formula with values and connstants
-- [ ] add new formula
-- [ ] edit formula
-- [X] delet formula
-- [ ] search to formula
-- [ ] decent settings
-- [ ] Add complexity
-- [ ] **if the project is at least usable here will be a pinguin**
+- Calculate formula with values and connstants
+- add new formula
+- edit formula
+X delet formula
+- search to formula
+- decent settings
+- Add complexity
+- **if the project is at least usable here will be a pinguin**
 
 
 ## Introduction
