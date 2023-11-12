@@ -50,6 +50,8 @@ class Gui:
         self.cal_rad_var = customtkinter.IntVar(value=0)
         self.cal_rad2_var = customtkinter.StringVar(value='T')
         self.cal_inp_var = [customtkinter.StringVar(value='') for _ in range(3)]
+        
+        self.cal_rad_first = False
        
     def add_formula(self):
         global edit_formula_but, del_formula_but
@@ -148,35 +150,14 @@ class Gui:
                                     )
                 unit_label = customtkinter.CTkLabel(master = inp_frame,  font=font1,  fg_color=grey,
                                 text= char_json[f"{formula_json['formula'][f'{formula}']['values'][0][i]}"]['unit'])
-                
-                # not functional for more var than three
-            if formula_json['formula'][f'{formula}']['values'][1][i] == 1:
-                print(2)
-                if len(inp) == 2:
-                    print(3)
-                    var_inp.configure(state='disabled')
-                    self.cal_rad_var.set(1)
-
-            else:
-                if len(inp) == 1:
-                    var_inp.configure(state='disabled')
-                        
-                        
-                
-                        
-
-               
-                                 
-
+                        # not functional for more var than three
+            if formula_json['formula'][f'{formula}']['values'][1].index(0) == i:
+                var_inp.configure(state='disabled')
+                self.cal_rad_var.set(i)
 
             var_inp.grid(row = 0, column=1, pady= 5, padx=(5,0), sticky='nwes')
             inp.append(var_inp)
 
-            
-                                                     
-           
-            
-            
             ud_frame = customtkinter.CTkFrame(master =inp_frame,bg_color='transparent', fg_color=grey)
             ud_frame.grid(column=2, row=0)
         
@@ -278,11 +259,14 @@ class Gui:
             scr_cal.grid(row=0, column=0, sticky='nswe')
             
             for i in range(len(Units)):
-                
                     if char_json[f"{formula_json['formula'][f'{formula}']['values'][0][i]}"]['unit'] == Units[i].cget('text'):
                         si_units.append('')
                     else:
                         si_units.append(Units[i].cget('text')[0])
+            labels = [ chosen.get(),format.get(),si_units, val[0].get(),val[1].get(),val[2].get()]
+            for i, data in enumerate(labels):
+                Cal_label = customtkinter.CTkLabel(master=scr_cal, text=data)
+                Cal_label.grid(row=i,column=0)
    
             
             #self.algebra?
