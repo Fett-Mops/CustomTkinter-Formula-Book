@@ -1,5 +1,6 @@
 # CustomTkinter Formula Book
 
+## Important
 These functions are already in the project:
 - [ ] Calculate frmula with values and connstants
 - [ ] add new fomrula
@@ -8,9 +9,7 @@ These functions are already in the project:
 - [ ] search to formula
 - [ ] decent settings
 - [ ] Add complexity
-
-## Important
-for now not working here will be a pinguin picture if it is mostly functional
+if the project is at least usable here will be a pinguin
 
 
 ## Introduction
