@@ -10,9 +10,11 @@ import si_prefix
 
 
 WIDTH, HEIGHT = int(500), int(500)
+appearance = ['System', 'light', 'dark']
+color_def = ['green', 'blue','dark-blue']
 
-customtkinter.set_appearance_mode('dark')
-customtkinter.set_default_color_theme('dark-blue')
+customtkinter.set_appearance_mode(appearance[2])
+customtkinter.set_default_color_theme(color_def[1])
 root = customtkinter.CTk()
 root.geometry(f'{WIDTH}'+'x'+f'{HEIGHT}')
 root.title('Formelbüchlein')
@@ -25,11 +27,11 @@ root.grid_rowconfigure(1, weight=1)
 red = '#E26579'
 red_b = '#D35B58'
 red_h = '#C77C78'
-green ='#2FA572'
-green_b ='#00947D'
+main_col =['#2FA572','#1F6AA5', '#1F538D']
 text_col = '#DCE4DB'
 grey='#333333'
 grey_disa = '#61676C'
+col_var = 1
 
 font1 =("None",13)
 
@@ -51,8 +53,9 @@ class Gui:
         self.si_str = si_prefix.SI_PREFIX_UNITS
         self.cal_rad_var = customtkinter.IntVar(value=0)
         self.cal_rad2_var = customtkinter.StringVar(value='T')
+        #flasch ist nur für 3 ausgerichtet verbessern!
         self.cal_inp_var = [customtkinter.StringVar(value='') for _ in range(3)]
-        self.add_check_var = customtkinter.IntVar()
+        
         
         self.cal_rad_first = False
        
@@ -63,6 +66,9 @@ class Gui:
            
         self.a_page.grid_rowconfigure(2, weight=1)  
         self.a_page.tkraise()
+        
+        boxes = []
+        
   
         
         label_frame= customtkinter.CTkFrame(master=self.a_page)
@@ -73,23 +79,30 @@ class Gui:
                                 text='Button', font=font1, compound='center',
                                 )
         name_formula.grid(row=0, column=0,columnspan=4, sticky='nswe', padx=5)
+        
         inp_formula = customtkinter.CTkEntry(master=self.a_page,width=50, height=35,
-                                         fg_color=green, border_width=0, bg_color='transparent',
-                                        placeholder_text_color='formula here')
+                                         fg_color=main_col[col_var], border_width=0, bg_color='transparent',
+                                        placeholder_text='Formula',
+                                        placeholder_text_color=text_col)
         inp_formula.grid(row=1, column=0,columnspan=3, sticky='nswe', pady=(0,5))
         
         helpful_frame = customtkinter.CTkFrame(master=self.a_page, fg_color='transparent')
         helpful_frame.grid(row=1, column=3, padx=(5,0),pady=(0,5))
         
         
-        info_img = ImageTk.PhotoImage(Image.open("pictures\info-icon.png").resize((30,30)))
-        
+        info_img = ImageTk.PhotoImage(Image.open("pictures\icon-infoo.png").resize((40,40)))
         info_format_but = customtkinter.CTkButton(master= helpful_frame, height=35, text = '',
                                                   image=info_img, width=10)
-        info_format_but.grid(row=0, column=1, padx=(5,0))
+        info_format_but.grid(row=0, column=2, padx=(5,0))
+        
+        
+        edit_info_img = ImageTk.PhotoImage(Image.open("pictures\edit-info.png").resize((30,30)))
+        edit_info_but = customtkinter.CTkButton(master= helpful_frame, height=35, text = '',
+                                                  image=edit_info_img, width=10)
+        edit_info_but.grid(row=0, column=1, padx=(5,0))
         
         reload_img =ImageTk.PhotoImage(Image.open("pictures/reload.png").resize((40,40)))
-        reload_scr_frame = customtkinter.CTkButton(master=helpful_frame, image=reload_img,width=100, text = '')
+        reload_scr_frame = customtkinter.CTkButton(master=helpful_frame, image=reload_img,width=60, text = '')
         reload_scr_frame.grid(row=0, column=0)
         
         #scrolable fram
@@ -107,49 +120,33 @@ class Gui:
         
         
         
-        
-        for i in range(3):            
+        number = 5
+        for i in range(number):            
             inp_frame = customtkinter.CTkFrame(master=scr_frame, fg_color=grey)
             inp_frame.grid(row=i+1, column=0, columnspan=4,sticky='nswe', pady=(0,5))
             inp_frame.grid_columnconfigure([0,1,2,4], weight=2)
-           
-            inp_frame.grid_rowconfigure([0,1,2,4,5], weight=1)  
+
+            inp_frame.grid_rowconfigure( [j for j in range(number)], weight=1)  
+            
+            
 
             
-           
+            add_check_var = [customtkinter.Variable() for _ in range(number)]
             box_x = customtkinter.CTkCheckBox(master=inp_frame,text='', width=5,
-                                                     corner_radius=5,
-                                                      variable=self.add_check_var)
+                                                corner_radius=5,
+                                                variable=add_check_var[i])
+            boxes.append(box_x)
             box_x.grid(row=0, column=0, pady=5, padx=(5,0))    
                  
             var_inp = customtkinter.CTkEntry(master=inp_frame
-                                    ,width=50, height=35,  fg_color=green, border_width=0, bg_color='transparent',
-                                    placeholder_text_color=text_col,
-                                    textvariable=self.cal_inp_var[i]
-                                    )
-            unit_label = customtkinter.CTkLabel(master = inp_frame,  font=font1,  fg_color=grey,
-                                text= '')
-                      
-    
-            var_inp.grid(row = 0, column=1, pady= 5, padx=(5,0), sticky='nwes')
-           
-            ud_frame = customtkinter.CTkFrame(master =inp_frame,bg_color='transparent', fg_color=grey)
-            ud_frame.grid(column=2, row=0)
-        
-            ud_img=Image.open("pictures/arrow.png").resize((20,20))
-            up_img = ImageTk.PhotoImage(ud_img)
-            up_but = customtkinter.CTkButton(master=ud_frame, image=up_img, text='',  width=0, height=0,
-                                             hover=False, fg_color=grey)
-            up_but.grid(row = 0, column=0, sticky='nswe')
-           
-            down_img = ImageTk.PhotoImage(ud_img.rotate(angle=180))
-            down_but = customtkinter.CTkButton(master=ud_frame, image=down_img, text='', width=0, height=0,
-                                               hover=False, fg_color=grey)
-            down_but.grid(row = 1, column=0, sticky='nswe')                
-           
-                                           
-            
-            unit_label.grid(row = 0, column=3, pady= (8,5), padx=10, sticky='nwes')
+                                    ,width=50, height=35,  fg_color=main_col[col_var], border_width=0, bg_color='transparent',
+                                    placeholder_text_color=text_col)
+            var_inp.grid(row = 0, column=1, pady= 5, sticky='nwes')
+                                          
+            unit_inp = customtkinter.CTkEntry(master=inp_frame
+                                    ,width=50, height=35,  fg_color=main_col[col_var], border_width=0, bg_color='transparent',
+                                    placeholder_text_color=text_col,)
+            unit_inp.grid(row = 0, column=2,  pady= 5, padx=(10,0), sticky='nwes')
         
         #change to listU
             symb_label = customtkinter.CTkLabel(master = inp_frame  ,text='d', font=font1, 
@@ -157,17 +154,23 @@ class Gui:
             symb_label.grid(row = 0, column=4, pady= (8,5), padx=10, sticky='nwes')
             
             
-            #info png        
+            #info   
             
-            info_but = customtkinter.CTkButton(master=inp_frame, 
-                                           text='',image=info_img,width=30,height= 30 )
-            info_but.grid(row = 0, column=5, sticky='nwe', pady = 7, padx=5) 
+            edit_var_info_but = customtkinter.CTkButton(master=inp_frame, 
+                                           text='',image=edit_info_img,width=30,height= 35 )
+            edit_var_info_but.grid(row = 0, column=5, sticky='nwe', pady = 5, padx=5) 
+            
+        
+        inp_category = customtkinter.CTkEntry(master=self.a_page,
+                                         fg_color=main_col[col_var], border_width=0, bg_color='transparent',
+                                        placeholder_text='Kategory',height=35,
+                                        placeholder_text_color=text_col)
+        inp_category.grid(row=3, column=0,columnspan=3, sticky='we', pady=5, padx=(0,5))
 
 
         save_but = customtkinter.CTkButton(master=self.a_page, text='Speichern', height=35)
         save_but.grid(row = 3, column=3, sticky='nwse', pady = 15) 
        
-
     def remove_formula(self,formula):
         
         rm_message = CTkMessagebox.CTkMessagebox(master= root,message="Bist du sicher das du die Formel: "+ f'{formula}'+" löschen willst?",
@@ -178,8 +181,10 @@ class Gui:
         
         if rm_message.get() == 'Löschen':
             if rm_comp.get():
+                
+                #optiation on chatgpt handeling json
                 for i, var in enumerate(r_formula_json['formula']):
-                    for i in range(3):
+                    for i in range(len(r_formula_json['formula'][f'{formula}']['values'][0])):
                             if formula != var:
                                 if r_formula_json['formula'][f'{formula}']['values'][0][i] in r_formula_json['formula'][var]['values'][0]:
                                     if r_formula_json['formula'][f'{formula}']['values'][1][i] != r_formula_json['formula'][var]['values'][1][i]:
@@ -290,7 +295,7 @@ class Gui:
                                                        state='disabled',corner_radius=5,)
                 box_x.grid(row=0, column=0, pady=5, padx=(5,0))
                 var_inp = customtkinter.CTkEntry(master=inp_frame
-                                    ,width=50, height=35,  fg_color=green, border_width=0, bg_color='transparent',
+                                    ,width=50, height=35,  fg_color=main_col[col_var], border_width=0, bg_color='transparent',
                                     placeholder_text_color=grey_disa,
                                     textvariable=self.cal_inp_var[i],
                                     state='disabled'
@@ -307,7 +312,7 @@ class Gui:
                                                      command=lambda inp = inp: self.disable_inp(inp, formula))
                 box_x.grid(row=0, column=0, pady=5, padx=(5,0))     
                 var_inp = customtkinter.CTkEntry(master=inp_frame
-                                    ,width=50, height=35,  fg_color=green, border_width=0, bg_color='transparent',
+                                    ,width=50, height=35,  fg_color=main_col[col_var], border_width=0, bg_color='transparent',
                                     placeholder_text_color=text_col,
                                     textvariable=self.cal_inp_var[i]
                                     )
@@ -349,10 +354,10 @@ class Gui:
             
             
             #info png        
-            info_img = ImageTk.PhotoImage(Image.open("pictures\info-icon.png").resize((30,30)))
+            info_img = ImageTk.PhotoImage(Image.open("pictures\icon-infoo.png").resize((40,40)))
             info_but = customtkinter.CTkButton(master=inp_frame, 
-                                           text='',image=info_img,width=30,height= 30 )
-            info_but.grid(row = 0, column=5, sticky='nwe', pady = 7, padx=5) 
+                                           text='',image=info_img,width=30,height= 35 )
+            info_but.grid(row = 0, column=5, sticky='nwe', pady = 5, padx=5) 
 
                         
         t_radio =customtkinter.CTkRadioButton(master=self.c_page, text='Text',corner_radius=5,
@@ -483,7 +488,7 @@ class Gui:
         self.h_page.tkraise()
         
         search_inp = customtkinter.CTkEntry(master=self.h_page, placeholder_text='Formel eingeben', 
-                                    width=100, height=35,  fg_color=green, 
+                                    width=100, height=35,  fg_color=main_col[col_var], 
                                     placeholder_text_color=text_col, border_width=0)
         search_inp.grid(row = 0, column=0, pady= 5, columnspan=1, sticky='nwe')
         
