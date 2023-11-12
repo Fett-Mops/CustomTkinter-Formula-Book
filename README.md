@@ -1,8 +1,13 @@
 # CustomTkinter Formula Book
 
-- [x] #739
-- [ ] https://github.com/octo-org/octo-repo/issues/740
-- [ ] Add delight to the experience when all tasks are complete :tada:
+These functions are already in the project:
+- [ ] Calculate frmula with values and connstants
+- [ ] add new fomrula
+- [ ] edit formula
+- [ ] delet formula
+- [ ] search to formula
+- [ ] decent settings
+- [ ] Add complexity
 
 ## Important
 for now not working here will be a pinguin picture if it is mostly functional
