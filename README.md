@@ -9,7 +9,7 @@ These functions are already in the project:
 - [ ] search to formula
 - [ ] decent settings
 - [ ] Add complexity
-**if the project is at least usable here will be a pinguin**
+- [ ] **if the project is at least usable here will be a pinguin**
 
 
 ## Introduction
