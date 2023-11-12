@@ -7,7 +7,7 @@
                 "Wiederstand",
                 "Elektrotechnick"
             ],
-            "formula": "U=I*R",
+            "formula": ["U=I*R", "U,I,R"],
             "values":[[0,1,2],[0,0,0]]
     
         },
@@ -19,7 +19,7 @@
                 "Elektrotechnick"
 
             ],
-            "formula": "U=I*R",
+            "formula": ["U=I*R", ["U","I","R"]],
             "values":[[0,1,2],[0,0,0]]
         },
         "Kapazit\u00e4t": {
@@ -30,7 +30,7 @@
                 "Elektrotechnick"
                 
             ],
-            "formula": "U=I*R",
+            "formula": ["U=I*R", ["U","I","R"]],
             "values":[[0,1,2],[0,0,0]]
         }
     }

@@ -1,16 +1,18 @@
 from tkinter import *
 import customtkinter
+from sympy import *
+import CTkMessagebox
+
 
 from PIL import Image, ImageTk
 import json
 import si_prefix
-import CTkMessagebox
 
 
 WIDTH, HEIGHT = int(500), int(500)
 
 customtkinter.set_appearance_mode('dark')
-customtkinter.set_default_color_theme('green')
+customtkinter.set_default_color_theme('dark-blue')
 root = customtkinter.CTk()
 root.geometry(f'{WIDTH}'+'x'+f'{HEIGHT}')
 root.title('Formelbüchlein')
@@ -54,25 +56,14 @@ class Gui:
         self.cal_rad_first = False
        
     def add_formula(self):
-        global edit_formula_but, del_formula_but
+ 
 
         
         self.a_page.grid(row = 0,rowspan=2, column=1, sticky='nesw', pady=(4,5), padx=(5,5))
         self.a_page.tkraise()
         self.cal_bool= True
         
-        edit_formula_img = ImageTk.PhotoImage(Image.open("pictures/edit-formula.png").resize((50,50)))
-        edit_formula_but = customtkinter.CTkButton(master=frame, image=edit_formula_img,text='', width=60,
-                                                height=60)
-        edit_formula_but.grid(row=1 ,column=0,pady=10, padx=10)
-        
-        
-        #remove formula
-        del_formula_img = ImageTk.PhotoImage(Image.open("pictures/remove-formula.png").resize((50,50)))
-        del_formula_but = customtkinter.CTkButton(master=frame, image=del_formula_img,text='', width=60,
-                                                  height=60, fg_color=red, hover_color=red_h,
-                                                  )
-        del_formula_but.grid(row = 2, column=0,pady=10, padx=10)      
+ 
 
     def edit_formula(self):
         pass
@@ -84,8 +75,24 @@ class Gui:
         print(5)
     
     def set_values(self, formula):
-        global unit_label, Buttons, Units
+
+        global unit_label, Buttons, Units, edit_formula_but, del_formula_but
         
+        add_formula_but.grid_forget()
+        edit_formula_img = ImageTk.PhotoImage(Image.open("pictures/edit-formula.png").resize((50,50)))
+        edit_formula_but = customtkinter.CTkButton(master=frame, image=edit_formula_img,text='', width=60,
+                                                height=60)
+        edit_formula_but.grid(row=1 ,column=0,pady=10, padx=10)
+        
+        
+        #remove formula
+        del_formula_img = ImageTk.PhotoImage(Image.open("pictures/remove-formula.png").resize((50,50)))
+        del_formula_but = customtkinter.CTkButton(master=frame, image=del_formula_img,text='', width=60,
+                                                  height=60, fg_color=red, hover_color=red_h,
+                                                  )
+        del_formula_but.grid(row = 2, column=0,pady=10, padx=10)     
+        self.cal_bool = True
+            
 
         self.c_page.grid(row = 0,rowspan=2, column=1, sticky='nesw', pady=(4,5), padx=(5,5))
         self.c_page.tkraise()
@@ -110,7 +117,7 @@ class Gui:
         
 
 
-        ryd_loop =formula_json['formula'][f'{formula}']['formula'].replace('*', '').replace('+', '').replace('-', '').replace('=', '').replace('/', '')
+        ryd_loop =formula_json['formula'][f'{formula}']['formula'][0].replace('*', '').replace('+', '').replace('-', '').replace('=', '').replace('/', '')
         Units, Buttons, inp = [], [[],[]], []
         for i, var in enumerate(ryd_loop)  :            
             inp_frame = customtkinter.CTkFrame(master=scr_frame, fg_color=grey)
@@ -260,10 +267,15 @@ class Gui:
             
             for i in range(len(Units)):
                     if char_json[f"{formula_json['formula'][f'{formula}']['values'][0][i]}"]['unit'] == Units[i].cget('text'):
-                        si_units.append('')
+                        si_units.append(' ')
                     else:
                         si_units.append(Units[i].cget('text')[0])
-            labels = [ chosen.get(),format.get(),si_units, val[0].get(),val[1].get(),val[2].get()]
+                        
+            
+            labels = [formula_json['formula'][f'{formula}']['formula'][0],self.sypmy_solve(formula, chosen)]
+            #labels = [ chosen.get(),format.get(),si_units, val[0].get(),val[1].get(),val[2].get()]
+            #labels = [ formula,umgestellte fomell ,umgestellete formel mit zahlen, Lösung]
+            
             for i, data in enumerate(labels):
                 Cal_label = customtkinter.CTkLabel(master=scr_cal, text=data)
                 Cal_label.grid(row=i,column=0)
@@ -286,8 +298,8 @@ class Gui:
             else:
                 var.configure(state=NORMAL)
     #change to list V
-    #maby animate
-    def sub(self,si_index, f,i):
+    #maby animat
+    def sub(self, si_index, f, i):
         
         if si_index[i] != 0:
             self.si_index[i] -=1
@@ -298,7 +310,7 @@ class Gui:
         Units[i].configure(text = self.si_str[self.si_index[i]] + f'{Unit}')
             
     #change to list V        
-    def add(self,si_index, f,  i):
+    def add(self, si_index, f, i):
            
         if si_index[i]  != 16:
            self.si_index[i]  +=1         
@@ -307,13 +319,16 @@ class Gui:
         else:
             Unit = char_json[f"{formula_json['formula'][f'{f}']['values'][0][i]}"]['unit']
         Units[i].configure(text = self.si_str[self.si_index[i] ] + f'{Unit}')
-            
-    def home(self, formula_json):  
+
+    def sypmy_solve(self, formula, chosen):
+        pass
         
-       
+    def home(self, formula_json):
         if self.cal_bool:
+
             del_formula_but.grid_forget()
             edit_formula_but.grid_forget() 
+            add_formula_but.grid(row=0, column=0,pady=10, padx=10)
         self.h_page.grid(row = 0,rowspan=2, column=1, sticky='nesw', pady=(4,5), padx=(5,5))
         self.h_page.grid_columnconfigure(0, weight=1)
         self.h_page.grid_rowconfigure(1, weight=1)
@@ -344,7 +359,7 @@ class Gui:
 
             customtkinter.CTkButton(frame_formula,text=formula,width=85, command=lambda k = formula: (self.set_values(k))
                                     ).grid(row=0, column=0, pady = 5, padx=5,sticky='w')
-            customtkinter.CTkLabel(frame_formula, text=formula_json['formula'][formula]['formula'], 
+            customtkinter.CTkLabel(frame_formula, text=formula_json['formula'][formula]['formula'][0], 
                                  font=font1).grid(row=0, column=1, pady =(0,5), padx=5,sticky='we')
             
             customtkinter.CTkLabel(frame_formula, text=formula_json['formula'][formula]["search_terms"][-1:], 
@@ -355,6 +370,10 @@ class Gui:
             del_formula_but.grid_forget()
         
             edit_formula_but.grid_forget()
+            add_formula_but.grid(row=0, column=0,pady=10, padx=10)
+
+
+        
         self.s_page.grid(row = 0,rowspan=2, column=1, sticky='nesw', pady=(4,5), padx=(5,5))
         self.s_page.tkraise()
     
