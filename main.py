@@ -102,7 +102,7 @@ class Gui:
         edit_info_but.grid(row=0, column=1, padx=(5,0))
         
         reload_img =ImageTk.PhotoImage(Image.open("pictures/reload.png").resize((40,40)))
-        reload_scr_frame = customtkinter.CTkButton(master=helpful_frame, image=reload_img,width=60, text = '')
+        reload_scr_frame = customtkinter.CTkButton(master=helpful_frame, image=reload_img,width=60, height=35, text = '')
         reload_scr_frame.grid(row=0, column=0)
         
         #scrolable fram
