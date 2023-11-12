@@ -5,7 +5,7 @@ These functions are already in the project:
 - [ ] Calculate formula with values and connstants
 - [ ] add new formula
 - [ ] edit formula
-- X delet formula
+- delet formula
 - [ ] search to formula
 - [ ] decent settings
 - [ ] Add complexity
