@@ -2,6 +2,7 @@ from tkinter import *
 import customtkinter
 from sympy import *
 import CTkMessagebox
+import CTkToolTip
 
 
 from PIL import Image, ImageTk
@@ -13,8 +14,7 @@ WIDTH, HEIGHT = int(500), int(500)
 appearance = ['System', 'light', 'dark']
 color_def = ['green', 'blue','dark-blue']
 
-customtkinter.set_appearance_mode(appearance[2])
-customtkinter.set_default_color_theme(color_def[1])
+
 root = customtkinter.CTk()
 root.geometry(f'{WIDTH}'+'x'+f'{HEIGHT}')
 root.title('Formelbüchlein')
@@ -27,11 +27,14 @@ root.grid_rowconfigure(1, weight=1)
 red = '#E26579'
 red_b = '#D35B58'
 red_h = '#C77C78'
-main_col =['#2FA572','#1F6AA5', '#1F538D']
+main_col ={'green':'#00947D','blue': '#008FBE', 'dark-blue': '#5C84C3'}
+menu_col = {'green': '#008180','blue': '#00B1BC', 'dark-blue': '#7764AC'}
+menu_h_col = {'green': '#006E7A','blue': '#0073A0', 'dark-blue': '#4E5C9F'}
 text_col = '#DCE4DB'
 grey='#333333'
+d = '#2FA572'
 grey_disa = '#61676C'
-col_var = 1
+
 
 font1 =("None",13)
 
@@ -55,8 +58,6 @@ class Gui:
         self.cal_rad2_var = customtkinter.StringVar(value='T')
         #flasch ist nur für 3 ausgerichtet verbessern!
         self.cal_inp_var = [customtkinter.StringVar(value='') for _ in range(3)]
-        
-        
         self.cal_rad_first = False
        
     def add_formula(self):
@@ -68,21 +69,20 @@ class Gui:
         self.a_page.tkraise()
         
         boxes = []
-        
-  
-        
-        label_frame= customtkinter.CTkFrame(master=self.a_page)
-        label_frame.grid(row=0, column=0, columnspan=4, sticky='nswe',pady=(0,5))
+
+
         
         
-        name_formula = customtkinter.CTkLabel(master=label_frame,
-                                text='Button', font=font1, compound='center',
+        name_formula = customtkinter.CTkEntry(master=self.a_page,
+                                placeholder_text='Formel Name',
+                                fg_color=col_th,border_width=0,
+                                placeholder_text_color=text_col
                                 )
-        name_formula.grid(row=0, column=0,columnspan=4, sticky='nswe', padx=5)
+        name_formula.grid(row=0, column=0,columnspan=4, sticky='nswe', pady=(0,5))
         
         inp_formula = customtkinter.CTkEntry(master=self.a_page,width=50, height=35,
-                                         fg_color=main_col[col_var], border_width=0, bg_color='transparent',
-                                        placeholder_text='Formula',
+                                         fg_color=col_th, border_width=0, bg_color='transparent',
+                                        placeholder_text='Formel',
                                         placeholder_text_color=text_col)
         inp_formula.grid(row=1, column=0,columnspan=3, sticky='nswe', pady=(0,5))
         
@@ -98,7 +98,7 @@ class Gui:
         
         edit_info_img = ImageTk.PhotoImage(Image.open("pictures\edit-info.png").resize((30,30)))
         edit_info_but = customtkinter.CTkButton(master= helpful_frame, height=35, text = '',
-                                                  image=edit_info_img, width=10)
+                                                  image=edit_info_img, width=10, command=self.edit_info)
         edit_info_but.grid(row=0, column=1, padx=(5,0))
         
         reload_img =ImageTk.PhotoImage(Image.open("pictures/reload.png").resize((40,40)))
@@ -139,12 +139,12 @@ class Gui:
             box_x.grid(row=0, column=0, pady=5, padx=(5,0))    
                  
             var_inp = customtkinter.CTkEntry(master=inp_frame
-                                    ,width=50, height=35,  fg_color=main_col[col_var], border_width=0, bg_color='transparent',
+                                    ,width=50, height=35,  fg_color=col_th, border_width=0, bg_color='transparent',
                                     placeholder_text_color=text_col)
             var_inp.grid(row = 0, column=1, pady= 5, sticky='nwes')
                                           
             unit_inp = customtkinter.CTkEntry(master=inp_frame
-                                    ,width=50, height=35,  fg_color=main_col[col_var], border_width=0, bg_color='transparent',
+                                    ,width=50, height=35,  fg_color=col_th, border_width=0, bg_color='transparent',
                                     placeholder_text_color=text_col,)
             unit_inp.grid(row = 0, column=2,  pady= 5, padx=(10,0), sticky='nwes')
         
@@ -162,7 +162,7 @@ class Gui:
             
         
         inp_category = customtkinter.CTkEntry(master=self.a_page,
-                                         fg_color=main_col[col_var], border_width=0, bg_color='transparent',
+                                         fg_color=col_th, border_width=0, bg_color='transparent',
                                         placeholder_text='Kategory',height=35,
                                         placeholder_text_color=text_col)
         inp_category.grid(row=3, column=0,columnspan=3, sticky='we', pady=5, padx=(0,5))
@@ -171,6 +171,23 @@ class Gui:
         save_but = customtkinter.CTkButton(master=self.a_page, text='Speichern', height=35)
         save_but.grid(row = 3, column=3, sticky='nwse', pady = 15) 
        
+   
+    def edit_info(self):
+        self.toplevel = None
+        if self.toplevel is None or not self.toplevel.winfo_exists():
+            self.toplevel = customtkinter.CTkToplevel()
+            self.toplevel.geometry("400x200")
+            self.toplevel.focus()
+            self.toplevel.rowconfigure(0, weight=1)
+            self.toplevel.columnconfigure(0, weight=1)
+        
+        edit_info_win = customtkinter.CTkTextbox(self.toplevel)
+        #independent
+        edit_info_win.insert('end',r_formula_json['formula']['Uri']['information'])
+        edit_info_win.grid(row=0,column=0, sticky='nswe')
+        
+        
+        print(2)
     def remove_formula(self,formula):
         
         rm_message = CTkMessagebox.CTkMessagebox(master= root,message="Bist du sicher das du die Formel: "+ f'{formula}'+" löschen willst?",
@@ -242,7 +259,7 @@ class Gui:
         add_formula_but.grid_forget()
         edit_formula_img = ImageTk.PhotoImage(Image.open("pictures/edit-formula.png").resize((50,50)))
         edit_formula_but = customtkinter.CTkButton(master=frame, image=edit_formula_img,text='', width=60,
-                                                height=60)
+                                                height=60,fg_color=menu_col[def_col],hover_color=menu_h_col[def_col])
         edit_formula_but.grid(row=1 ,column=0,pady=10, padx=10)
         
         
@@ -250,7 +267,8 @@ class Gui:
         del_formula_img = ImageTk.PhotoImage(Image.open("pictures/remove-formula.png").resize((50,50)))
         del_formula_but = customtkinter.CTkButton(master=frame, image=del_formula_img,text='', width=60,
                                                   height=60, fg_color=red, hover_color=red_h,
-                                                  command=lambda formula= formula :self.remove_formula(formula))
+                                                  command=lambda formula= formula :self.remove_formula(formula),
+                                                 )
         del_formula_but.grid(row = 2, column=0,pady=10, padx=10)     
         self.cal_bool = True
             
@@ -295,7 +313,7 @@ class Gui:
                                                        state='disabled',corner_radius=5,)
                 box_x.grid(row=0, column=0, pady=5, padx=(5,0))
                 var_inp = customtkinter.CTkEntry(master=inp_frame
-                                    ,width=50, height=35,  fg_color=main_col[col_var], border_width=0, bg_color='transparent',
+                                    ,width=50, height=35,  fg_color=col_th, border_width=0, bg_color='transparent',
                                     placeholder_text_color=grey_disa,
                                     textvariable=self.cal_inp_var[i],
                                     state='disabled'
@@ -312,7 +330,7 @@ class Gui:
                                                      command=lambda inp = inp: self.disable_inp(inp, formula))
                 box_x.grid(row=0, column=0, pady=5, padx=(5,0))     
                 var_inp = customtkinter.CTkEntry(master=inp_frame
-                                    ,width=50, height=35,  fg_color=main_col[col_var], border_width=0, bg_color='transparent',
+                                    ,width=50, height=35,  fg_color=col_th, border_width=0, bg_color='transparent',
                                     placeholder_text_color=text_col,
                                     textvariable=self.cal_inp_var[i]
                                     )
@@ -488,7 +506,7 @@ class Gui:
         self.h_page.tkraise()
         
         search_inp = customtkinter.CTkEntry(master=self.h_page, placeholder_text='Formel eingeben', 
-                                    width=100, height=35,  fg_color=main_col[col_var], 
+                                    width=100, height=35,  fg_color=col_th, 
                                     placeholder_text_color=text_col, border_width=0)
         search_inp.grid(row = 0, column=0, pady= 5, columnspan=1, sticky='nwe')
         
@@ -530,8 +548,25 @@ class Gui:
         self.s_page.grid(row = 0,rowspan=2, column=1, sticky='nesw', pady=(4,5), padx=(5,5))
         self.s_page.tkraise()
     
+    def user_settings(self):
+        global less_popu, lang, col_th, def_col
+
+        def_col = user_json['def_col']
+        auto_app = user_json['auto_app']
+        var_app = user_json['var_app']
+        lang = user_json['language']
+        less_popu = user_json['less_popup']
+        col_th = main_col[def_col]
+        
+        if auto_app:
+            customtkinter.set_appearance_mode('System')
+        else:
+            customtkinter.set_appearance_mode(var_app)
+            
+        customtkinter.set_default_color_theme(def_col)
+        
     def run(self):
-        global r_formula_json, r_char_json, r_con_json, add_formula_but
+        global r_formula_json, r_char_json, r_con_json, user_json, add_formula_but
         with open ('json_files/formula.json') as f:
             r_formula_json = json.load(f)
             
@@ -540,6 +575,11 @@ class Gui:
             
         with open ('json_files/formula_con.json') as f:
             r_con_json = json.load(f)
+        
+        with open ('json_files/user_data.json') as f:
+            user_json = json.load(f)
+        
+        self.user_settings()
             
         self.home()
             
@@ -549,7 +589,9 @@ class Gui:
 #makes formula
         add_formula_img = ImageTk.PhotoImage(Image.open("pictures/add-list.png").resize((50,50)))
         add_formula_but = customtkinter.CTkButton(master=frame, image=add_formula_img,text='', width=60,
-                                          height=60,     command=self.add_formula)
+                                          height=60,     command=self.add_formula,
+                                          fg_color=menu_col[def_col],hover_color=menu_h_col[def_col])
+        CTkToolTip.CTkToolTip(add_formula_but, message='Neue Formel')   
         add_formula_but.grid(row=0, column=0,pady=10, padx=10)
 
 
@@ -562,14 +604,16 @@ class Gui:
     #settings
         setting_img = ImageTk.PhotoImage(Image.open("pictures/settings.png").resize((50,50)))
         setting_but = customtkinter.CTkButton(master=frame, image=setting_img,text='', width=60, height=60,
-                                       command= self.settings)
+                                       command= self.settings, fg_color=menu_col[def_col],
+                                       hover_color=menu_h_col[def_col])
+        CTkToolTip.CTkToolTip(setting_but, message='Einstellungen')   
         setting_but.grid(row=4, column=0,pady=10, padx=10, sticky='nwe')
     
     #home
         home_img = ImageTk.PhotoImage(Image.open("pictures/home.png").resize((50,50)))
         home_but = customtkinter.CTkButton(master=frame, image=home_img,text='', width=60, height=60,
-                                   command=lambda: (self.home()))
-   
+                                   command=lambda: (self.home()), fg_color=menu_col[def_col], hover_color=menu_h_col[def_col])
+        CTkToolTip.CTkToolTip(home_but, message='Home')
         home_but.grid(row=5,column=0,pady=10, sticky='nwe', padx=10)
         
 

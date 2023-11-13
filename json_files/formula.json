@@ -22,7 +22,8 @@
                     0,
                     0
                 ]
-            ]
+            ],
+            "information": "insert information"
         },
         "Leistung": {
             "search_terms": [
@@ -50,7 +51,8 @@
                     0,
                     0
                 ]
-            ]
+            ],
+            "information": "insert information"
         }
     }
 }

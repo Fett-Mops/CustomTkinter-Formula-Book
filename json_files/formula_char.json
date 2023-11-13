@@ -1,17 +1,16 @@
 {
-    
     "0": {
         "symbol": "U",
         "name": "Spannung",
         "value": 0,
         "unit": "V",
         "category": "Mechanics",
-        "pack": "Basics",
         "locals": {
             "de": {
                 "name": "Pi"
             }
-        }
+        },
+        "information": "insert information"
     },
     "1": {
         "symbol": "I",
@@ -19,12 +18,12 @@
         "value": 0,
         "unit": "A",
         "category": "Quantum mechanics",
-        "pack": "Relativity",
         "locals": {
             "de": {
                 "name": "Lichtgeschwindigkeit im Vakuum"
             }
-        }
+        },
+        "information": "insert information"
     },
     "2": {
         "symbol": "R",
@@ -32,12 +31,12 @@
         "value": 0,
         "unit": "ohm",
         "category": "Mechanics",
-        "pack": "Basics",
         "locals": {
             "de": {
                 "name": "Gravitationskonstante"
             }
-        }
+        },
+        "information": "insert information"
     },
     "3": {
         "symbol": "h",
@@ -45,12 +44,12 @@
         "value": "6.626069*10^-34",
         "unit": "joule second",
         "category": "Quantum mechanics",
-        "pack": "Basics",
         "locals": {
             "de": {
                 "name": "Plancksches Wirkungsquantum"
             }
-        }
+        },
+        "information": "insert information"
     },
     "4": {
         "symbol": "\u00ce\u00bc<sub>0</sub>",
@@ -58,12 +57,12 @@
         "value": "4*3.14159265359*10^-7",
         "unit": "newton per square meter",
         "category": "Electromagnetism",
-        "pack": "Magnetism",
         "locals": {
             "de": {
                 "name": "Magnetische Feldkonstante"
             }
-        }
+        },
+        "information": "insert information"
     },
     "5": {
         "symbol": "\u00ce\u00b5<sub>0</sub>",
@@ -71,12 +70,12 @@
         "value": "8.854188*10^-12",
         "unit": "farad per meter",
         "category": "Electromagnetism",
-        "pack": "Electricity",
         "locals": {
             "de": {
                 "name": "Elektrische Feldkonstante"
             }
-        }
+        },
+        "information": "insert information"
     },
     "6": {
         "symbol": "T<sub>a</sub>",
@@ -84,12 +83,12 @@
         "value": "0",
         "unit": "kelvin",
         "category": "Thermodynamics",
-        "pack": "Basics",
         "locals": {
             "de": {
                 "name": "Absoluter Nullpunkt"
             }
-        }
+        },
+        "information": "insert information"
     },
     "7": {
         "symbol": "u",
@@ -97,12 +96,12 @@
         "value": "1.660540*10^-27",
         "unit": "kilogram",
         "category": "Chemical physics",
-        "pack": "Basics",
         "locals": {
             "de": {
                 "name": "Atomare Masseeinheit"
             }
-        }
+        },
+        "information": "insert information"
     },
     "8": {
         "symbol": "N<sub>A</sub>",
@@ -110,12 +109,12 @@
         "value": "6.022142*10^23",
         "unit": "per mole",
         "category": "Chemical physics",
-        "pack": "Advanced",
         "locals": {
             "de": {
                 "name": "Avogadro-Konstante"
             }
-        }
+        },
+        "information": "insert information"
     },
     "9": {
         "symbol": "k",
@@ -123,12 +122,12 @@
         "value": "1.380650*10^-23",
         "unit": "joule per kelvin",
         "category": "Thermodynamics",
-        "pack": "Advanced",
         "locals": {
             "de": {
                 "name": "Boltzmann-Konstante"
             }
-        }
+        },
+        "information": "insert information"
     },
     "10": {
         "symbol": "\u00ce\u00bb<sub>C</sub>",
@@ -136,12 +135,12 @@
         "value": "2.426310^-12",
         "unit": "meter",
         "category": "Quantum mechanics",
-        "pack": "Basics",
         "locals": {
             "de": {
                 "name": "Compton-Wellenl\u00c3\u00a4nge des Elektrons"
             }
-        }
+        },
+        "information": "insert information"
     },
     "11": {
         "symbol": "F<sub>A</sub>",
@@ -149,12 +148,12 @@
         "value": "9.648534*10^4",
         "unit": "ampere second per mole",
         "category": "Chemical physics",
-        "pack": "Advanced",
         "locals": {
             "de": {
                 "name": "Faraday-Konstante"
             }
-        }
+        },
+        "information": "insert information"
     },
     "12": {
         "symbol": "N<sub>L</sub>",
@@ -162,12 +161,12 @@
         "value": "2.686778*10^25",
         "unit": "per cubic meter",
         "category": "Chemical physics",
-        "pack": "Advanced",
         "locals": {
             "de": {
                 "name": "Loschmidt-Konstante"
             }
-        }
+        },
+        "information": "insert information"
     },
     "13": {
         "symbol": "R<sub>H</sub>",
@@ -175,12 +174,12 @@
         "value": "1.097373*10^7",
         "unit": "per meter",
         "category": "Electromagnetism",
-        "pack": "Optics",
         "locals": {
             "de": {
                 "name": "Rydberg-Konstante"
             }
-        }
+        },
+        "information": "insert information"
     },
     "14": {
         "symbol": "R<sub>y</sub>",
@@ -188,12 +187,12 @@
         "value": "3.289841*10^15",
         "unit": "hertz",
         "category": "Electromagnetism",
-        "pack": "Optics",
         "locals": {
             "de": {
                 "name": "Rydberg-Frequenz"
             }
-        }
+        },
+        "information": "insert information"
     },
     "15": {
         "symbol": "\u00cf\u0192<sub>B</sub>",
@@ -201,12 +200,12 @@
         "value": "5.670400*10^-8",
         "unit": "watt per square meter kelvin",
         "category": "Thermodynamics",
-        "pack": "Advanced",
         "locals": {
             "de": {
                 "name": "Stefan-Boltzmann-Konstante"
             }
-        }
+        },
+        "information": "insert information"
     },
     "16": {
         "symbol": "R<sub>0</sub>",
@@ -214,12 +213,12 @@
         "value": "8.314472",
         "unit": "joule per kelvin mole",
         "category": "Chemical physics",
-        "pack": "Advanced",
         "locals": {
             "de": {
                 "name": "Universelle Gaskonstante"
             }
-        }
+        },
+        "information": "insert information"
     },
     "17": {
         "symbol": "b<sub>energy</sub>",
@@ -227,12 +226,12 @@
         "value": "2.897769*10^-3",
         "unit": "meter kelvin",
         "category": "Quantum mechanics",
-        "pack": "Basics",
         "locals": {
             "de": {
                 "name": "Wiensche Konstante"
             }
-        }
+        },
+        "information": "insert information"
     },
     "18": {
         "symbol": "V<sub>0</sub>",
@@ -240,12 +239,12 @@
         "value": "22.414",
         "unit": "liter per mole",
         "category": "Chemical physics",
-        "pack": "Advanced",
         "locals": {
             "de": {
                 "name": "Molares Normvolumen"
             }
-        }
+        },
+        "information": "insert information"
     },
     "19": {
         "symbol": "g<sub>0</sub>",
@@ -253,12 +252,12 @@
         "value": "9.80665*10^-2",
         "unit": "meter per square second",
         "category": "Mechanics",
-        "pack": "Basics",
         "locals": {
             "de": {
                 "name": "Normfallbeschleunigung"
             }
-        }
+        },
+        "information": "insert information"
     },
     "20": {
         "symbol": "T<sub>0</sub>",
@@ -266,12 +265,12 @@
         "value": "273.15",
         "unit": "kelvin",
         "category": "Thermodynamics",
-        "pack": "Basics",
         "locals": {
             "de": {
                 "name": "Normtemperatur"
             }
-        }
+        },
+        "information": "insert information"
     },
     "21": {
         "symbol": "e",
@@ -279,12 +278,12 @@
         "value": "1.60217646*10^-19",
         "unit": "coulomb",
         "category": "Electromagnetism",
-        "pack": "Basics",
         "locals": {
             "de": {
                 "name": "Elementarladung"
             }
-        }
+        },
+        "information": "insert information"
     },
     "22": {
         "symbol": "m<sub>e</sub>",
@@ -292,12 +291,12 @@
         "value": "9.10938188*10^-31",
         "unit": "kilogram",
         "category": "Chemical physics",
-        "pack": "Basics",
         "locals": {
             "de": {
                 "name": "Ruhemasse eines Elektrons"
             }
-        }
+        },
+        "information": "insert information"
     },
     "23": {
         "symbol": "m<sub>n</sub>",
@@ -305,12 +304,12 @@
         "value": "1.67492716*10^-27",
         "unit": "kilogram",
         "category": "Chemical physics",
-        "pack": "Basics",
         "locals": {
             "de": {
                 "name": "Ruhemasse eines Neutrons"
             }
-        }
+        },
+        "information": "insert information"
     },
     "24": {
         "symbol": "m<sub>p</sub>",
@@ -318,11 +317,11 @@
         "value": "1.67262158*10^-27",
         "unit": "kilogram",
         "category": "Chemical physics",
-        "pack": "Basics",
         "locals": {
             "de": {
                 "name": "Ruhemasse eines Protons"
             }
-        }
+        },
+        "information": "insert information"
     }
 }

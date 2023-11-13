@@ -1,7 +1,7 @@
 {
-"auto_app": False,
-"app_var" : "dark",
-"def_col" : "green",
-"less_popup" : False,
+"auto_app": false,
+"var_app" : "dark",
+"def_col" : "dark-blue",
+"less_popup" : false,
 "language" : "deutsch"
 }
