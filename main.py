@@ -542,6 +542,7 @@ class Gui:
             r_con_json = json.load(f)
             
         self.home()
+            
 
   
 
