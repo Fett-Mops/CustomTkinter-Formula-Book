@@ -59,8 +59,10 @@ class Gui:
         #flasch ist nur für 3 ausgerichtet verbessern!
         self.cal_inp_var = [customtkinter.StringVar(value='') for _ in range(3)]
         self.cal_rad_first = False
+        self.toplevell = False
+        self.toplevel = None
        
-    def add_formula(self):
+    def add_formula(self, new_frm):
         self.a_page.grid(row = 0,rowspan=2, column=1, sticky='nesw', pady=(4,5), padx=(5,5))
         self.a_page.grid_columnconfigure([0,1,2], weight=1)
  
@@ -173,21 +175,34 @@ class Gui:
        
    
     def edit_info(self):
-        self.toplevel = None
-        if self.toplevel is None or not self.toplevel.winfo_exists():
+        
+        if self.toplevell:
+            self.toplevell = False
+        else:
             self.toplevel = customtkinter.CTkToplevel()
             self.toplevel.geometry("400x200")
             self.toplevel.focus()
             self.toplevel.rowconfigure(0, weight=1)
             self.toplevel.columnconfigure(0, weight=1)
+            self.toplevel.attributes('-topmost', 'true')
+            self.toplevell = True
         
         edit_info_win = customtkinter.CTkTextbox(self.toplevel)
         #independent
         edit_info_win.insert('end',r_formula_json['formula']['Uri']['information'])
         edit_info_win.grid(row=0,column=0, sticky='nswe')
         
+    def add_formula_name(self):
+        frm_name = customtkinter.CTkInputDialog(title='Formel Bennenen', text='Name der Formel eingebend')
+        if frm_name.get_input() == 'Ok':
+            if frm_name.get_input() == '':
+                new_frm = r_formula_json['formula']['Unbennante Formel']
+            else:
+                new_frm = r_formula_json['formula'][frm_name.get_input()]
+        self.add_formula(new_frm)
+                
         
-        print(2)
+
     def remove_formula(self,formula):
         
         rm_message = CTkMessagebox.CTkMessagebox(master= root,message="Bist du sicher das du die Formel: "+ f'{formula}'+" löschen willst?",
@@ -589,7 +604,7 @@ class Gui:
 #makes formula
         add_formula_img = ImageTk.PhotoImage(Image.open("pictures/add-list.png").resize((50,50)))
         add_formula_but = customtkinter.CTkButton(master=frame, image=add_formula_img,text='', width=60,
-                                          height=60,     command=self.add_formula,
+                                          height=60,     command=self.add_formula_name,
                                           fg_color=menu_col[def_col],hover_color=menu_h_col[def_col])
         CTkToolTip.CTkToolTip(add_formula_but, message='Neue Formel')   
         add_formula_but.grid(row=0, column=0,pady=10, padx=10)
