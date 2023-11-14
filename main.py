@@ -62,7 +62,11 @@ class Gui:
         self.toplevell = False
         self.toplevel = None
        
-    def add_formula(self, new_frm):
+    def add_formula(self, new_frm_name):
+        for kid in frame.winfo_children():
+            kid.configure(state='disabled')
+            kid.configure(fg_color='green')
+            
         self.a_page.grid(row = 0,rowspan=2, column=1, sticky='nesw', pady=(4,5), padx=(5,5))
         self.a_page.grid_columnconfigure([0,1,2], weight=1)
  
@@ -71,15 +75,12 @@ class Gui:
         self.a_page.tkraise()
         
         boxes = []
-
-
-        
-        
         name_formula = customtkinter.CTkEntry(master=self.a_page,
                                 placeholder_text='Formel Name',
                                 fg_color=col_th,border_width=0,
-                                placeholder_text_color=text_col
+                                placeholder_text_color=text_col,justify='center'
                                 )
+        name_formula.insert('end',new_frm_name)
         name_formula.grid(row=0, column=0,columnspan=4, sticky='nswe', pady=(0,5))
         
         inp_formula = customtkinter.CTkEntry(master=self.a_page,width=50, height=35,
@@ -158,7 +159,7 @@ class Gui:
             
             #info   
             
-            edit_var_info_but = customtkinter.CTkButton(master=inp_frame, 
+            edit_var_info_but = customtkinter.CTkButton(master=inp_frame,
                                            text='',image=edit_info_img,width=30,height= 35 )
             edit_var_info_but.grid(row = 0, column=5, sticky='nwe', pady = 5, padx=5) 
             
@@ -167,13 +168,14 @@ class Gui:
                                          fg_color=col_th, border_width=0, bg_color='transparent',
                                         placeholder_text='Kategory',height=35,
                                         placeholder_text_color=text_col)
-        inp_category.grid(row=3, column=0,columnspan=3, sticky='we', pady=5, padx=(0,5))
+        inp_category.grid(row=3, column=0,columnspan=4, sticky='we', pady=5)
 
 
         save_but = customtkinter.CTkButton(master=self.a_page, text='Speichern', height=35)
-        save_but.grid(row = 3, column=3, sticky='nwse', pady = 15) 
+        save_but.grid(row = 4, column=2,columnspan= 2, sticky='nwse') 
+        cancle_but = customtkinter.CTkButton(master=self.a_page, text='Cancle', height=35, color=red,hover_color=red_h)
+        cancle_but.grid(row = 4, column=0, columnspan= 2,sticky='nwse',padx=(0,5)) 
        
-   
     def edit_info(self):
         
         if self.toplevell:
@@ -181,10 +183,9 @@ class Gui:
         else:
             self.toplevel = customtkinter.CTkToplevel()
             self.toplevel.geometry("400x200")
-            self.toplevel.focus()
             self.toplevel.rowconfigure(0, weight=1)
             self.toplevel.columnconfigure(0, weight=1)
-            self.toplevel.attributes('-topmost', 'true')
+            self.attributes("-topmost", True)
             self.toplevell = True
         
         edit_info_win = customtkinter.CTkTextbox(self.toplevel)
@@ -194,12 +195,13 @@ class Gui:
         
     def add_formula_name(self):
         frm_name = customtkinter.CTkInputDialog(title='Formel Bennenen', text='Name der Formel eingebend')
-        if frm_name.get_input() == 'Ok':
-            if frm_name.get_input() == '':
-                new_frm = r_formula_json['formula']['Unbennante Formel']
-            else:
-                new_frm = r_formula_json['formula'][frm_name.get_input()]
-        self.add_formula(new_frm)
+        frm_var = frm_name.get_input()
+        frm_safe = 'Unbennante Formel'
+        if  frm_var!= None:
+            if frm_var != '':
+                frm_safe = frm_var
+            r_formula_json['formula'][frm_safe] = {'search_terms':[],'formula':[[]],'values':[[],[]], 'information': 'insert info'}
+            self.add_formula(frm_safe)
                 
         
 
