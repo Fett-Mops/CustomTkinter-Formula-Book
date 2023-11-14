@@ -173,7 +173,7 @@ class Gui:
 
         save_but = customtkinter.CTkButton(master=self.a_page, text='Speichern', height=35)
         save_but.grid(row = 4, column=2,columnspan= 2, sticky='nwse') 
-        cancle_but = customtkinter.CTkButton(master=self.a_page, text='Cancle', height=35, color=red,hover_color=red_h)
+        cancle_but = customtkinter.CTkButton(master=self.a_page, text='Cancle', height=35, fg_color=red,hover_color=red_h)
         cancle_but.grid(row = 4, column=0, columnspan= 2,sticky='nwse',padx=(0,5)) 
        
     def edit_info(self):
