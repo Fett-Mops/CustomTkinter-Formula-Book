@@ -30,6 +30,8 @@ red_h = '#C77C78'
 main_col ={'green':'#00947D','blue': '#008FBE', 'dark-blue': '#5C84C3'}
 menu_col = {'green': '#008180','blue': '#00B1BC', 'dark-blue': '#7764AC'}
 menu_h_col = {'green': '#006E7A','blue': '#0073A0', 'dark-blue': '#4E5C9F'}
+del_col = {'green': '#FFA17A','blue': '#AF4079', 'dark-blue': '#C0697D'}
+del_h_col = {'green': '#F98383','blue': '#9F5399', 'dark-blue': '#88364C'}
 text_col = '#DCE4DB'
 grey='#333333'
 d = '#2FA572'
@@ -65,7 +67,7 @@ class Gui:
     def add_formula(self, new_frm_name):
         for kid in frame.winfo_children():
             kid.configure(state='disabled')
-            kid.configure(fg_color='green')
+            kid.configure(fg_color=colorscale(menue_col[col_th], 0.8))
             
         self.a_page.grid(row = 0,rowspan=2, column=1, sticky='nesw', pady=(4,5), padx=(5,5))
         self.a_page.grid_columnconfigure([0,1,2], weight=1)
