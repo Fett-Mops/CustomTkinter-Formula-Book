@@ -4,6 +4,8 @@ from sympy import *
 import CTkMessagebox
 import CTkToolTip
 
+import os
+
 
 from PIL import Image, ImageTk
 import json
@@ -66,8 +68,8 @@ class Gui:
        
     def add_formula(self, new_frm_name):
         for kid in frame.winfo_children():
-            kid.configure(state='disabled')
-            kid.configure(fg_color=colorscale(menue_col[col_th], 0.8))
+            kid.configure(state='disabled') 
+            kid.configure(fg_color=self.colorscale(col_th, .5))
             
         self.a_page.grid(row = 0,rowspan=2, column=1, sticky='nesw', pady=(4,5), padx=(5,5))
         self.a_page.grid_columnconfigure([0,1,2], weight=1)
@@ -97,7 +99,7 @@ class Gui:
         
         info_img = ImageTk.PhotoImage(Image.open("pictures\icon-infoo.png").resize((40,40)))
         info_format_but = customtkinter.CTkButton(master= helpful_frame, height=35, text = '',
-                                                  image=info_img, width=10)
+                                                  image=info_img, width=10, command=lambda:(self.open_file()))
         info_format_but.grid(row=0, column=2, padx=(5,0))
         
         
@@ -173,28 +175,104 @@ class Gui:
         inp_category.grid(row=3, column=0,columnspan=4, sticky='we', pady=5)
 
 
-        save_but = customtkinter.CTkButton(master=self.a_page, text='Speichern', height=35)
+        save_but = customtkinter.CTkButton(master=self.a_page, text='Speichern', height=35,
+                                           command= lambda:(self.idk_dont_look('Diese änderung Speichern',
+                                                                               None,
+                                                                               ['Speicher'],
+                                                                               'center', 
+                                                                               False,
+                                                                               'Speichern',
+                                                                               new_frm_name
+                                                                               )))
         save_but.grid(row = 4, column=2,columnspan= 2, sticky='nwse') 
-        cancle_but = customtkinter.CTkButton(master=self.a_page, text='Cancle', height=35, fg_color=del_col[col_th],hover_color=del_h_col[col_th])
+        
+        
+        cancle_but = customtkinter.CTkButton(master=self.a_page, text='Cancle',
+                                             height=35, fg_color=del_col[def_col],hover_color=del_h_col[def_col],
+                                             command=lambda:(self.idk_dont_look('Diese änderung Speichern',
+                                                                                None,['nicht Speicher'],'center', False,'Verlassen', new_frm_name)))
+        
         cancle_but.grid(row = 4, column=0, columnspan= 2,sticky='nwse',padx=(0,5)) 
-       
+        
+    def idk_dont_look(self, message, icon, options, justify, sound, title, new_frm_name):
+        
+        if self.messagebox(message,icon, options, justify, sound, title):
+            if title == 'Verlassen':
+                r_formula_json['formula'].pop(new_frm_name)
+                for kid in frame.winfo_children():
+                    kid.configure(state='normal') 
+                    kid.configure(fg_color=col_th)
+                    self.home()    
+            elif title == 'Speichern':
+                with open ('json_files/formula.json', 'w') as f:
+                    json.dump(r_formula_json,f ,indent=4)
+                    
+                with open ('json_files/formula_char.json', 'w') as f:
+                    json.dump(r_char_json,f ,indent=4)
+                
+                with open ('json_files/formula_con.json', 'w') as f:
+                    json.dump(r_con_json,f ,indent=4)
+                self.home()
+                    
+    def open_file(self):
+        os.system('start formula_syntax.pdf')
+        
+    def clamp(self, val, minimum=0, maximum=255):
+        if val < minimum:
+            return minimum
+        if val > maximum:
+            return maximum
+        return val
+
+    def colorscale(self,hexstr, scalefactor):
+        """
+        Scales a hex string by ``scalefactor``. Returns scaled hex string.
+
+        To darken the color, use a float value between 0 and 1.
+        To brighten the color, use a float value greater than 1.
+
+        >>> colorscale("#DF3C3C", .5)
+        #6F1E1E
+        >>> colorscale("#52D24F", 1.6)
+        #83FF7E
+        >>> colorscale("#4F75D2", 1)
+        #4F75D2
+        """
+
+        hexstr = hexstr.strip('#')
+
+        if scalefactor < 0 or len(hexstr) != 6:
+            return hexstr
+
+        r, g, b = int(hexstr[:2], 16), int(hexstr[2:4], 16), int(hexstr[4:], 16)
+
+        r = int(self.clamp(r * scalefactor))
+        g = int(self.clamp(g * scalefactor))
+        b = int(self.clamp(b * scalefactor))
+        print(r,g,b)
+        
+
+        return "#%02x%02x%02x" % (r, g, b)
+    
     def edit_info(self):
         
-        if self.toplevell:
+        if self.toplevell :
             self.toplevell = False
-        else:
+            
+        if not self.toplevell:
             self.toplevel = customtkinter.CTkToplevel()
             self.toplevel.geometry("400x200")
             self.toplevel.rowconfigure(0, weight=1)
             self.toplevel.columnconfigure(0, weight=1)
-            self.attributes("-topmost", True)
+            self.toplevel.attributes("-topmost", True)
             self.toplevell = True
+            
         
         edit_info_win = customtkinter.CTkTextbox(self.toplevel)
         #independent
         edit_info_win.insert('end',r_formula_json['formula']['Uri']['information'])
         edit_info_win.grid(row=0,column=0, sticky='nswe')
-        
+            
     def add_formula_name(self):
         frm_name = customtkinter.CTkInputDialog(title='Formel Bennenen', text='Name der Formel eingebend')
         frm_var = frm_name.get_input()
@@ -202,11 +280,9 @@ class Gui:
         if  frm_var!= None:
             if frm_var != '':
                 frm_safe = frm_var
-            r_formula_json['formula'][frm_safe] = {'search_terms':[],'formula':[[]],'values':[[],[]], 'information': 'insert info'}
+            r_formula_json['formula'][frm_safe] = {'search_terms':[],'formula':['',[]],'values':[[],[]], 'information': 'insert info'}
             self.add_formula(frm_safe)
                 
-        
-
     def remove_formula(self,formula):
         
         rm_message = CTkMessagebox.CTkMessagebox(master= root,message="Bist du sicher das du die Formel: "+ f'{formula}'+" löschen willst?",
@@ -229,15 +305,15 @@ class Gui:
 
                                             r_char_json.pop(f"{r_formula_json['formula'][f'{formula}']['values'][0][i]}")
                                             
-                                            #with open ('json_files/formula_char.json', 'w') as f:
-                                            #    json.dump(r_char_json, f, indent=4)
+                                            with open ('json_files/formula_char.json', 'w') as f:
+                                                json.dump(r_char_json, f, indent=4)
                                            
                                         else:
                                             
                                             r_con_json.pop(f"{r_formula_json['formula'][f'{formula}']['values'][0][i]}")
                                             
-                                            #with open ('json_files/formula_con.json', 'w') as f:
-                                                #json.dump(r_con_json, f, indent=4)
+                                            with open ('json_files/formula_con.json', 'w') as f:
+                                                json.dump(r_con_json, f, indent=4)
                                             print('con rm1',i)
                                     
                                 else:
@@ -246,20 +322,20 @@ class Gui:
 
                                         r_char_json.pop(f"{r_formula_json['formula'][f'{formula}']['values'][0][i]}")
                                             
-                                            #with open ('json_files/formula_char.json', 'w') as f:
-                                            #    json.dump(r_char_json, f, indent=4)
+                                        with open ('json_files/formula_char.json', 'w') as f:
+                                            json.dump(r_char_json, f, indent=4)
                                     else:
                                         print('con rm2',i)
                                         r_con_json.pop(f"{r_formula_json['formula'][f'{formula}']['values'][0][i]}")
                                             
-                                        #with open ('json_files/formula_con.json', 'w') as f:
-                                            #json.dump(r_con_json, f, indent=4)
+                                        with open ('json_files/formula_con.json', 'w') as f:
+                                            json.dump(r_con_json, f, indent=4)
                                     
                 
             r_formula_json['formula'].pop(formula)
             
-            #with open ('json_files/formula.json', 'w') as f:
-                #json.dump(r_formula_json, f, indent=4)
+            with open ('json_files/formula.json', 'w') as f:
+                json.dump(r_formula_json, f, indent=4)
             
 
     
@@ -285,7 +361,7 @@ class Gui:
         #remove formula
         del_formula_img = ImageTk.PhotoImage(Image.open("pictures/remove-formula.png").resize((50,50)))
         del_formula_but = customtkinter.CTkButton(master=frame, image=del_formula_img,text='', width=60,
-                                                  height=60, fg_color=red, hover_color=red_h,
+                                                  height=60, fg_color=del_col[def_col], hover_color=del_h_col[def_col],
                                                   command=lambda formula= formula :self.remove_formula(formula),
                                                  )
         del_formula_but.grid(row = 2, column=0,pady=10, padx=10)     
@@ -332,7 +408,7 @@ class Gui:
                                                        state='disabled',corner_radius=5,)
                 box_x.grid(row=0, column=0, pady=5, padx=(5,0))
                 var_inp = customtkinter.CTkEntry(master=inp_frame
-                                    ,width=50, height=35,  fg_color=col_th, border_width=0, bg_color='transparent',
+                                    ,width=50, height=35,  fg_color=self.colorscale(col_th, 0.5), border_width=0, bg_color='transparent',
                                     placeholder_text_color=grey_disa,
                                     textvariable=self.cal_inp_var[i],
                                     state='disabled'
@@ -358,6 +434,7 @@ class Gui:
                         # not functional for more var than three
             if r_formula_json['formula'][f'{formula}']['values'][1].index(0) == i:
                 var_inp.configure(state='disabled')
+                var_inp.configure(fg_color=self.colorscale(col_th,0.5))
                 self.cal_rad_var.set(i)
 
             var_inp.grid(row = 0, column=1, pady= 5, padx=(5,0), sticky='nwes')
@@ -421,7 +498,7 @@ class Gui:
         sound = False
         icon = 'check'
         title = 'Inputs Speichern'
-        l = 'Berechnen'
+        option1 = 'Berechnen'
         for i in range(len(val)):
             
                 if i != chosen.get():
@@ -432,19 +509,18 @@ class Gui:
                     except:
                         message = 'Es ist ein Fehler aufgetretten'
                         sound = True
-                        l = None
+                        option1 = None
                         title = 'Fehler'   
                         icon =  "cancel"                 
                         
                         
                 else:
-                   values.append(None)     
-        mis_win = CTkMessagebox.CTkMessagebox(master= root,message=message, 
-                                              icon=icon, option_1=l,
-                                              justify='center',sound=sound,
-                                              title=title,
-                                              cancel_button='circle') 
-        if mis_win.get() == 'Berechnen':
+                   values.append(None) 
+        
+
+        
+        
+        if self.messagebox(message, icon, [option1], 'center', sound, title):
             self.calculate(val, chosen, format, formula)
                 
     def calculate(self, val, chosen, format, formula):
@@ -481,15 +557,17 @@ class Gui:
         else :
             pass
     
-    def disable_inp(self, inp, C):
+    def disable_inp(self, inp, formula):
+        
         
         for i , var in enumerate(inp):
             if int(self.cal_rad_var.get()) == i:
                 var.configure(state='disabled')
-
+                var.configure(fg_color=self.colorscale(col_th, .5))
                 self.cal_inp_var[i].set('')
-            else:
+            elif r_formula_json['formula'][f'{formula}']['values'][1][i] != 1:
                 var.configure(state=NORMAL)
+                var.configure(fg_color=col_th)
 
     def sub(self, si_index, f, i):
         
@@ -513,6 +591,19 @@ class Gui:
 
     def sypmy_solve(self, formula, chosen):
         pass
+    
+    def messagebox(self, message, icon, options, justify, sound, title):
+        
+        mis_win = CTkMessagebox.CTkMessagebox(master= root,message=message, 
+                                              icon=icon, 
+                                              options=options,
+                                              option_1= None,
+                                              justify=justify,sound=sound,
+                                              title=title,
+                                              cancel_button='circle') 
+
+        if mis_win.get() == options[0] and options[0] != None:
+            return True
         
     def home(self):
         if self.cal_bool:
