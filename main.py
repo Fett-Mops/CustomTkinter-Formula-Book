@@ -280,7 +280,15 @@ class Gui:
         if  frm_var!= None:
             if frm_var != '':
                 frm_safe = frm_var
+            else:
+                for i in range(len(r_formula_json['formula'])):
+                    try: 
+                        r_formula_json['formula']['Unbennante Formel ' +f'{i}' ]
+                    except:                      
+                        frm_safe = 'Unbennante Formel ' +f'{i}' 
+                
             r_formula_json['formula'][frm_safe] = {'search_terms':[],'formula':['',[]],'values':[[],[]], 'information': 'insert info'}
+            
             self.add_formula(frm_safe)
                 
     def remove_formula(self,formula):
@@ -725,6 +733,8 @@ class Gui:
                                    command=lambda: (self.home()), fg_color=menu_col[def_col], hover_color=menu_h_col[def_col])
         CTkToolTip.CTkToolTip(home_but, message='Home')
         home_but.grid(row=5,column=0,pady=10, sticky='nwe', padx=10)
+        print(2)
+   
         
 
         
