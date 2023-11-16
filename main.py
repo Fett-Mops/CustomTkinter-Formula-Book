@@ -124,66 +124,72 @@ class Gui:
         cal_label.grid_columnconfigure(0, weight=1)
         cal_label.grid_rowconfigure(0, weight=1)
         
-        
-        
-        
-        number = 5
+        information = [[inp_formula],[[],[],[],[]]]        
+        number = 3
         for i in range(number):            
             inp_frame = customtkinter.CTkFrame(master=scr_frame, fg_color=grey)
             inp_frame.grid(row=i+1, column=0, columnspan=4,sticky='nswe', pady=(0,5))
-            inp_frame.grid_columnconfigure([0,1,2,4], weight=2)
+            inp_frame.grid_columnconfigure([1,2,3,4,5], weight=2)
 
             inp_frame.grid_rowconfigure( [j for j in range(number)], weight=1)  
-            
-            
-
-            
             add_check_var = [customtkinter.Variable() for _ in range(number)]
             box_x = customtkinter.CTkCheckBox(master=inp_frame,text='', width=5,
                                                 corner_radius=5,
                                                 variable=add_check_var[i])
             boxes.append(box_x)
-            box_x.grid(row=0, column=0, pady=5, padx=(5,0))    
+            box_x.grid(row=0, column=0, pady=5, padx=(10,0))    
                  
             var_inp = customtkinter.CTkEntry(master=inp_frame
                                     ,width=50, height=35,  fg_color=col_th, border_width=0, bg_color='transparent',
                                     placeholder_text_color=text_col)
-            var_inp.grid(row = 0, column=1, pady= 5, sticky='nwes')
+            #var_inp.grid(row = 0, column=1, pady= 5, sticky='nwes')
+            
+
                                           
             unit_inp = customtkinter.CTkEntry(master=inp_frame
                                     ,width=50, height=35,  fg_color=col_th, border_width=0, bg_color='transparent',
                                     placeholder_text_color=text_col,)
             unit_inp.grid(row = 0, column=2,  pady= 5, padx=(10,0), sticky='nwes')
+            
+            unit_n_inp = customtkinter.CTkEntry(master=inp_frame
+                                    ,width=50, height=35,  fg_color=col_th, border_width=0, bg_color='transparent',
+                                    placeholder_text_color=text_col)
+            unit_n_inp.grid(row = 0, column=3, pady= 5,padx=(5,0), sticky='nwes')
         
         #change to listU
             symb_label = customtkinter.CTkLabel(master = inp_frame  ,text='d', font=font1, 
                                            fg_color=grey)
             symb_label.grid(row = 0, column=4, pady= (8,5), padx=10, sticky='nwes')
             
+            symb_n_inp = customtkinter.CTkEntry(master=inp_frame
+                                    ,width=50, height=35,  fg_color=col_th, border_width=0, bg_color='transparent',
+                                    placeholder_text_color=text_col)
+            symb_n_inp.grid(row = 0, column=5, pady= 5, sticky='nwes')
+            
             
             #info   
             
             edit_var_info_but = customtkinter.CTkButton(master=inp_frame,
                                            text='',image=edit_info_img,width=30,height= 35 )
-            edit_var_info_but.grid(row = 0, column=5, sticky='nwe', pady = 5, padx=5) 
-            
+            edit_var_info_but.grid(row = 0, column=6, sticky='nwe', pady = 5, padx=5) 
+            information[1][0].append(unit_inp)
+            information[1][1].append(unit_n_inp)
+            information[1][2].append(symb_n_inp)
+            #info box
+            information[1][3].append(var_inp)
+
+                
         
         inp_category = customtkinter.CTkEntry(master=self.a_page,
                                          fg_color=col_th, border_width=0, bg_color='transparent',
                                         placeholder_text='Kategory',height=35,
                                         placeholder_text_color=text_col)
         inp_category.grid(row=3, column=0,columnspan=4, sticky='we', pady=5)
-
+        
+        information.append(inp_category)
 
         save_but = customtkinter.CTkButton(master=self.a_page, text='Speichern', height=35,
-                                           command= lambda:(self.idk_dont_look('Diese änderung Speichern',
-                                                                               None,
-                                                                               ['Speicher'],
-                                                                               'center', 
-                                                                               False,
-                                                                               'Speichern',
-                                                                               new_frm_name
-                                                                               )))
+                                           command= lambda:(self.get_formula(new_frm_name,information)))
         save_but.grid(row = 4, column=2,columnspan= 2, sticky='nwse') 
         
         
@@ -193,16 +199,53 @@ class Gui:
                                                                                 None,['nicht Speicher'],'center', False,'Verlassen', new_frm_name)))
         
         cancle_but.grid(row = 4, column=0, columnspan= 2,sticky='nwse',padx=(0,5)) 
-        
+    
+    def get_formula(self, new_frm_name, information):
+        print( r_formula_json['formula'][new_frm_name])
+
+        #information = [[inp_formula,edit_info_box],[[unit_inp],[unit_n_inp],[symb_n_inp][info_box]],category] 
+        print(information[0][0].get())
+        print(information[2].get())
+        r_formula_json['formula'][new_frm_name]['formula'][0] = information[0][0].get()
+        #r_formula_json['formula'][new_frm_name]['information'] = information[0][1].get()    
+            
+        char_len = len(r_char_json)
+        # char exept symbol is working
+        for  i, var in enumerate(information[1][0]):
+            r_formula_json['formula'][new_frm_name]['values'][0].append(i)
+            r_char_json[char_len+i] ={
+                            "symbol": 'change Thies',
+                            "s_name": "",
+                            "value": 0,
+                            "unit": var.get(),
+                            "u_name": '',
+                            "category": information[2].get(),
+                            "information": "insert information"}
+        for  i, var in enumerate(information[1][1]):
+            r_char_json[char_len+i]['u_name'] = var.get()
+            
+        for  i, var in enumerate(information[1][2]):
+            r_char_json[char_len+i]['s_name'] = var.get()
+        #for  i, var in enumerate(information[1][3]):
+        #    r_char_json[char_len+i]['information'] = var.get()
+            
+        #print(r_char_json[char_len])
+        #print(r_char_json[char_len+1])
+        #print(r_char_json[char_len+2])
+        #print(char_len)
+        print(r_formula_json['formula'][new_frm_name])
+
+            
+            
+                
+        self.idk_dont_look('Diese änderung Speichern', None,['Speicher'],
+                           'center', False,'Speichern',new_frm_name)
     def idk_dont_look(self, message, icon, options, justify, sound, title, new_frm_name):
         
         if self.messagebox(message,icon, options, justify, sound, title):
             if title == 'Verlassen':
                 r_formula_json['formula'].pop(new_frm_name)
-                for kid in frame.winfo_children():
-                    kid.configure(state='normal') 
-                    kid.configure(fg_color=col_th)
-                    self.home()    
+
             elif title == 'Speichern':
                 with open ('json_files/formula.json', 'w') as f:
                     json.dump(r_formula_json,f ,indent=4)
@@ -212,7 +255,10 @@ class Gui:
                 
                 with open ('json_files/formula_con.json', 'w') as f:
                     json.dump(r_con_json,f ,indent=4)
-                self.home()
+            for kid in frame.winfo_children():
+                    kid.configure(state='normal') 
+                    kid.configure(fg_color=col_th)
+            self.home()    
                     
     def open_file(self):
         os.system('start formula_syntax.pdf')
