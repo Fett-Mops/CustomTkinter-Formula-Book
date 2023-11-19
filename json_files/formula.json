@@ -23,7 +23,8 @@
                     0
                 ]
             ],
-            "information": "insert information"
+            "information": "insert information",
+            "category": "Elektrotechnick"
         },
         "Leistung": {
             "search_terms": [
@@ -52,7 +53,8 @@
                     0
                 ]
             ],
-            "information": "insert information"
+            "information": "insert information",
+            "category": "Elektrotechnick"
         }
     }
 }

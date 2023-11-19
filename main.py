@@ -207,12 +207,13 @@ class Gui:
         print(information[0][0].get())
         print(information[2].get())
         r_formula_json['formula'][new_frm_name]['formula'][0] = information[0][0].get()
-        #r_formula_json['formula'][new_frm_name]['information'] = information[0][1].get()    
+        #r_formula_json['formula'][new_frm_name]['information'] = information[0][1].get() 
+        r_formula_json['formula'][new_frm_name]['category'] = information[2].get()    
             
         char_len = len(r_char_json)
         # char exept symbol is working
         for  i, var in enumerate(information[1][0]):
-            r_formula_json['formula'][new_frm_name]['values'][0].append(i)
+            r_formula_json['formula'][new_frm_name]['values'][0].append(char_len+i)
             r_char_json[char_len+i] ={
                             "symbol": 'change Thies',
                             "s_name": "",
@@ -221,25 +222,24 @@ class Gui:
                             "u_name": '',
                             "category": information[2].get(),
                             "information": "insert information"}
-        for  i, var in enumerate(information[1][1]):
-            r_char_json[char_len+i]['u_name'] = var.get()
+            r_char_json[char_len+i]['u_name'] = information[1][1][i].get()
+            r_char_json[char_len+i]['s_name'] = information[1][2][i].get()
+            #r_char_json[char_len+i]['information'] = information[1][3][i].get()
+
             
-        for  i, var in enumerate(information[1][2]):
-            r_char_json[char_len+i]['s_name'] = var.get()
-        #for  i, var in enumerate(information[1][3]):
-        #    r_char_json[char_len+i]['information'] = var.get()
-            
-        #print(r_char_json[char_len])
-        #print(r_char_json[char_len+1])
-        #print(r_char_json[char_len+2])
+        print(r_char_json[char_len])
+        print(r_char_json[char_len+1])
+        print(r_char_json[char_len+2])
         #print(char_len)
         print(r_formula_json['formula'][new_frm_name])
+     
 
             
             
                 
         self.idk_dont_look('Diese änderung Speichern', None,['Speicher'],
                            'center', False,'Speichern',new_frm_name)
+    
     def idk_dont_look(self, message, icon, options, justify, sound, title, new_frm_name):
         
         if self.messagebox(message,icon, options, justify, sound, title):
@@ -333,7 +333,11 @@ class Gui:
                     except:                      
                         frm_safe = 'Unbennante Formel ' +f'{i}' 
                 
-            r_formula_json['formula'][frm_safe] = {'search_terms':[],'formula':['',[]],'values':[[],[]], 'information': 'insert info'}
+            r_formula_json['formula'][frm_safe] = {'search_terms':[],
+                                                   'formula':['',[]],
+                                                   'values':[[],[]],
+                                                   'information': 'insert info',
+                                                   'category' : ''}
             
             self.add_formula(frm_safe)
                 
@@ -661,7 +665,7 @@ class Gui:
         
     def home(self):
         if self.cal_bool:
-            del_formula_but.grid_forget()
+            del_formula_but.grid_forget
             edit_formula_but.grid_forget() 
             add_formula_but.grid(row=0, column=0,pady=10, padx=10)
         self.h_page.grid(row = 0,rowspan=2, column=1, sticky='nesw', pady=(4,5), padx=(5,5))
