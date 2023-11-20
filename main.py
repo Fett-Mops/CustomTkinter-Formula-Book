@@ -63,10 +63,11 @@ class Gui:
         #flasch ist nur für 3 ausgerichtet verbessern!
         self.cal_inp_var = [customtkinter.StringVar(value='') for _ in range(3)]
         self.cal_rad_first = False
+        self.info_str_var = customtkinter.StringVar(value='sdfadf')
         self.toplevell = False
         self.toplevel = None
        
-    def add_formula(self, new_frm_name):
+    def add_formula(self, new_frm_name, first_var):
         for kid in frame.winfo_children():
             kid.configure(state='disabled') 
             kid.configure(fg_color=self.colorscale(col_th, .5))
@@ -78,7 +79,7 @@ class Gui:
         self.a_page.grid_rowconfigure(2, weight=1)  
         self.a_page.tkraise()
         
-        boxes = []
+        boxes,  info_index = [], []
         name_formula = customtkinter.CTkEntry(master=self.a_page,
                                 placeholder_text='Formel Name',
                                 fg_color=col_th,border_width=0,
@@ -105,8 +106,9 @@ class Gui:
         
         edit_info_img = ImageTk.PhotoImage(Image.open("pictures\edit-info.png").resize((30,30)))
         edit_info_but = customtkinter.CTkButton(master= helpful_frame, height=35, text = '',
-                                                  image=edit_info_img, width=10, command=self.edit_info)
+                                                  image=edit_info_img, width=10, command=lambda:(self.edit_info(new_frm_name,None)))
         edit_info_but.grid(row=0, column=1, padx=(5,0))
+        
         
         reload_img =ImageTk.PhotoImage(Image.open("pictures/reload.png").resize((40,40)))
         reload_scr_frame = customtkinter.CTkButton(master=helpful_frame, image=reload_img,width=60, height=35, text = '')
@@ -168,9 +170,12 @@ class Gui:
             
             
             #info   
-            
+            info_index.append(first_var + i)
+            print(info_index)
+            #Help
             edit_var_info_but = customtkinter.CTkButton(master=inp_frame,
-                                           text='',image=edit_info_img,width=30,height= 35 )
+                                           text='',image=edit_info_img,width=30,height= 35, 
+                                           command=lambda:(self.edit_info(new_frm_name,info_index[i])) )
             edit_var_info_but.grid(row = 0, column=6, sticky='nwe', pady = 5, padx=5) 
             information[1][0].append(unit_inp)
             information[1][1].append(unit_n_inp)
@@ -300,7 +305,7 @@ class Gui:
 
         return "#%02x%02x%02x" % (r, g, b)
     
-    def edit_info(self):
+    def edit_info(self, formula, var):
         
         if self.toplevell :
             self.toplevell = False
@@ -316,9 +321,21 @@ class Gui:
         
         edit_info_win = customtkinter.CTkTextbox(self.toplevel)
         #independent
-        edit_info_win.insert('end',r_formula_json['formula']['Uri']['information'])
         edit_info_win.grid(row=0,column=0, sticky='nswe')
-            
+        if var != None:
+            r_formula_json['formula'][formula]['values'][0].append(var)
+            r_char_json[var] ={
+                            "symbol": 'change Thies',
+                            "s_name": "",
+                            "value": 0,
+                            "unit": '',
+                            "u_name": '',
+                            "category": '',
+                            "information": "cock" +f'{var}'}
+            edit_info_win.insert('end',r_char_json[var]['information'])
+        else:
+            edit_info_win.insert('end',r_formula_json['formula'][formula]['information'])
+                
     def add_formula_name(self):
         frm_name = customtkinter.CTkInputDialog(title='Formel Bennenen', text='Name der Formel eingebend')
         frm_var = frm_name.get_input()
@@ -339,7 +356,7 @@ class Gui:
                                                    'information': 'insert info',
                                                    'category' : ''}
             
-            self.add_formula(frm_safe)
+            self.add_formula(frm_safe, len(r_char_json))
                 
     def remove_formula(self,formula):
         
