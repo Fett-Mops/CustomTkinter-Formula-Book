@@ -176,7 +176,7 @@ class Gui:
             #Help
             
             edit_var_info_but = customtkinter.CTkButton(master=inp_frame,
-                                           text='',value=i,variable = help ,
+                                           text='' ,
                                            image=edit_info_img,width=30,height= 35, 
                                            command=lambda:(self.edit_info(new_frm_name,info_index[i],i)) )
             edit_var_info_but.grid(row = 0, column=6, sticky='nwe', pady = 5, padx=5) 
