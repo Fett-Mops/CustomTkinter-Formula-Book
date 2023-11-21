@@ -170,12 +170,15 @@ class Gui:
             
             
             #info   
+            help = 0
             info_index.append(first_var + i)
             print(info_index)
             #Help
+            
             edit_var_info_but = customtkinter.CTkButton(master=inp_frame,
-                                           text='',image=edit_info_img,width=30,height= 35, 
-                                           command=lambda:(self.edit_info(new_frm_name,info_index[i])) )
+                                           text='',value=i,variable = help ,
+                                           image=edit_info_img,width=30,height= 35, 
+                                           command=lambda:(self.edit_info(new_frm_name,info_index[i],i)) )
             edit_var_info_but.grid(row = 0, column=6, sticky='nwe', pady = 5, padx=5) 
             information[1][0].append(unit_inp)
             information[1][1].append(unit_n_inp)
@@ -276,20 +279,6 @@ class Gui:
         return val
 
     def colorscale(self,hexstr, scalefactor):
-        """
-        Scales a hex string by ``scalefactor``. Returns scaled hex string.
-
-        To darken the color, use a float value between 0 and 1.
-        To brighten the color, use a float value greater than 1.
-
-        >>> colorscale("#DF3C3C", .5)
-        #6F1E1E
-        >>> colorscale("#52D24F", 1.6)
-        #83FF7E
-        >>> colorscale("#4F75D2", 1)
-        #4F75D2
-        """
-
         hexstr = hexstr.strip('#')
 
         if scalefactor < 0 or len(hexstr) != 6:
@@ -305,7 +294,8 @@ class Gui:
 
         return "#%02x%02x%02x" % (r, g, b)
     
-    def edit_info(self, formula, var):
+    def edit_info(self, formula, var, i):
+        print(i)
         
         if self.toplevell :
             self.toplevell = False
@@ -332,6 +322,7 @@ class Gui:
                             "u_name": '',
                             "category": '',
                             "information": "cock" +f'{var}'}
+            
             edit_info_win.insert('end',r_char_json[var]['information'])
         else:
             edit_info_win.insert('end',r_formula_json['formula'][formula]['information'])
