@@ -4,3 +4,6 @@ CTkColorPicker          ==  0.8.0
 CTkMessagebox           ==  2.5
 Pillow                  ==  9.5.0
 Tkinter
+torch                   ==  2.0.1
+
+dl-translate           

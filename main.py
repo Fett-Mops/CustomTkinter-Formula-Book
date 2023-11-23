@@ -5,11 +5,14 @@ import CTkMessagebox
 import CTkToolTip
 
 import os
-
+#import dl_translate as dlt
+#from dl_translate import *
 
 from PIL import Image, ImageTk
 import json
 import si_prefix
+
+
 
 
 WIDTH, HEIGHT = int(500), int(500)
@@ -66,6 +69,13 @@ class Gui:
         self.info_str_var = customtkinter.StringVar(value='sdfadf')
         self.toplevell = False
         self.toplevel = None
+        self.t_lang = 'english'
+    
+    def translate(self, text):
+        #,source=dlt.lang.GERMAN
+        #tred =mt.translate(text,source, t_lang)
+
+        return text
        
     def add_formula(self, new_frm_name, first_var):
         for kid in frame.winfo_children():
@@ -81,7 +91,7 @@ class Gui:
         
         boxes,  info_index = [], []
         name_formula = customtkinter.CTkEntry(master=self.a_page,
-                                placeholder_text='Formel Name',
+                                placeholder_text=self.translate('formula name'),
                                 fg_color=col_th,border_width=0,
                                 placeholder_text_color=text_col,justify='center'
                                 )
@@ -90,7 +100,7 @@ class Gui:
         
         inp_formula = customtkinter.CTkEntry(master=self.a_page,width=50, height=35,
                                          fg_color=col_th, border_width=0, bg_color='transparent',
-                                        placeholder_text='Formel',
+                                        placeholder_text=self.translate('formula'),
                                         placeholder_text_color=text_col)
         inp_formula.grid(row=1, column=0,columnspan=3, sticky='nswe', pady=(0,5))
         
@@ -121,7 +131,7 @@ class Gui:
         scr_frame.grid_rowconfigure(0, weight=1)   
         
         cal_label = customtkinter.CTkLabel(master=scr_frame,
-                                text='ajsdlfkajsdlkf', font=font1)
+                                text=self.translate('d'), font=font1)
         cal_label.grid(row=0, column=0, sticky='nswe', padx=5)
         cal_label.grid_columnconfigure(0, weight=1)
         cal_label.grid_rowconfigure(0, weight=1)
@@ -159,7 +169,7 @@ class Gui:
             unit_n_inp.grid(row = 0, column=3, pady= 5,padx=(5,0), sticky='nwes')
         
         #change to listU
-            symb_label = customtkinter.CTkLabel(master = inp_frame  ,text='d', font=font1, 
+            symb_label = customtkinter.CTkLabel(master = inp_frame  ,text=self.translate('formula'), font=font1, 
                                            fg_color=grey)
             symb_label.grid(row = 0, column=4, pady= (8,5), padx=10, sticky='nwes')
             
@@ -190,21 +200,21 @@ class Gui:
         
         inp_category = customtkinter.CTkEntry(master=self.a_page,
                                          fg_color=col_th, border_width=0, bg_color='transparent',
-                                        placeholder_text='Kategory',height=35,
+                                        placeholder_text=self.translate('category'),height=35,
                                         placeholder_text_color=text_col)
         inp_category.grid(row=3, column=0,columnspan=4, sticky='we', pady=5)
         
         information.append(inp_category)
 
-        save_but = customtkinter.CTkButton(master=self.a_page, text='Speichern', height=35,
+        save_but = customtkinter.CTkButton(master=self.a_page, text=self.translate('save'), height=35,
                                            command= lambda:(self.get_formula(new_frm_name,information)))
         save_but.grid(row = 4, column=2,columnspan= 2, sticky='nwse') 
         
         
-        cancle_but = customtkinter.CTkButton(master=self.a_page, text='Cancle',
+        cancle_but = customtkinter.CTkButton(master=self.a_page, text=self.translate('cancle'),
                                              height=35, fg_color=del_col[def_col],hover_color=del_h_col[def_col],
-                                             command=lambda:(self.idk_dont_look('Diese änderung Speichern',
-                                                                                None,['nicht Speicher'],'center', False,'Verlassen', new_frm_name)))
+                                             command=lambda:(self.idk_dont_look(self.translate("don't save changes"),
+                                                                                None,[self.translate("don't save")],'center', False,self.translate('leaf'), new_frm_name)))
         
         cancle_but.grid(row = 4, column=0, columnspan= 2,sticky='nwse',padx=(0,5)) 
     
@@ -245,16 +255,16 @@ class Gui:
             
             
                 
-        self.idk_dont_look('Diese änderung Speichern', None,['Speicher'],
-                           'center', False,'Speichern',new_frm_name)
+        self.idk_dont_look(self.translate('save chages'), None,[self.translate('save')],
+                           'center', False,self.translate('save'),new_frm_name)
     
     def idk_dont_look(self, message, icon, options, justify, sound, title, new_frm_name):
         
         if self.messagebox(message,icon, options, justify, sound, title):
-            if title == 'Verlassen':
+            if title == self.translate('leaf'):
                 r_formula_json['formula'].pop(new_frm_name)
 
-            elif title == 'Speichern':
+            elif title ==  self.translate('save'):
                 with open ('json_files/formula.json', 'w') as f:
                     json.dump(r_formula_json,f ,indent=4)
                     
@@ -302,17 +312,20 @@ class Gui:
             
         if not self.toplevell:
             self.toplevel = customtkinter.CTkToplevel()
-            self.toplevel.geometry("400x200")
-            self.toplevel.rowconfigure(0, weight=1)
+            self.toplevel.geometry("400x500")
+            self.toplevel.rowconfigure(1, weight=2)
+            self.toplevel.rowconfigure(0, weight=1)            
             self.toplevel.columnconfigure(0, weight=1)
             self.toplevel.attributes("-topmost", True)
             self.toplevell = True
             
-        
-        edit_info_win = customtkinter.CTkTextbox(self.toplevel)
+        edit_info_win = customtkinter.CTkTextbox(self.toplevel,fg_color=grey)
         #independent
-        edit_info_win.grid(row=0,column=0, sticky='nswe')
+        edit_info_win.grid(row=1,column=0, sticky='nswe', pady=5, padx=5)
+        
         if var != None:
+            var_sym = customtkinter.CTkTextbox(self.toplevel,fg_color=grey)
+            var_sym.grid(row=0,column=0, sticky='nswe', pady=(5,0), padx=5)
             r_formula_json['formula'][formula]['values'][0].append(var)
             r_char_json[var] ={
                             "symbol": 'change Thies',
@@ -321,25 +334,30 @@ class Gui:
                             "unit": '',
                             "u_name": '',
                             "category": '',
-                            "information": "cock" +f'{var}'}
+                            "information": "cock " +f'{var}'}
             
             edit_info_win.insert('end',r_char_json[var]['information'])
         else:
             edit_info_win.insert('end',r_formula_json['formula'][formula]['information'])
+        save_edit = customtkinter.CTkButton(self.toplevel, text=self.translate('save'))
+        save_edit.grid(row=3,column=0, sticky='nswe', padx=5,pady=(0,5))
                 
     def add_formula_name(self):
-        frm_name = customtkinter.CTkInputDialog(title='Formel Bennenen', text='Name der Formel eingebend')
+        frm_name = customtkinter.CTkInputDialog(title=self.translate('name formula'), text=self.translate('naming the formula'))
         frm_var = frm_name.get_input()
-        frm_safe = 'Unbennante Formel'
+        frm_safe = self.translate('unnamed formula')
         if  frm_var!= None:
             if frm_var != '':
                 frm_safe = frm_var
             else:
                 for i in range(len(r_formula_json['formula'])):
-                    try: 
-                        r_formula_json['formula']['Unbennante Formel ' +f'{i}' ]
-                    except:                      
-                        frm_safe = 'Unbennante Formel ' +f'{i}' 
+                    if i >=1:
+                        try: 
+                            r_formula_json['formula'][frm_safe +f' {i}' ]
+                            print(i)
+                        except:                      
+                            frm_safe = frm_safe +f' {i}' 
+                            print(i)
                 
             r_formula_json['formula'][frm_safe] = {'search_terms':[],
                                                    'formula':['',[]],
@@ -351,13 +369,15 @@ class Gui:
                 
     def remove_formula(self,formula):
         
-        rm_message = CTkMessagebox.CTkMessagebox(master= root,message="Bist du sicher das du die Formel: "+ f'{formula}'+" löschen willst?",
-                                   justify='right', icon=False,
-                                   title='Formel Löschen', option_1='Löschen') 
-        rm_comp = customtkinter.CTkCheckBox(master = rm_message, text='Auch komponente löschen')
+        
+        rm_message = CTkMessagebox.CTkMessagebox(master= root,
+                        message=self.translate("Bist du sicher das du die Formel: {}{}{} löschen willst?").format("'",formula,"'"),
+                        justify='right', icon=False,
+                        title=self.translate('delete formula'), option_1=self.translate('delete')) 
+        rm_comp = customtkinter.CTkCheckBox(master = rm_message, text=self.translate('also delet components'))
         rm_comp.place(x=10,y=160)
         
-        if rm_message.get() == 'Löschen':
+        if rm_message.get() == self.translate('delete'):
             if rm_comp.get():
                 
                 #optiation on chatgpt handeling json
@@ -443,7 +463,7 @@ class Gui:
         label_frame.grid(row=0, column=0, columnspan=4, sticky='nswe',pady=(0,10))
         
         cal_label = customtkinter.CTkLabel(master=label_frame,
-                                text='ajsdlfkajsdlkf', font=font1)
+                                text=self.translate('help'), font=font1)
         cal_label.grid(row=1, column=0, sticky='nswe', padx=5)
         cal_label.grid_columnconfigure(0, weight=1)
         cal_label.grid_rowconfigure(0, weight=1)
@@ -496,7 +516,7 @@ class Gui:
                                     textvariable=self.cal_inp_var[i]
                                     )
                 unit_label = customtkinter.CTkLabel(master = inp_frame,  font=font1,  fg_color=grey,
-                                text= r_char_json[f"{r_formula_json['formula'][f'{formula}']['values'][0][i]}"]['unit'])
+                                text= self.translate(r_char_json[f"{r_formula_json['formula'][f'{formula}']['values'][0][i]}"]['unit']))
                         # not functional for more var than three
             if r_formula_json['formula'][f'{formula}']['values'][1].index(0) == i:
                 var_inp.configure(state='disabled')
@@ -528,7 +548,7 @@ class Gui:
             unit_label.grid(row = 0, column=3, pady= (8,5), padx=10, sticky='nwes')
         
         #change to listU
-            symb_label = customtkinter.CTkLabel(master = inp_frame  ,text=var, font=font1, 
+            symb_label = customtkinter.CTkLabel(master = inp_frame  ,text=self.translate(var), font=font1, 
                                            fg_color=grey)
             symb_label.grid(row = 0, column=4, pady= (8,5), padx=10, sticky='nwes')
             
@@ -540,19 +560,19 @@ class Gui:
             info_but.grid(row = 0, column=5, sticky='nwe', pady = 5, padx=5) 
 
                         
-        t_radio =customtkinter.CTkRadioButton(master=self.c_page, text='Text',corner_radius=5,
+        t_radio =customtkinter.CTkRadioButton(master=self.c_page, text=self.translate('text'),corner_radius=5,
                                               value='T', variable=self.cal_rad2_var)
                                               
         t_radio.grid(row=3, column=0, sticky='nswe', pady=10,padx=10 )
-        p_radio =customtkinter.CTkRadioButton(master=self.c_page, text='Foto',corner_radius=5,
+        p_radio =customtkinter.CTkRadioButton(master=self.c_page, text=self.translate('picture'),corner_radius=5,
                                               value='P', variable=self.cal_rad2_var)
         p_radio.grid(row=3, column=1, sticky='nswe', pady=10,padx=10)
-        v_radio =customtkinter.CTkRadioButton(master=self.c_page, text='Video', corner_radius=5,
+        v_radio =customtkinter.CTkRadioButton(master=self.c_page, text=self.translate('video...en'), corner_radius=5,
                                               value='V', variable=self.cal_rad2_var)
         v_radio.grid(row=3, column=2, sticky='nswe', pady=10,padx=10)
 
               
-        cal_but = customtkinter.CTkButton(master=self.c_page, text='Berechnen', height=35,
+        cal_but = customtkinter.CTkButton(master=self.c_page, text=self.translate('calculata'), height=35,
                     command= lambda val =inp, chosen = self.cal_rad_var, 
                     format = self.cal_rad2_var , formula = formula:(self.set_values_check(val,chosen,format, formula)) )
         cal_but.grid(row = 3, column=3, sticky='nwse', pady = 15) 
@@ -612,7 +632,7 @@ class Gui:
             #labels = [ formula,umgestellte fomell ,umgestellete formel mit zahlen, Lösung]
             
             for i, data in enumerate(labels):
-                Cal_label = customtkinter.CTkLabel(master=scr_cal, text=data)
+                Cal_label = customtkinter.CTkLabel(master=scr_cal, textt=self.translate(data))
                 Cal_label.grid(row=i,column=0)
    
             
@@ -681,12 +701,12 @@ class Gui:
         self.h_page.grid_rowconfigure(1, weight=1)
         self.h_page.tkraise()
         
-        search_inp = customtkinter.CTkEntry(master=self.h_page, placeholder_text='Formel eingeben', 
+        search_inp = customtkinter.CTkEntry(master=self.h_page, placeholder_text=self.translate('idk'), 
                                     width=100, height=35,  fg_color=col_th, 
                                     placeholder_text_color=text_col, border_width=0)
         search_inp.grid(row = 0, column=0, pady= 5, columnspan=1, sticky='nwe')
         
-        search_but = customtkinter.CTkButton(master=self.h_page, text='Suchen', command=self.search_formula,
+        search_but = customtkinter.CTkButton(master=self.h_page, text=self.translate('search'), command=self.search_formula,
                                         width=100, height=35)
         search_but.grid(row = 0, column=1, pady =  5, padx=5, sticky='nwe')
 
@@ -704,12 +724,12 @@ class Gui:
             frame_formula.grid_columnconfigure((0,1), weight=(1))
             frame_formula.grid_columnconfigure(2, weight=(2))
 
-            customtkinter.CTkButton(frame_formula,text=formula,width=85, command=lambda k = formula: (self.set_values(k))
+            customtkinter.CTkButton(frame_formula,text=self.translate(formula),width=85, command=lambda k = formula: (self.set_values(k))
                                     ).grid(row=0, column=0, pady = 5, padx=5,sticky='w')
-            customtkinter.CTkLabel(frame_formula, text=r_formula_json['formula'][formula]['formula'][0], 
+            customtkinter.CTkLabel(frame_formula, text=self.translate(r_formula_json['formula'][formula]['formula'][0]), 
                                  font=font1).grid(row=0, column=1, pady =(0,5), padx=5,sticky='we')
             
-            customtkinter.CTkLabel(frame_formula, text=r_formula_json['formula'][formula]["search_terms"][-1:], 
+            customtkinter.CTkLabel(frame_formula, text=self.translate(r_formula_json['formula'][formula]["search_terms"][-1:]), 
                                    font=font1).grid(row=0, column=2, pady =(0,5), padx=10,sticky='e')
             
     def settings(self):
@@ -725,12 +745,19 @@ class Gui:
         self.s_page.tkraise()
     
     def user_settings(self):
-        global less_popu, lang, col_th, def_col
+        global less_popu, lang, col_th, def_col,  t_lang
 
         def_col = user_json['def_col']
         auto_app = user_json['auto_app']
         var_app = user_json['var_app']
-        lang = user_json['language']
+        
+        #language_mapping = {
+        #'german': dlt.lang.GERMAN,
+        #'english': dlt.lang.ENGLISH,
+        #}
+        #user_language = user_json.get('language')
+        #t_lang = language_mapping.get(user_language.lower())
+        t_lang = user_json.get('language')
         less_popu = user_json['less_popup']
         col_th = main_col[def_col]
         
@@ -742,7 +769,7 @@ class Gui:
         customtkinter.set_default_color_theme(def_col)
         
     def run(self):
-        global r_formula_json, r_char_json, r_con_json, user_json, add_formula_but
+        global r_formula_json, r_char_json, r_con_json, user_json, add_formula_but, mt
         with open ('json_files/formula.json') as f:
             r_formula_json = json.load(f)
             
@@ -767,7 +794,7 @@ class Gui:
         add_formula_but = customtkinter.CTkButton(master=frame, image=add_formula_img,text='', width=60,
                                           height=60,     command=self.add_formula_name,
                                           fg_color=menu_col[def_col],hover_color=menu_h_col[def_col])
-        CTkToolTip.CTkToolTip(add_formula_but, message='Neue Formel')   
+        CTkToolTip.CTkToolTip(add_formula_but, message=self.translate('new formula'))   
         add_formula_but.grid(row=0, column=0,pady=10, padx=10)
 
 
@@ -782,14 +809,14 @@ class Gui:
         setting_but = customtkinter.CTkButton(master=frame, image=setting_img,text='', width=60, height=60,
                                        command= self.settings, fg_color=menu_col[def_col],
                                        hover_color=menu_h_col[def_col])
-        CTkToolTip.CTkToolTip(setting_but, message='Einstellungen')   
+        CTkToolTip.CTkToolTip(setting_but, message=self.translate('settings'))
         setting_but.grid(row=4, column=0,pady=10, padx=10, sticky='nwe')
     
     #home
         home_img = ImageTk.PhotoImage(Image.open("pictures/home.png").resize((50,50)))
         home_but = customtkinter.CTkButton(master=frame, image=home_img,text='', width=60, height=60,
                                    command=lambda: (self.home()), fg_color=menu_col[def_col], hover_color=menu_h_col[def_col])
-        CTkToolTip.CTkToolTip(home_but, message='Home')
+        CTkToolTip.CTkToolTip(home_but, message=self.translate('home'))
         home_but.grid(row=5,column=0,pady=10, sticky='nwe', padx=10)
         print(2)
    
@@ -803,8 +830,7 @@ class Gui:
 
     #sound_slider = customtkinter.CTkSlider(master=root )
     #sound_slider.grid(row = 0, column=0,pady=5, padx=5)
-        
-
+        #mt = dlt.TranslationModel()
         root.mainloop()
 
 if __name__ == '__main__':
