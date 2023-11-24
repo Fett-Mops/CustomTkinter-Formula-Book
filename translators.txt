@@ -1,0 +1,5 @@
+pip install deep-translator
+https://pythonprogramminglanguage.com/translate/
+
+eq To 0
+https://stackoverflow.com/questions/60373970/solving-equation-equal-to-zero

@@ -3,10 +3,13 @@ import customtkinter
 from sympy import *
 import CTkMessagebox
 import CTkToolTip
+from CTkScrollableDropdown import *
 
 import os
 #import dl_translate as dlt
 #from dl_translate import *
+#from translate import Translator
+
 
 from PIL import Image, ImageTk
 import json
@@ -15,13 +18,15 @@ import si_prefix
 
 
 
-WIDTH, HEIGHT = int(500), int(500)
+WIDTH, HEIGHT = 600,600
 appearance = ['System', 'light', 'dark']
 color_def = ['green', 'blue','dark-blue']
 
 
 root = customtkinter.CTk()
 root.geometry(f'{WIDTH}'+'x'+f'{HEIGHT}')
+#root.state('zoomed')
+
 root.title('Formelbüchlein')
 
 # Grid configer
@@ -35,8 +40,8 @@ red_h = '#C77C78'
 main_col ={'green':'#00947D','blue': '#008FBE', 'dark-blue': '#5C84C3', 'orange':'#5C84C3'}
 menu_col = {'green': '#008180','blue': '#00B1BC', 'dark-blue': '#7764AC','orange':'#5C84C3'}
 menu_h_col = {'green': '#006E7A','blue': '#0073A0', 'dark-blue': '#4E5C9F','orange':'#5C84C3'}
-del_col = {'green': '#FFA17A','blue': '#AF4079', 'dark-blue': '#C0697D','orange':'#5C84C3'}
-del_h_col = {'green': '#F98383','blue': '#9F5399', 'dark-blue': '#88364C','orange':'#5C84C3'}
+del_col = {'green': '#FFA17A','blue': '#AF4079', 'dark-blue': '#C0697D','orange':'#88364C'}
+del_h_col = {'green': '#F98383','blue': '#9F5399', 'dark-blue': '#88364C','orange':'#88364C'}
 text_col = '#DCE4DB'
 grey='#333333'
 d = '#2FA572'
@@ -69,14 +74,17 @@ class Gui:
         self.info_str_var = customtkinter.StringVar(value='sdfadf')
         self.toplevell = False
         self.toplevel = None
-        self.t_lang = 'english'
+
     
     def translate(self, text):
         #,source=dlt.lang.GERMAN
         #tred =mt.translate(text,source, t_lang)
+        # Create a Translator instance with the desired engine ('mymemory', 'microsoft', etc.)
+        #translator = Translator(to_lang=t_lang, from_lang='en', provider='mymemory')
 
+        #translation = translator.translate(text)
         return text
-       
+    
     def add_formula(self, new_frm_name, first_var):
         for kid in frame.winfo_children():
             kid.configure(state='disabled') 
@@ -693,7 +701,7 @@ class Gui:
         
     def home(self):
         if self.cal_bool:
-            del_formula_but.grid_forget
+            del_formula_but.grid_forget()
             edit_formula_but.grid_forget() 
             add_formula_but.grid(row=0, column=0,pady=10, padx=10)
         self.h_page.grid(row = 0,rowspan=2, column=1, sticky='nesw', pady=(4,5), padx=(5,5))
@@ -729,20 +737,75 @@ class Gui:
             customtkinter.CTkLabel(frame_formula, text=self.translate(r_formula_json['formula'][formula]['formula'][0]), 
                                  font=font1).grid(row=0, column=1, pady =(0,5), padx=5,sticky='we')
             
-            customtkinter.CTkLabel(frame_formula, text=self.translate(r_formula_json['formula'][formula]["search_terms"][-1:]), 
+            customtkinter.CTkLabel(frame_formula, text=self.translate(r_formula_json['formula'][formula]["category"]), 
                                    font=font1).grid(row=0, column=2, pady =(0,5), padx=10,sticky='e')
             
     def settings(self):
+        global sound_but, sound_img_1, sound_img_2, sound_slider, col
         if self.cal_bool:
             del_formula_but.grid_forget()
         
             edit_formula_but.grid_forget()
             add_formula_but.grid(row=0, column=0,pady=10, padx=10)
 
-
-        
         self.s_page.grid(row = 0,rowspan=2, column=1, sticky='nesw', pady=(4,5), padx=(5,5))
         self.s_page.tkraise()
+        self.s_page.columnconfigure(1, weight=1)
+        
+        sound_img_1 = ImageTk.PhotoImage(Image.open("pictures/speaker_on.png").resize((50,50)))
+        sound_img_2 = ImageTk.PhotoImage(Image.open("pictures/speaker_off.png").resize((50,50)))
+
+        sound_but = customtkinter.CTkButton(master=self.s_page, text='', width=60, height=60,
+                                      fg_color='transparent', hover=False,image=sound_img_1, border_width=2,
+                                      border_color=menu_col[def_col])
+        sound_but.grid(row = 0, column=0,pady=5, padx=5, sticky='nswe')
+
+        sound_slider = customtkinter.CTkSlider(master=self.s_page, command=self.sound_slider,
+                                               from_=0, to=100, number_of_steps=100)
+        sound_slider.grid(row = 0, column=1,pady=30, padx=5 ,sticky='nwe')
+        
+        auto_th_swi = customtkinter.CTkSwitch(self.s_page)
+        auto_th_swi.grid(row = 1, column=0,pady=30, padx=5 ,sticky='nwe')
+        
+        manuell_th_swi = customtkinter.CTkSwitch(self.s_page)
+        manuell_th_swi.grid(row = 1, column=1,pady=30, padx=5 ,sticky='nwe')
+        
+        col_thms = ['green', 'blue', 'dark-blue', 'orange']
+        col = [def_col]
+        col_them_menu = customtkinter.CTkOptionMenu(self.s_page, values=col)
+        col_them_menu.grid(row = 2, column=1,pady=30, padx=5 ,sticky='nwe')
+        CTkScrollableDropdown(col_them_menu,values=col_thms, command=self.update_col)
+                
+        languages =  ['Englisch', 'Deutsch', 'Français']
+        lang = [t_lang]
+        lang_them_menu = customtkinter.CTkOptionMenu(self.s_page,values=lang)
+        lang_them_menu.grid(row = 2, column=0,pady=30, padx=5 ,sticky='nwe')
+        CTkScrollableDropdown(lang_them_menu,values=languages)
+       
+       
+        less_popu_box = customtkinter.CTkCheckBox(self.s_page)
+        less_popu_box.grid(row = 3, column=0,pady=30, padx=5 ,sticky='nwe')
+        
+        
+        
+        save_but = customtkinter.CTkButton(self.s_page, text=self.translate('save'))
+        save_but.grid(row = 5, column=1, sticky='nesw', pady=(4,5), padx=(5,5))
+    def update_col(self, col_change):
+        col = [col_change]
+        user_json['def_col'] = col_change
+        with open ('json_files/user_data.json', 'w') as f:
+            json.dump(user_json,f , indent=4)
+    def sound_slider(self, value):
+        print(value)
+        
+        if value <= 0:
+            sound_but.configure(image=sound_img_2)
+            sound_but.configure(border_color=del_col[def_col])
+        else:
+            sound_but.configure(image=sound_img_1)
+            sound_but.configure(border_color=menu_col[def_col])
+       
+
     
     def user_settings(self):
         global less_popu, lang, col_th, def_col,  t_lang
@@ -823,13 +886,7 @@ class Gui:
         
 
         
-    #sound_img = ImageTk.PhotoImage(Image.open("pictures/settings.png").resize((50,50)))
-    #sound_but = customtkinter.CTkButton(master=root, image=sound_img,text='', width=60, height=60,
-    #                                   command=home,)
-    #sound_but.grid(row = 0, column=0,pady=5, padx=5)
 
-    #sound_slider = customtkinter.CTkSlider(master=root )
-    #sound_slider.grid(row = 0, column=0,pady=5, padx=5)
         #mt = dlt.TranslationModel()
         root.mainloop()
 
