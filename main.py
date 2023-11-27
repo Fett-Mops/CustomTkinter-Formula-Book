@@ -74,7 +74,7 @@ class Gui:
         self.info_str_var = customtkinter.StringVar(value='sdfadf')
         self.auto_th_var = customtkinter.Variable()
         self.man_th_var = customtkinter.Variable()
-        self.popup_var = customtkinter.BooleanVar()
+        self.popup_var = customtkinter.Variable()
 
         self.toplevell = False
         self.toplevel = None
