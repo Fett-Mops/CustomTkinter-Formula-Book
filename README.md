@@ -4,6 +4,7 @@
 These functions are already in the project:
 - [ ] Calculate formula with values and connstants
 - [ ] add new formula
+- [ ] formula documentation(basics of latex)
 - [ ] edit formula
 - delet formula
 - [ ] search to formula

@@ -6,4 +6,4 @@ Pillow                  ==  9.5.0
 Tkinter
 torch                   ==  2.0.1
 
-dl-translate           
+         
