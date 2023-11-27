@@ -37,9 +37,9 @@ root.grid_rowconfigure(1, weight=1)
 red = '#E26579'
 red_b = '#D35B58'
 red_h = '#C77C78'
-main_col ={'green':'#00947D','blue': '#008FBE', 'dark-blue': '#5C84C3', 'orange':'#5C84C3'}
-menu_col = {'green': '#008180','blue': '#00B1BC', 'dark-blue': '#7764AC','orange':'#5C84C3'}
-menu_h_col = {'green': '#006E7A','blue': '#0073A0', 'dark-blue': '#4E5C9F','orange':'#5C84C3'}
+main_col ={'green':'#00947D','blue': '#008FBE', 'dark-blue': '#5C84C3', 'orange':'#88364C'}
+menu_col = {'green': '#008180','blue': '#00B1BC', 'dark-blue': '#7764AC','orange':'#88364C'}
+menu_h_col = {'green': '#006E7A','blue': '#0073A0', 'dark-blue': '#4E5C9F','orange':'#88364C'}
 del_col = {'green': '#FFA17A','blue': '#AF4079', 'dark-blue': '#C0697D','orange':'#88364C'}
 del_h_col = {'green': '#F98383','blue': '#9F5399', 'dark-blue': '#88364C','orange':'#88364C'}
 text_col = '#DCE4DB'
@@ -72,10 +72,13 @@ class Gui:
         self.cal_inp_var = [customtkinter.StringVar(value='') for _ in range(3)]
         self.cal_rad_first = False
         self.info_str_var = customtkinter.StringVar(value='sdfadf')
+        self.auto_th_var = customtkinter.Variable()
+        self.man_th_var = customtkinter.Variable()
+        self.popup_var = customtkinter.BooleanVar()
+
         self.toplevell = False
         self.toplevel = None
-
-    
+  
     def translate(self, text):
         #,source=dlt.lang.GERMAN
         #tred =mt.translate(text,source, t_lang)
@@ -741,7 +744,7 @@ class Gui:
                                    font=font1).grid(row=0, column=2, pady =(0,5), padx=10,sticky='e')
             
     def settings(self):
-        global sound_but, sound_img_1, sound_img_2, sound_slider, col
+        global sound_but, sound_img_1, sound_img_2, sound_slider, manuell_th_swi
         if self.cal_bool:
             del_formula_but.grid_forget()
         
@@ -764,37 +767,78 @@ class Gui:
                                                from_=0, to=100, number_of_steps=100)
         sound_slider.grid(row = 0, column=1,pady=30, padx=5 ,sticky='nwe')
         
-        auto_th_swi = customtkinter.CTkSwitch(self.s_page)
-        auto_th_swi.grid(row = 1, column=0,pady=30, padx=5 ,sticky='nwe')
-        
-        manuell_th_swi = customtkinter.CTkSwitch(self.s_page)
+
+        # make look better
+        #disabled and not better seeable
+        manuell_th_swi = customtkinter.CTkSwitch(self.s_page,text='deez nuts', state='disabled',
+                                                 variable=self.man_th_var,
+                                                 command=lambda:(self.mode(self.man_th_var)))
         manuell_th_swi.grid(row = 1, column=1,pady=30, padx=5 ,sticky='nwe')
+        
+        auto_th_swi = customtkinter.CTkSwitch(self.s_page, text='get system mode', 
+                                              variable=self.auto_th_var,
+                                              command=lambda:(self.auto_thm(self.auto_th_var)))
+        auto_th_swi.grid(row = 1, column=0,pady=30, padx=5 ,sticky='nwe')
         
         col_thms = ['green', 'blue', 'dark-blue', 'orange']
         col = [def_col]
-        col_them_menu = customtkinter.CTkOptionMenu(self.s_page, values=col)
+        col_them_menu = customtkinter.CTkOptionMenu(self.s_page, values=col_thms)
         col_them_menu.grid(row = 2, column=1,pady=30, padx=5 ,sticky='nwe')
         CTkScrollableDropdown(col_them_menu,values=col_thms, command=self.update_col)
                 
         languages =  ['Englisch', 'Deutsch', 'Français']
         lang = [t_lang]
         lang_them_menu = customtkinter.CTkOptionMenu(self.s_page,values=lang)
-        lang_them_menu.grid(row = 2, column=0,pady=30, padx=5 ,sticky='nwe')
+        
         CTkScrollableDropdown(lang_them_menu,values=languages)
-       
-       
-        less_popu_box = customtkinter.CTkCheckBox(self.s_page)
+        lang_them_menu.grid(row = 2, column=0,pady=30, padx=5 ,sticky='nwe')
+        
+        
+        less_popu_box = customtkinter.CTkCheckBox(self.s_page, text='Less safty popups',
+                                                   variable=self.popup_var, 
+                                                   command=lambda:(self.popup(self.popup_var)))
         less_popu_box.grid(row = 3, column=0,pady=30, padx=5 ,sticky='nwe')
         
         
         
         save_but = customtkinter.CTkButton(self.s_page, text=self.translate('save'))
         save_but.grid(row = 5, column=1, sticky='nesw', pady=(4,5), padx=(5,5))
+        
+    def auto_thm (self,bool):
+        if bool.get() == 1:
+            manuell_th_swi.configure(state='Normal')
+            customtkinter.set_appearance_mode(user_json['var_app'])
+            user_json['auto_app'] = True
+        else:
+            manuell_th_swi.configure(state='disabled')
+            customtkinter.set_appearance_mode('System')
+            user_json['auto_app'] = False
+            
+    def mode(self, bool):
+        if bool.get() ==1:
+            customtkinter.set_appearance_mode('dark')
+            user_json['var_app'] = 'dark'
+        else:
+            customtkinter.set_appearance_mode('light')
+            user_json['var_app'] = 'ligth'
+    
+    def popup(self,bool):
+        if bool.get():
+            pass
+            
+    
     def update_col(self, col_change):
+        global col
         col = [col_change]
         user_json['def_col'] = col_change
         with open ('json_files/user_data.json', 'w') as f:
             json.dump(user_json,f , indent=4)
+            
+        for child in self.s_page.winfo_children():
+            print(child.cget('fg_color'))
+            child.configure(fg_color= main_col[col_change])
+    
+       
     def sound_slider(self, value):
         print(value)
         
@@ -808,7 +852,7 @@ class Gui:
 
     
     def user_settings(self):
-        global less_popu, lang, col_th, def_col,  t_lang
+        global less_popu, lang, col_th, def_col,  t_lang, auto_app, var_app
 
         def_col = user_json['def_col']
         auto_app = user_json['auto_app']
@@ -821,14 +865,13 @@ class Gui:
         #user_language = user_json.get('language')
         #t_lang = language_mapping.get(user_language.lower())
         t_lang = user_json.get('language')
-        less_popu = user_json['less_popup']
+        self.popup_var = user_json['less_popup']
         col_th = main_col[def_col]
         
         if auto_app:
             customtkinter.set_appearance_mode('System')
         else:
-            customtkinter.set_appearance_mode(var_app)
-            
+            customtkinter.set_appearance_mode(var_app)            
         customtkinter.set_default_color_theme(def_col)
         
     def run(self):

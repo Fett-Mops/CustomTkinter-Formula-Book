@@ -1,6 +1,6 @@
 {
     "volume": 100,
-    "auto_app": false,
+    "auto_app": true,
     "var_app": "dark",
     "def_col": "green",
     "less_popup": false,
