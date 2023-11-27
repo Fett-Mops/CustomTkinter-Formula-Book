@@ -79,6 +79,7 @@ class Gui:
         self.col_menu_var = 'green'
         self.toplevell = False
         self.toplevel = None
+        self.user_json_cp = ''
   
     def translate(self, text):
         #,source=dlt.lang.GERMAN
@@ -708,8 +709,13 @@ class Gui:
         self.user_settings()
         if self.cal_bool:
             del_formula_but.grid_forget()
-            edit_formula_but.grid_forget() 
+        
+            edit_formula_but.grid_forget()
             add_formula_but.grid(row=0, column=0,pady=10, padx=10)
+        #if self.cal_bool:
+        #    del_formula_but.grid_forget()
+        #    edit_formula_but.grid_forget() 
+        #    add_formula_but.grid(row=0, column=0,pady=10, padx=10)
         self.h_page.grid(row = 0,rowspan=2, column=1, sticky='nesw', pady=(4,5), padx=(5,5))
         self.h_page.grid_columnconfigure(0, weight=1)
         self.h_page.grid_rowconfigure(1, weight=1)
@@ -747,8 +753,7 @@ class Gui:
                                    font=font1).grid(row=0, column=2, pady =(0,5), padx=10,sticky='e')
             
     def settings(self):
-        global sound_but, sound_img_1, sound_img_2, user_settings, manuell_th_swi
-        user_settings = user_json.copy()
+        global sound_but, sound_img_1, sound_img_2,  manuell_th_swi
         if self.cal_bool:
             del_formula_but.grid_forget()
         
@@ -793,10 +798,13 @@ class Gui:
         
         col_thms = ['green', 'blue', 'dark-blue', 'orange']
         col = [def_col]
+       
         col_them_menu = ct.CTkOptionMenu(self.s_page,values=[self.col_menu_var])
         col_them_menu.grid(row = 2, column=1,pady=30, padx=5 ,sticky='nwe')
+       
         CTkScrollableDropdown(col_them_menu, values=col_thms, command=self.update_col,
                               scrollbar=False)
+        print(col_them_menu.winfo_width())
         languages =  ['Englisch', 'Deutsch', 'Français']
         lang = [t_lang]
         lang_them_menu = ct.CTkOptionMenu(self.s_page,values=lang)
@@ -814,16 +822,16 @@ class Gui:
         
         save_but = ct.CTkButton(self.s_page, text=self.translate('save'), command=self.save_settings)
         save_but.grid(row = 5, column=1, sticky='nesw', pady=(4,5), padx=(5,5))
-        
+
     def auto_thm (self,bool):
         if bool.get() == 1:
             manuell_th_swi.configure(state='disabled')
             ct.set_appearance_mode('System')
-            user_settings['auto_app'] = True
+            self.user_json_cp['auto_app'] = True
             
         else:
             manuell_th_swi.configure(state='Normal')
-            user_settings['auto_app'] = False
+            self.user_json_cp['auto_app'] = False
             if self.man_th_var.get() == 1:
                 ct.set_appearance_mode('dark')
             else:
@@ -832,27 +840,30 @@ class Gui:
     def mode(self, bool):
         if bool.get() ==1:
             ct.set_appearance_mode('dark')
-            user_settings['var_app'] = 'dark'
+            self.user_json_cp['var_app'] = 'dark'
         else:
             ct.set_appearance_mode('light')
-            user_settings['var_app'] = 'ligth'
+            self.user_json_cp['var_app'] = 'ligth'
     
     def popup(self,bool):
-        user_settings['less_popup'] = bool.get()
+        self.user_json_cp['less_popup'] = bool.get()
             
     def update_col(self, col_change):
-  
-        self.col_menu_var = col_change
-        user_settings['def_col'] = col_change
 
-            
-        #for child in self.s_page.winfo_children():
-            #print(child.cget('fg_color'))
-            #child.configure(fg_color= main_col[col_change])
-    
+        self.user_json_cp['def_col'] = col_change
+        print(self.user_json_cp['def_col'])
+        print(self.user_json_cp)
+        ct.set_default_color_theme(col_change)
+        for child in frame.winfo_children():
+            child.configure(fg_color=menu_col[col_change])
+            child.configure(hover_color= menu_h_col[col_change])
+        
+        
+        self.settings()
+       
     def sound_slider(self, value):
         
-        user_settings['volume'] = int(self.sound_slider_var.get())
+        self.user_json_cp['volume'] = int(self.sound_slider_var.get())
        
         
         if value <= 0:
@@ -863,15 +874,20 @@ class Gui:
             sound_but.configure(border_color=menu_col[def_col])
     
     def save_settings(self):
-        user_json = user_settings
+
+        print(self.user_json_cp)
+        user_json = self.user_json_cp
+        
         with open ('json_files/user_data.json', 'w') as f:
             json.dump(user_json,f , indent=4)
-    
+
     def user_settings(self):
         global less_popu, lang, col_th, def_col,  t_lang, auto_app, var_app, user_json
         with open ('json_files/user_data.json') as f:
             user_json = json.load(f)
+        self.user_json_cp = user_json.copy()
         def_col = user_json['def_col']
+        print(def_col)
 
         #language_mapping = {
         #'german': dlt.lang.GERMAN,
@@ -901,28 +917,10 @@ class Gui:
                 ct.set_appearance_mode('light')
                             
         ct.set_default_color_theme(def_col)
-        
-    def run(self):
-        global r_formula_json, r_char_json, r_con_json, user_json, add_formula_but, mt
-        with open ('json_files/formula.json') as f:
-            r_formula_json = json.load(f)
-            
-        with open ('json_files/formula_char.json') as f:
-            r_char_json = json.load(f)
-            
-        with open ('json_files/formula_con.json') as f:
-            r_con_json = json.load(f)
-        
-
-        
-        self.user_settings()
-            
-        self.home()
-            
-
-  
-
-#makes formula
+    
+    def menue_buts(self):
+        global  add_formula_but
+        #makes formula
         add_formula_img = ImageTk.PhotoImage(Image.open("pictures/add-list.png").resize((50,50)))
         add_formula_but = ct.CTkButton(master=frame, image=add_formula_img,text='', width=60,
                                           height=60,     command=self.add_formula_name,
@@ -951,6 +949,29 @@ class Gui:
                                    command=lambda: (self.home()), fg_color=menu_col[def_col], hover_color=menu_h_col[def_col])
         CTkToolTip.CTkToolTip(home_but, message=self.translate('home'))
         home_but.grid(row=5,column=0,pady=10, sticky='nwe', padx=10)
+        
+    def run(self):
+        global r_formula_json, r_char_json, r_con_json, user_json
+        with open ('json_files/formula.json') as f:
+            r_formula_json = json.load(f)
+            
+        with open ('json_files/formula_char.json') as f:
+            r_char_json = json.load(f)
+            
+        with open ('json_files/formula_con.json') as f:
+            r_con_json = json.load(f)
+        
+
+        
+        self.user_settings()
+            
+        self.home()
+        self.menue_buts()
+        
+
+
+
+
     
    
         
