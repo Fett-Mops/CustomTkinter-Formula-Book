@@ -1,5 +1,8 @@
 {
-    "volume": 0,
+    "volume": [
+        true,
+        0
+    ],
     "auto_app": false,
     "var_app": "dark",
     "def_col": "blue",

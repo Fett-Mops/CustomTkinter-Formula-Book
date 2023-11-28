@@ -76,6 +76,7 @@ class Gui:
         self.man_th_var = ct.Variable()
         self.popup_var = ct.Variable()
         self.sound_slider_var = ct.Variable()
+        self.sound_slider_boo = ct.BooleanVar()
         self.col_menu_var = 'green'
         self.toplevell = False
         self.toplevel = None
@@ -707,6 +708,9 @@ class Gui:
         
     def home(self):
         self.user_settings()
+        for child in frame.winfo_children():      
+            child.configure(fg_color=menu_col[def_col])
+            child.configure(hover_color= menu_h_col[def_col])
         if self.cal_bool:
             del_formula_but.grid_forget()
         
@@ -766,16 +770,20 @@ class Gui:
         
         sound_img_1 = ImageTk.PhotoImage(Image.open("pictures/speaker_on.png").resize((50,50)))
         sound_img_2 = ImageTk.PhotoImage(Image.open("pictures/speaker_off.png").resize((50,50)))
+        #border doesent change color for some reason
 
-        sound_but = ct.CTkButton(master=self.s_page, text='', width=60, height=60,
-                                      fg_color='transparent', hover=False,image=sound_img_1, border_width=2,
-                                      border_color=menu_col[def_col])
-        sound_but.grid(row = 0, column=0,pady=5, padx=5, sticky='nswe')
-        
 
         sound_slider = ct.CTkSlider(master=self.s_page, command=self.sound_slider,
-                                               variable=self.sound_slider_var,from_=0, to=100, number_of_steps=100)
+                                    variable=self.sound_slider_var,from_=0, to=100, number_of_steps=100)
         sound_slider.grid(row = 0, column=1,pady=30, padx=5 ,sticky='nwe')
+        
+        sound_but = ct.CTkButton(master=self.s_page, text='', width=60, height=60,
+                                      fg_color='transparent', hover=True, hover_color=menu_h_col[def_col]
+                                      ,image=sound_img_1, border_width=2,border_color=menu_col[def_col],
+                                      command=lambda bool = self.sound_slider_boo
+                                      ,int = self.sound_slider_var: self.sound_slider((int, bool)))
+        sound_but.grid(row = 0, column=0,pady=5, padx=5, sticky='nswe')
+        
         if self.sound_slider_var.get() ==0:
             sound_but.configure(image=sound_img_2)
             sound_but.configure(border_color=del_col[def_col])
@@ -847,31 +855,43 @@ class Gui:
     
     def popup(self,bool):
         self.user_json_cp['less_popup'] = bool.get()
+        
             
     def update_col(self, col_change):
 
         self.user_json_cp['def_col'] = col_change
-        print(self.user_json_cp['def_col'])
-        print(self.user_json_cp)
+
         ct.set_default_color_theme(col_change)
-        for child in frame.winfo_children():
+        for child in frame.winfo_children():      
             child.configure(fg_color=menu_col[col_change])
             child.configure(hover_color= menu_h_col[col_change])
-        
+            
         
         self.settings()
        
     def sound_slider(self, value):
         
-        self.user_json_cp['volume'] = int(self.sound_slider_var.get())
-       
+        if type(value) == tuple:
+            
+            self.sound_slider_boo.set(value= True)
+
+            self.sound_slider_var.set(value=0)
+            
+            self.user_json_cp['volume'] = (self.sound_slider_boo.get(),int(value[0].get()))
+
+        else:
+            self.user_json_cp['volume'] = (self.sound_slider_boo.get(),int(self.sound_slider_var.get()))
+           
         
-        if value <= 0:
+        if self.sound_slider_var.get() <=0 or self.sound_slider_boo.get():
+            self.sound_slider_boo.set(value=False)
             sound_but.configure(image=sound_img_2)
             sound_but.configure(border_color=del_col[def_col])
+            sound_but.configure(hover_color=del_h_col[def_col])
         else:
             sound_but.configure(image=sound_img_1)
             sound_but.configure(border_color=menu_col[def_col])
+            sound_but.configure(hover_color=menu_h_col[def_col])
     
     def save_settings(self):
 
@@ -896,7 +916,7 @@ class Gui:
         #user_language = user_json.get('language')
         #t_lang = language_mapping.get(user_language.lower())
         t_lang = user_json.get('language')
-        self.sound_slider_var.set(value= user_json['volume'])
+        self.sound_slider_var.set(value= user_json['volume'][1])
         self.popup_var.set(value= user_json['less_popup'])
         self.auto_th_var.set(value=user_json['auto_app'])
         if user_json['var_app'] == 'dark':
