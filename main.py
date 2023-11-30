@@ -91,6 +91,8 @@ class Gui:
         #translation = translator.translate(text)
         return text 
     
+    def write_json(self, path, inp):
+        pass
     def add_formula(self, new_frm_name, first_var):
         for kid in frame.winfo_children():
             kid.configure(state='disabled') 
@@ -433,9 +435,11 @@ class Gui:
                                     
                 
             r_formula_json['formula'].pop(formula)
+            w_formula_json = dict(sorted(r_formula_json['formula'].in()))
+            print(w_formula_json)
             
             with open ('json_files/formula.json', 'w') as f:
-                json.dump(r_formula_json, f, indent=4)
+                json.dump({'formula' : w_formula_json}, f, indent=4)
             
 
     
@@ -739,8 +743,7 @@ class Gui:
         frame_list.grid_columnconfigure(0, weight=1)
 
 
-
-        
+    
         for i, formula in enumerate(r_formula_json['formula']):
            
             frame_formula = ct.CTkFrame(frame_list,width=250, height=75,fg_color=grey)

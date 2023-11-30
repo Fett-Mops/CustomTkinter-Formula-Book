@@ -1,4 +1,4 @@
-{
+dic = {
     "formula": {
         "Leistung": {
             "search_terms": [
@@ -109,3 +109,18 @@
         }
     }
 }
+
+
+#print(dic['formula'])
+
+
+sortednames=sorted(dic['formula'].keys(), key=lambda x:x.lower())
+a ={}
+
+for i in sortednames:
+    d = []
+    d = dic['formula'][i]
+    a[i] = d
+w={'formula':a}
+print(w)
+
