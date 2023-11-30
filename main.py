@@ -77,7 +77,7 @@ class Gui:
         self.popup_var = ct.Variable()
         self.sound_slider_var = ct.Variable()
         self.sound_slider_boo = ct.BooleanVar()
-        self.col_menu_var = 'green'
+        self.lan_menu_var = ct.Variable()
         self.toplevell = False
         self.toplevel = None
         self.user_json_cp = ''
@@ -89,7 +89,7 @@ class Gui:
         #translator = Translator(to_lang=t_lang, from_lang='en', provider='mymemory')
 
         #translation = translator.translate(text)
-        return text
+        return text 
     
     def add_formula(self, new_frm_name, first_var):
         for kid in frame.winfo_children():
@@ -757,7 +757,9 @@ class Gui:
                                    font=font1).grid(row=0, column=2, pady =(0,5), padx=10,sticky='e')
             
     def settings(self):
-        global sound_but, sound_img_1, sound_img_2,  manuell_th_swi
+       
+        
+        global sound_but, sound_img_1, sound_img_2,  manuell_th_swi, col_them_menu
         if self.cal_bool:
             del_formula_but.grid_forget()
         
@@ -805,18 +807,16 @@ class Gui:
         auto_th_swi.grid(row = 1, column=0,pady=30, padx=5 ,sticky='nwe')
         
         col_thms = ['green', 'blue', 'dark-blue', 'orange']
-        col = [def_col]
-       
-        col_them_menu = ct.CTkOptionMenu(self.s_page,values=[self.col_menu_var])
+        col_them_menu = ct.CTkOptionMenu(self.s_page,values=[def_col])
+        
         col_them_menu.grid(row = 2, column=1,pady=30, padx=5 ,sticky='nwe')
        
         CTkScrollableDropdown(col_them_menu, values=col_thms, command=self.update_col,
                               scrollbar=False)
-        print(col_them_menu.winfo_width())
+        g = user_json['language']
         languages =  ['Englisch', 'Deutsch', 'Français']
-        lang = [t_lang]
-        lang_them_menu = ct.CTkOptionMenu(self.s_page,values=lang)
-        
+        lang_them_menu = ct.CTkOptionMenu(self.s_page,values=['t_l'],variable=self.lan_menu_var)
+        lang_them_menu.set(g)
         CTkScrollableDropdown(lang_them_menu,values=languages)
         lang_them_menu.grid(row = 2, column=0,pady=30, padx=5 ,sticky='nwe')
         
@@ -856,7 +856,6 @@ class Gui:
     def popup(self,bool):
         self.user_json_cp['less_popup'] = bool.get()
         
-            
     def update_col(self, col_change):
 
         self.user_json_cp['def_col'] = col_change
@@ -868,6 +867,7 @@ class Gui:
             
         
         self.settings()
+        col_them_menu.set(col_change)
        
     def sound_slider(self, value):
         
@@ -895,11 +895,16 @@ class Gui:
     
     def save_settings(self):
 
-        print(self.user_json_cp)
+      
+        self.user_json_cp['language'] = self.lan_menu_var.get()
         user_json = self.user_json_cp
         
         with open ('json_files/user_data.json', 'w') as f:
+            
             json.dump(user_json,f , indent=4)
+        print(user_json)
+        self.user_settings()
+        self.settings()
 
     def user_settings(self):
         global less_popu, lang, col_th, def_col,  t_lang, auto_app, var_app, user_json
@@ -907,7 +912,7 @@ class Gui:
             user_json = json.load(f)
         self.user_json_cp = user_json.copy()
         def_col = user_json['def_col']
-        print(def_col)
+        print(def_col, self.lan_menu_var.get())
 
         #language_mapping = {
         #'german': dlt.lang.GERMAN,

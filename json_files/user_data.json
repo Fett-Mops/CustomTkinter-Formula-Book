@@ -1,11 +1,11 @@
 {
     "volume": [
-        true,
-        0
+        false,
+        42
     ],
     "auto_app": false,
     "var_app": "dark",
-    "def_col": "blue",
+    "def_col": "orange",
     "less_popup": 1,
-    "language": "Deutsch"
+    "language": "Fran\u00e7ais"
 }

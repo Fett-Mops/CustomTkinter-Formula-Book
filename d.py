@@ -1,3 +1,4 @@
+ 
 from CTkScrollableDropdown import *
 import customtkinter
 
@@ -33,8 +34,7 @@ CTkScrollableDropdown(entry, values=values, command=lambda e: entry.insert(1, e)
 # Attach to Button 
 button = customtkinter.CTkButton(root, text="choose options", width=240)
 button.pack(fill="x", padx=10, pady=10)
-
-CTkScrollableDropdown(button, values=values, height=270, resize=False, button_height=30,
+CTkScrollableDropdown(button, values=values,
                       scrollbar=False, command=lambda e: button.configure(text=e))
 
 root.mainloop()
