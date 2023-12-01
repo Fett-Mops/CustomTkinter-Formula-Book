@@ -6,6 +6,8 @@ import CTkToolTip
 from CTkScrollableDropdown import *
 
 import os
+import time
+from datetime import datetime
 #import dl_translate as dlt
 #from dl_translate import *
 #from translate import Translator
@@ -44,11 +46,38 @@ del_col = {'green': '#FFA17A','blue': '#AF4079', 'dark-blue': '#C0697D','orange'
 del_h_col = {'green': '#F98383','blue': '#9F5399', 'dark-blue': '#88364C','orange':'#88364C'}
 text_col = '#DCE4DB'
 grey='#333333'
+grey_fram = '#2B2B2B'
 d = '#2FA572'
 grey_disa = '#61676C'
 
 
+
 font1 =("None",13)
+
+#pictures
+sort_name = ['home-category',
+             'add-folder',
+             'add-list',
+             'u_arrow',
+             'd_arrow',
+             'edit-formula',
+             'edit-info',
+             'home-category',
+             'home',
+             'icon-infoo',
+             'reload',
+             'remove-formula',
+             'settings',
+             'speaker_off',
+             'speaker_on',
+             'createdate',
+             'abc']
+pngs = {}
+for i in sort_name:
+    pngs[i] =ct.CTkImage(dark_image=Image.open("pictures/white/"+i+'.png'),
+                   light_image=Image.open("pictures/black/"+i+'.png'),
+                   size=(30, 30))
+
 
 frame = ct.CTkFrame(root, width=25)
 frame.grid(row = 0,rowspan=2, column=0, sticky='nws', pady=(4,5), padx=(5,5))
@@ -68,7 +97,7 @@ class Gui:
         self.si_str = si_prefix.SI_PREFIX_UNITS
         self.cal_rad_var = ct.IntVar(value=0)
         self.cal_rad2_var = ct.StringVar(value='T')
-        #flasch ist nur für 3 ausgerichtet verbessern!
+        # ! flasch ist nur für 3 ausgerichtet verbessern!
         self.cal_inp_var = [ct.StringVar(value='') for _ in range(3)]
         self.cal_rad_first = False
         self.info_str_var = ct.StringVar(value='sdfadf')
@@ -81,19 +110,25 @@ class Gui:
         self.toplevell = False
         self.toplevel = None
         self.user_json_cp = ''
+        self.sorting_var = -1
+        self.sort_tip_var =self.translate('alphabetical')
+        self.sort_but_img = [pngs['abc'],pngs['createdate'],pngs['home-category']]
   
     def translate(self, text):
-        #,source=dlt.lang.GERMAN
-        #tred =mt.translate(text,source, t_lang)
-        # Create a Translator instance with the desired engine ('mymemory', 'microsoft', etc.)
-        #translator = Translator(to_lang=t_lang, from_lang='en', provider='mymemory')
+        # ? source=dlt.lang.GERMAN
+        # ? tred =mt.translate(text,source, t_lang)
+        # ? Create a Translator instance with the desired engine ('mymemory', 'microsoft', etc.)
+        # ? translator = Translator(to_lang=t_lang, from_lang='en', provider='mymemory')
 
-        #translation = translator.translate(text)
+        # ? translation = translator.translate(text)
         return text 
     
-    def write_json(self, path, inp):
-        pass
+    def write_json(self, path:str, inp:any)->any:
+        with open (path, 'w') as f:
+            json.dump(inp, f, indent=4)
+    
     def add_formula(self, new_frm_name, first_var):
+        # TODO if added not sorted pls change
         for kid in frame.winfo_children():
             kid.configure(state='disabled') 
             kid.configure(fg_color=self.colorscale(col_th, .5))
@@ -123,21 +158,20 @@ class Gui:
         helpful_frame = ct.CTkFrame(master=self.a_page, fg_color='transparent')
         helpful_frame.grid(row=1, column=3, padx=(5,0),pady=(0,5))
         
-        
-        info_img = ImageTk.PhotoImage(Image.open("pictures\icon-infoo.png").resize((40,40)))
+        pngs['icon-infoo'].configure(size=(30,30))
         info_format_but = ct.CTkButton(master= helpful_frame, height=35, text = '',
-                                                  image=info_img, width=10, command=lambda:(self.open_file()))
+                                                  image=pngs['icon-infoo'],
+                                                  width=10, command=lambda:(self.open_file()))
         info_format_but.grid(row=0, column=2, padx=(5,0))
         
         
-        edit_info_img = ImageTk.PhotoImage(Image.open("pictures\edit-info.png").resize((30,30)))
         edit_info_but = ct.CTkButton(master= helpful_frame, height=35, text = '',
-                                                  image=edit_info_img, width=10, command=lambda:(self.edit_info(new_frm_name,None)))
+                                                  image=pngs['edit-info'],
+                                                  width=10, command=lambda:(self.edit_info(new_frm_name,None)))
         edit_info_but.grid(row=0, column=1, padx=(5,0))
         
-        
-        reload_img =ImageTk.PhotoImage(Image.open("pictures/reload.png").resize((40,40)))
-        reload_scr_frame = ct.CTkButton(master=helpful_frame, image=reload_img,width=60, height=35, text = '')
+
+        reload_scr_frame = ct.CTkButton(master=helpful_frame, image=pngs['reload'],width=60, height=35, text = '')
         reload_scr_frame.grid(row=0, column=0)
         
         #scrolable fram
@@ -196,14 +230,14 @@ class Gui:
             
             
             #info   
-            help = 0
+     
             info_index.append(first_var + i)
-            print(info_index)
+       
             #Help
-            
+            pngs['icon-infoo'].configure(size=(30,30))
             edit_var_info_but = ct.CTkButton(master=inp_frame,
                                            text='' ,
-                                           image=edit_info_img,width=30,height= 35, 
+                                           image=pngs['icon-infoo'],width=30,height= 35, 
                                            command=lambda:(self.edit_info(new_frm_name,info_index[i],i)) )
             edit_var_info_but.grid(row = 0, column=6, sticky='nwe', pady = 5, padx=5) 
             information[1][0].append(unit_inp)
@@ -281,14 +315,11 @@ class Gui:
                 r_formula_json['formula'].pop(new_frm_name)
 
             elif title ==  self.translate('save'):
-                with open ('json_files/formula.json', 'w') as f:
-                    json.dump(r_formula_json,f ,indent=4)
-                    
-                with open ('json_files/formula_char.json', 'w') as f:
-                    json.dump(r_char_json,f ,indent=4)
-                
-                with open ('json_files/formula_con.json', 'w') as f:
-                    json.dump(r_con_json,f ,indent=4)
+                r_formula_json['formula'][new_frm_name]['creationdate'] = datetime.now().strftime("%d.%m.%Y %H:%M")
+                self.write_json('json_files/formula.json',r_formula_json)
+                self.write_json('json_files/formula_char.json',r_char_json)
+                self.write_json('json_files/formula_con.json',r_con_json)  
+
             for kid in frame.winfo_children():
                     kid.configure(state='normal') 
                     kid.configure(fg_color=col_th)
@@ -315,7 +346,7 @@ class Gui:
         r = int(self.clamp(r * scalefactor))
         g = int(self.clamp(g * scalefactor))
         b = int(self.clamp(b * scalefactor))
-        print(r,g,b)
+        
         
 
         return "#%02x%02x%02x" % (r, g, b)
@@ -396,7 +427,7 @@ class Gui:
         if rm_message.get() == self.translate('delete'):
             if rm_comp.get():
                 
-                #optiation on chatgpt handeling json
+                # TODO better way to storey than rewrite the hole thing
                 for i, var in enumerate(r_formula_json['formula']):
                     for i in range(len(r_formula_json['formula'][f'{formula}']['values'][0])):
                             if formula != var:
@@ -407,15 +438,13 @@ class Gui:
 
                                             r_char_json.pop(f"{r_formula_json['formula'][f'{formula}']['values'][0][i]}")
                                             
-                                            with open ('json_files/formula_char.json', 'w') as f:
-                                                json.dump(r_char_json, f, indent=4)
+                                            self.write_json('json_files/formula_char.json',r_char_json)  
                                            
                                         else:
                                             
                                             r_con_json.pop(f"{r_formula_json['formula'][f'{formula}']['values'][0][i]}")
                                             
-                                            with open ('json_files/formula_con.json', 'w') as f:
-                                                json.dump(r_con_json, f, indent=4)
+                                            self.write_json('json_files/formula_con.json',r_con_json)  
                                             print('con rm1',i)
                                     
                                 else:
@@ -424,22 +453,16 @@ class Gui:
 
                                         r_char_json.pop(f"{r_formula_json['formula'][f'{formula}']['values'][0][i]}")
                                             
-                                        with open ('json_files/formula_char.json', 'w') as f:
-                                            json.dump(r_char_json, f, indent=4)
+                                        self.write_json('json_files/formula_char.json',r_char_json)  
                                     else:
                                         print('con rm2',i)
                                         r_con_json.pop(f"{r_formula_json['formula'][f'{formula}']['values'][0][i]}")
                                             
-                                        with open ('json_files/formula_con.json', 'w') as f:
-                                            json.dump(r_con_json, f, indent=4)
+                                        self.write_json('json_files/formula_con.json',r_con_json)  
                                     
                 
             r_formula_json['formula'].pop(formula)
-            w_formula_json = dict(sorted(r_formula_json['formula'].in()))
-            print(w_formula_json)
-            
-            with open ('json_files/formula.json', 'w') as f:
-                json.dump({'formula' : w_formula_json}, f, indent=4)
+            self.write_json('json_files/formula.json', r_formula_json)  
             
 
     
@@ -456,18 +479,19 @@ class Gui:
         global unit_label, Buttons, Units, edit_formula_but, del_formula_but
         
         add_formula_but.grid_forget()
-        edit_formula_img = ImageTk.PhotoImage(Image.open("pictures/edit-formula.png").resize((50,50)))
-        edit_formula_but = ct.CTkButton(master=frame, image=edit_formula_img,text='', width=60,
-                                                height=60,fg_color=menu_col[def_col],hover_color=menu_h_col[def_col])
+        pngs['edit-formula'].configure(size=(40,40))
+        edit_formula_but = ct.CTkButton(master=frame, image=pngs['edit-formula'],
+                                        text='', width=60, height=60,fg_color=menu_col[def_col],
+                                        hover_color=menu_h_col[def_col])
         edit_formula_but.grid(row=1 ,column=0,pady=10, padx=10)
         
         
         #remove formula
-        del_formula_img = ImageTk.PhotoImage(Image.open("pictures/remove-formula.png").resize((50,50)))
-        del_formula_but = ct.CTkButton(master=frame, image=del_formula_img,text='', width=60,
-                                                  height=60, fg_color=del_col[def_col], hover_color=del_h_col[def_col],
-                                                  command=lambda formula= formula :self.remove_formula(formula),
-                                                 )
+        pngs['remove-formula'].configure(size=(40,40))
+        del_formula_but = ct.CTkButton(master=frame, image=pngs['remove-formula'],
+                                       text='', width=60, height=60, fg_color=del_col[def_col],
+                                       hover_color=del_h_col[def_col],
+                                       command=lambda formula= formula :self.remove_formula(formula))
         del_formula_but.grid(row = 2, column=0,pady=10, padx=10)     
         self.cal_bool = True
             
@@ -535,7 +559,7 @@ class Gui:
                                     )
                 unit_label = ct.CTkLabel(master = inp_frame,  font=font1,  fg_color=grey,
                                 text= self.translate(r_char_json[f"{r_formula_json['formula'][f'{formula}']['values'][0][i]}"]['unit']))
-                        # not functional for more var than three
+                        # ! not functional for more var than three
             if r_formula_json['formula'][f'{formula}']['values'][1].index(0) == i:
                 var_inp.configure(state='disabled')
                 var_inp.configure(fg_color=self.colorscale(col_th,0.5))
@@ -547,16 +571,16 @@ class Gui:
             ud_frame = ct.CTkFrame(master =inp_frame,bg_color='transparent', fg_color=grey)
             ud_frame.grid(column=2, row=0)
         
-            ud_img=Image.open("pictures/arrow.png").resize((20,20))
-            up_img = ImageTk.PhotoImage(ud_img)
-            up_but = ct.CTkButton(master=ud_frame, image=up_img, text='',  width=0, height=0,
-                                             hover=False, fg_color=grey,
-                                         command=lambda i = i, f = formula: (self.add(self.si_index,f,i)))
+
+            pngs['u_arrow'].configure(size=(20,20))
+            up_but = ct.CTkButton(master=ud_frame, image=pngs['u_arrow'],
+                                  text='',  width=0, height=0, hover=False, fg_color=grey,
+                                  command=lambda i = i, f = formula: (self.add(self.si_index,f,i)))
             up_but.grid(row = 0, column=0, sticky='nswe')
             Buttons[0].append(up_but)
         
-            down_img = ImageTk.PhotoImage(ud_img.rotate(angle=180))
-            down_but = ct.CTkButton(master=ud_frame, image=down_img, text='', width=0, height=0,
+            pngs['d_arrow'].configure(size=(20,20))
+            down_but = ct.CTkButton(master=ud_frame, image=pngs['d_arrow'], text='', width=0, height=0,
                                                hover=False, fg_color=grey,
                                                command=lambda i = i, f = formula: (self.sub(self.si_index,f,i)))
             down_but.grid(row = 1, column=0, sticky='nswe')                
@@ -572,10 +596,12 @@ class Gui:
             
             
             #info png        
-            info_img = ImageTk.PhotoImage(Image.open("pictures\icon-infoo.png").resize((40,40)))
-            info_but = ct.CTkButton(master=inp_frame, 
-                                           text='',image=info_img,width=30,height= 35 )
+            pngs['icon-infoo'].configure(size=(40,40))
+            info_but = ct.CTkButton(master=inp_frame, text='',
+                                    image=pngs['icon-infoo'],
+                                    width=30,height= 35 )
             info_but.grid(row = 0, column=5, sticky='nwe', pady = 5, padx=5) 
+            
 
                         
         t_radio =ct.CTkRadioButton(master=self.c_page, text=self.translate('text'),corner_radius=5,
@@ -711,7 +737,10 @@ class Gui:
             return True
         
     def home(self):
+        global sort_but
         self.user_settings()
+        
+       
         for child in frame.winfo_children():      
             child.configure(fg_color=menu_col[def_col])
             child.configure(hover_color= menu_h_col[def_col])
@@ -720,30 +749,32 @@ class Gui:
         
             edit_formula_but.grid_forget()
             add_formula_but.grid(row=0, column=0,pady=10, padx=10)
-        #if self.cal_bool:
-        #    del_formula_but.grid_forget()
-        #    edit_formula_but.grid_forget() 
-        #    add_formula_but.grid(row=0, column=0,pady=10, padx=10)
+
         self.h_page.grid(row = 0,rowspan=2, column=1, sticky='nesw', pady=(4,5), padx=(5,5))
-        self.h_page.grid_columnconfigure(0, weight=1)
+        self.h_page.grid_columnconfigure(1, weight=1)
         self.h_page.grid_rowconfigure(1, weight=1)
         self.h_page.tkraise()
         
+
+        
+        sort_but = ct.CTkButton(master=self.h_page, text='',image=self.sort_but_img[self.sorting_var],
+                                command=lambda: (self.sorting(r_formula_json)),height=40,width=35)
+        sort_but.grid(row = 0, column=0, pady =  5, padx=(0,5), sticky='nwe')
+        CTkToolTip.CTkToolTip(sort_but,message=self.sort_tip_var)
+        
         search_inp = ct.CTkEntry(master=self.h_page, placeholder_text=self.translate('idk'), 
-                                    width=100, height=35,  fg_color=col_th, 
+                                    width=100, height=40,  fg_color=col_th, 
                                     placeholder_text_color=text_col, border_width=0)
-        search_inp.grid(row = 0, column=0, pady= 5, columnspan=1, sticky='nwe')
+        search_inp.grid(row = 0, column=1, pady= 5, columnspan=1, sticky='nwe')
         
         search_but = ct.CTkButton(master=self.h_page, text=self.translate('search'), command=self.search_formula,
-                                        width=100, height=35)
-        search_but.grid(row = 0, column=1, pady =  5, padx=5, sticky='nwe')
+                                        width=100, height=40)
+        search_but.grid(row = 0, column=2, pady =  5, padx=5, sticky='nwe')
 
-        frame_list = ct.CTkScrollableFrame(self.h_page)
-        frame_list.grid(row=1,column=0,pady=(0,5),columnspan=2, sticky='nwes')
+        frame_list = ct.CTkScrollableFrame(self.h_page,fg_color=grey_fram)
+        frame_list.grid(row=1,column=0,columnspan=3, sticky='nwes')
         frame_list.grid_columnconfigure(0, weight=1)
 
-
-    
         for i, formula in enumerate(r_formula_json['formula']):
            
             frame_formula = ct.CTkFrame(frame_list,width=250, height=75,fg_color=grey)
@@ -754,15 +785,45 @@ class Gui:
             ct.CTkButton(frame_formula,text=self.translate(formula),width=85, command=lambda k = formula: (self.set_values(k))
                                     ).grid(row=0, column=0, pady = 5, padx=5,sticky='w')
             ct.CTkLabel(frame_formula, text=self.translate(r_formula_json['formula'][formula]['formula'][0]), 
-                                 font=font1).grid(row=0, column=1, pady =(0,5), padx=5,sticky='we')
+                                 font=font1).grid(row=0, column=1, pady =8, padx=5,sticky='we')
             
             ct.CTkLabel(frame_formula, text=self.translate(r_formula_json['formula'][formula]["category"]), 
-                                   font=font1).grid(row=0, column=2, pady =(0,5), padx=10,sticky='e')
+                                   font=font1).grid(row=0, column=2, pady =8, padx=10,sticky='e')
+            ct.CTkLabel(frame_formula, text=self.translate(r_formula_json['formula'][formula]["creationdate"]), 
+                                   font=font1).grid(row=0, column=3, pady =8, padx=10,sticky='e')
+    
+    def sorting(self, dictionary:dict)-> dict:   
+        global r_formula_json, sort_but
+        
+        self.sorting_var +=1
+        
+        if self.sorting_var == 3:
+           self.sorting_var = 0
             
+        if self.sorting_var == 0:
+            #alphabetical
+            sorted_data = dict(sorted(dictionary["formula"].items(), key=lambda x: (x[0].lower(), x[0])))
+            r_formula_json = {"formula": sorted_data}
+            self.sort_tip_var = self.translate('alphabetical')
+
+        elif self.sorting_var == 1:
+            #erscheinungsdatum
+            sorted_data = dict(sorted(dictionary["formula"].items(), key=lambda x: datetime.strptime(x[1]["creationdate"], "%d.%m.%Y %H:%M")))
+            r_formula_json = {"formula": sorted_data}           
+            self.sort_tip_var = self.translate('creation date')
+            
+        elif self.sorting_var == 2:
+            #category
+            sorted_data = dict(sorted(dictionary["formula"].items(), key=lambda x: x[1]['category'].lower()))
+            r_formula_json = {"formula": sorted_data}   
+            self.sort_tip_var = self.translate('category')
+            
+        self.home()
+          
     def settings(self):
        
         
-        global sound_but, sound_img_1, sound_img_2,  manuell_th_swi, col_them_menu
+        global sound_but,   manuell_th_swi, col_them_menu
         if self.cal_bool:
             del_formula_but.grid_forget()
         
@@ -773,8 +834,9 @@ class Gui:
         self.s_page.tkraise()
         self.s_page.columnconfigure(1, weight=1)
         
-        sound_img_1 = ImageTk.PhotoImage(Image.open("pictures/speaker_on.png").resize((50,50)))
-        sound_img_2 = ImageTk.PhotoImage(Image.open("pictures/speaker_off.png").resize((50,50)))
+        pngs['speaker_on'].configure(size=(50,50))
+        pngs['speaker_off'].configure(size=(50,50))
+        
         #border doesent change color for some reason
 
 
@@ -784,18 +846,18 @@ class Gui:
         
         sound_but = ct.CTkButton(master=self.s_page, text='', width=60, height=60,
                                       fg_color='transparent', hover=True, hover_color=menu_h_col[def_col]
-                                      ,image=sound_img_1, border_width=2,border_color=menu_col[def_col],
+                                      ,image=pngs['speaker_on'], border_width=2,border_color=menu_col[def_col],
                                       command=lambda bool = self.sound_slider_boo
                                       ,int = self.sound_slider_var: self.sound_slider((int, bool)))
         sound_but.grid(row = 0, column=0,pady=5, padx=5, sticky='nswe')
         
         if self.sound_slider_var.get() ==0:
-            sound_but.configure(image=sound_img_2)
+            sound_but.configure(image=pngs['speaker_off'])
             sound_but.configure(border_color=del_col[def_col])
         
 
-        # make look better
-        #disabled and not better seeable
+        #TODO make look better
+        #TODO disabled and not better seeable
         
         manuell_th_swi = ct.CTkSwitch(self.s_page,text='Light/Dark-Mode',
                                                  variable=self.man_th_var,
@@ -888,11 +950,11 @@ class Gui:
         
         if self.sound_slider_var.get() <=0 or self.sound_slider_boo.get():
             self.sound_slider_boo.set(value=False)
-            sound_but.configure(image=sound_img_2)
+            sound_but.configure(image=pngs['speaker_off'])
             sound_but.configure(border_color=del_col[def_col])
             sound_but.configure(hover_color=del_h_col[def_col])
         else:
-            sound_but.configure(image=sound_img_1)
+            sound_but.configure(image=pngs['speaker_on'])
             sound_but.configure(border_color=menu_col[def_col])
             sound_but.configure(hover_color=menu_h_col[def_col])
     
@@ -905,7 +967,7 @@ class Gui:
         with open ('json_files/user_data.json', 'w') as f:
             
             json.dump(user_json,f , indent=4)
-        print(user_json)
+      
         self.user_settings()
         self.settings()
 
@@ -915,7 +977,7 @@ class Gui:
             user_json = json.load(f)
         self.user_json_cp = user_json.copy()
         def_col = user_json['def_col']
-        print(def_col, self.lan_menu_var.get())
+       
 
         #language_mapping = {
         #'german': dlt.lang.GERMAN,
@@ -949,31 +1011,26 @@ class Gui:
     def menue_buts(self):
         global  add_formula_but
         #makes formula
-        add_formula_img = ImageTk.PhotoImage(Image.open("pictures/add-list.png").resize((50,50)))
-        add_formula_but = ct.CTkButton(master=frame, image=add_formula_img,text='', width=60,
-                                          height=60,     command=self.add_formula_name,
-                                          fg_color=menu_col[def_col],hover_color=menu_h_col[def_col])
+        pngs['add-list'].configure(size=(40,40))
+        add_formula_but = ct.CTkButton(master=frame, image=pngs['add-list'],
+                                       text='', width=60,
+                                       height=60, command=self.add_formula_name,
+                                       fg_color=menu_col[def_col],hover_color=menu_h_col[def_col])
         CTkToolTip.CTkToolTip(add_formula_but, message=self.translate('new formula'))   
         add_formula_but.grid(row=0, column=0,pady=10, padx=10)
 
-
-#edits formula
-
-
-
-
-
-    #settings
-        setting_img = ImageTk.PhotoImage(Image.open("pictures/settings.png").resize((50,50)))
-        setting_but = ct.CTkButton(master=frame, image=setting_img,text='', width=60, height=60,
+        #settings
+        pngs['settings'].configure(size=(40,40))
+        setting_but = ct.CTkButton(master=frame, image=pngs['settings'],
+                                   text='', width=60, height=60,
                                        command= self.settings, fg_color=menu_col[def_col],
                                        hover_color=menu_h_col[def_col])
         CTkToolTip.CTkToolTip(setting_but, message=self.translate('settings'))
         setting_but.grid(row=4, column=0,pady=10, padx=10, sticky='nwe')
     
-    #home
-        home_img = ImageTk.PhotoImage(Image.open("pictures/home.png").resize((50,50)))
-        home_but = ct.CTkButton(master=frame, image=home_img,text='', width=60, height=60,
+        #home
+        pngs['home'].configure(size=(40,40))
+        home_but = ct.CTkButton(master=frame, image=pngs['home'],text='', width=60, height=60,
                                    command=lambda: (self.home()), fg_color=menu_col[def_col], hover_color=menu_h_col[def_col])
         CTkToolTip.CTkToolTip(home_but, message=self.translate('home'))
         home_but.grid(row=5,column=0,pady=10, sticky='nwe', padx=10)
@@ -992,21 +1049,9 @@ class Gui:
 
         
         self.user_settings()
-            
+        self.sorting(r_formula_json)
         self.home()
         self.menue_buts()
-        
-
-
-
-
-    
-   
-        
-
-        
-
-        #mt = dlt.TranslationModel()
         root.mainloop()
 
 if __name__ == '__main__':

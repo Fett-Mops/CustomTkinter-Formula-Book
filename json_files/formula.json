@@ -1,5 +1,104 @@
 {
     "formula": {
+        "unnamed formula 1": {
+            "search_terms": [],
+            "formula": [
+                "",
+                []
+            ],
+            "values": [
+                [
+                    82,
+                    83,
+                    84
+                ],
+                []
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "01.12.2023 19:50"
+        },
+        "unnamed formula 3": {
+            "search_terms": [],
+            "formula": [
+                "",
+                []
+            ],
+            "values": [
+                [
+                    88,
+                    89,
+                    90
+                ],
+                []
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "01.12.2023 22:15"
+        },
+        "a": {
+            "search_terms": [],
+            "formula": [
+                "",
+                []
+            ],
+            "values": [
+                [
+                    91,
+                    92,
+                    93
+                ],
+                []
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "01.12.2023 22:48"
+        },
+        "unnamed formula 2": {
+            "search_terms": [],
+            "formula": [
+                "",
+                []
+            ],
+            "values": [
+                [
+                    85,
+                    86,
+                    87
+                ],
+                []
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "01.12.2023 23:37"
+        },
+        "Uri": {
+            "search_terms": [
+                "Spannung",
+                "Strom",
+                "Wiederstand",
+                "Elektrotechnick"
+            ],
+            "formula": [
+                "U=I*R",
+                "U,I,R"
+            ],
+            "values": [
+                [
+                    0,
+                    1,
+                    2
+                ],
+                [
+                    0,
+                    0,
+                    0
+                ]
+            ],
+            "information": "insert information",
+            "category": "Elecktrotechinck",
+            "creationdate": "01.12.2023 19:37"
+        },
         "Leistung": {
             "search_terms": [
                 "Spannung",
@@ -28,35 +127,10 @@
                 ]
             ],
             "information": "insert information",
-            "category": "Elecktrotechinck"
+            "category": "Elecktrotechinck",
+            "creationdate": "01.12.2023 23:34"
         },
-        "Uri": {
-            "search_terms": [
-                "Spannung",
-                "Strom",
-                "Wiederstand",
-                "Elektrotechnick"
-            ],
-            "formula": [
-                "U=I*R",
-                "U,I,R"
-            ],
-            "values": [
-                [
-                    0,
-                    1,
-                    2
-                ],
-                [
-                    0,
-                    0,
-                    0
-                ]
-            ],
-            "information": "insert information",
-            "category": "Elecktrotechinck"
-        },
-        "a": {
+        "sdaf": {
             "search_terms": [],
             "formula": [
                 "",
@@ -64,16 +138,17 @@
             ],
             "values": [
                 [
-                    37,
-                    38,
-                    39
+                    94,
+                    95,
+                    96
                 ],
                 []
             ],
             "information": "insert info",
-            "category": ""
+            "category": "u mum ya",
+            "creationdate": "01.12.2023 23:40"
         },
-        "fdfsg": {
+        "unnamed formula 4 5 6": {
             "search_terms": [],
             "formula": [
                 "",
@@ -81,31 +156,15 @@
             ],
             "values": [
                 [
-                    49,
-                    50,
-                    51
+                    97,
+                    98,
+                    99
                 ],
                 []
             ],
             "information": "insert info",
-            "category": ""
-        },
-        "unnamed formula 1 2 3": {
-            "search_terms": [],
-            "formula": [
-                "",
-                []
-            ],
-            "values": [
-                [
-                    31,
-                    32,
-                    33
-                ],
-                []
-            ],
-            "information": "insert info",
-            "category": ""
+            "category": "a",
+            "creationdate": "01.12.2023 23:40"
         }
     }
 }

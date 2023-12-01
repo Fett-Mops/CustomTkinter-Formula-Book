@@ -7,14 +7,14 @@ These functions are already in the project:
 - formula documentation(basics of latex)
 - edit formula
 - ~~delet formula~~
-- search to formula
+- Fuzzy search
 - ~~decent settings~~
 - Add complexity
 - **if the project is at least usable here will be a pinguin**
 
 
 ## Introduction
-Welcome to the CustomTkinter Formula Book repository! This project is a custom-made formula book built using the CustomTkinter library in Python. As the maintainer of this project and a newcomer, we're excited to have you join our community. This README will provide you with important information about the project and how to get started.
+Welcome to the CustomTkinter Formula Book repository! This project is a custom-made formula book built using the CustomTkinter library in Python. As the maintainer of this project, i am excited to have you join my community. This README will provide you with important information about the project and how to get started.
 
 
 ## Table of Contents
@@ -24,7 +24,7 @@ Welcome to the CustomTkinter Formula Book repository! This project is a custom-m
 - [License](#license)
 
 ## Aims
-The primary aim of this project is to provide a customizable and user-friendly formula book for various mathematical and scientific formulas. As a newcomer to this project, your fresh perspective and contributions are invaluable in achieving these goals. We encourage you to get involved and help us enhance this formula book.
+The primary aim of this project is to provide a customizable and user-friendly formula book for various mathematical and scientific formulas. As a newcomer to programming, your perspective and contributions are invaluable in achieving these goals. We encourage you to get involved and help us enhance this formula book.
 
 
 ## Getting Started
@@ -44,4 +44,4 @@ To use the CustomTkinter Formula Book:
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-We look forward to your contributions and hope you find this project both educational and enjoyable. Happy coding!
+I look forward to your contributions and hope you find this project both educational and enjoyable. Happy coding!

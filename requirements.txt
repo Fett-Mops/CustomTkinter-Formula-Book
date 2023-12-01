@@ -1,9 +1,11 @@
+Tkinter
 customtkinter           ==  5.2.1
-si-prefix               ==  1.2.2
-CTkColorPicker          ==  0.8.0
+CTkToolTip              ==  0.8
 CTkMessagebox           ==  2.5
 Pillow                  ==  9.5.0
-Tkinter
-torch                   ==  2.0.1
+sympy                   ==  1.12
+si-prefix               ==  1.2.2
+Pillow                  ==  9.5.0
 
-         
+
+
