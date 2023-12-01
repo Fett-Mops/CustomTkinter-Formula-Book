@@ -3,3 +3,6 @@ https://pythonprogramminglanguage.com/translate/
 
 eq To 0
 https://stackoverflow.com/questions/60373970/solving-equation-equal-to-zero
+
+pip install fast-autocomplete
+https://www.datacamp.com/tutorial/fuzzy-string-python
