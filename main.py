@@ -78,7 +78,6 @@ for i in sort_name:
                    light_image=Image.open("pictures/black/"+i+'.png'),
                    size=(30, 30))
 
-
 frame = ct.CTkFrame(root, width=25)
 frame.grid(row = 0,rowspan=2, column=0, sticky='nws', pady=(4,5), padx=(5,5))
 frame.grid_rowconfigure(3,weight=1)
@@ -97,8 +96,6 @@ class Gui:
         self.si_str = si_prefix.SI_PREFIX_UNITS
         self.cal_rad_var = ct.IntVar(value=0)
         self.cal_rad2_var = ct.StringVar(value='T')
-        # ! flasch ist nur für 3 ausgerichtet verbessern!
-        self.cal_inp_var = [ct.StringVar(value='') for _ in range(3)]
         self.cal_rad_first = False
         self.info_str_var = ct.StringVar(value='sdfadf')
         self.auto_th_var = ct.Variable()
@@ -518,7 +515,7 @@ class Gui:
         scr_frame.grid_rowconfigure(0, weight=1)   
         
 
-
+        cal_inp_var = [ct.StringVar(value='') for _ in range(len(r_formula_json['formula'][formula]['formula'][1]))]
         ryd_loop =r_formula_json['formula'][f'{formula}']['formula'][0].replace('*', '').replace('+', '').replace('-', '').replace('=', '').replace('/', '')
         Units, Buttons, inp = [], [[],[]], []
         for i, var in enumerate(ryd_loop)  :            
@@ -531,14 +528,14 @@ class Gui:
          
         
             if r_formula_json['formula'][f'{formula}']['values'][1][i] == 1:
-                self.cal_inp_var[i].set(r_con_json[f"{r_formula_json['formula'][f'{formula}']['values'][0][1]}"]['value'])
+                cal_inp_var[i].set(r_con_json[f"{r_formula_json['formula'][f'{formula}']['values'][0][1]}"]['value'])
                 box_x = ct.CTkRadioButton(master=inp_frame,text='', width=5 , border_color=grey_disa,
                                                        state='disabled',corner_radius=5,)
                 box_x.grid(row=0, column=0, pady=5, padx=(5,0))
                 var_inp = ct.CTkEntry(master=inp_frame
                                     ,width=50, height=35,  fg_color=self.colorscale(col_th, 0.5), border_width=0, bg_color='transparent',
                                     placeholder_text_color=grey_disa,
-                                    textvariable=self.cal_inp_var[i],
+                                    textvariable=cal_inp_var[i],
                                     state='disabled'
                                     )
                                    
@@ -555,7 +552,7 @@ class Gui:
                 var_inp = ct.CTkEntry(master=inp_frame
                                     ,width=50, height=35,  fg_color=col_th, border_width=0, bg_color='transparent',
                                     placeholder_text_color=text_col,
-                                    textvariable=self.cal_inp_var[i]
+                                    textvariable=cal_inp_var[i]
                                     )
                 unit_label = ct.CTkLabel(master = inp_frame,  font=font1,  fg_color=grey,
                                 text= self.translate(r_char_json[f"{r_formula_json['formula'][f'{formula}']['values'][0][i]}"]['unit']))
@@ -696,7 +693,7 @@ class Gui:
             if int(self.cal_rad_var.get()) == i:
                 var.configure(state='disabled')
                 var.configure(fg_color=self.colorscale(col_th, .5))
-                self.cal_inp_var[i].set('')
+                cal_inp_var[i].set('')
             elif r_formula_json['formula'][f'{formula}']['values'][1][i] != 1:
                 var.configure(state=NORMAL)
                 var.configure(fg_color=col_th)
