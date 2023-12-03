@@ -12,26 +12,20 @@ import json
 # Create a list of datetime objects
 time_objects = []
 
-for i in range(4):
-    time.sleep(1)
-    time_objects.append(datetime.strptime(time.asctime(), "%a %b %d %H:%M:%S %Y") )
+
     
 import time
 from datetime import datetime
 import json
 
-# Create a list of datetime objects
-time_objects = [datetime.strptime(time.asctime(), "%a %b %d %H:%M:%S %Y") for _ in range(5)]
 
-# Sort the list based on datetime
-sorted_time_objects = sorted(time_objects)
+with open ('json_files/formula.json') as f:
+            r_formula_json = json.load(f)
+            
+with open ('json_files/formula_char.json') as f:
+            r_char_json = json.load(f)
+                   
 
-# Convert datetime objects to formatted strings
-sorted_time_strings = [time_obj.strftime("%a %b %d %H:%M:%S %Y") for time_obj in sorted_time_objects]
+print()
+print(r_char_json.pop(f"{r_formula_json['formula']['unnamed formula 1']['values'][1]}"))
 
-# Dump the sorted time strings into a JSON file
-json_file_path = 'sorted_times.json'
-with open(json_file_path, 'w') as json_file:
-    json.dump(sorted_time_strings, json_file)
-
-print(f"Sorted time strings dumped to {json_file_path}")

@@ -1,22 +1,19 @@
 {
     "formula": {
-        "a": {
+        "jkhj": {
             "search_terms": [],
             "formula": [
                 "",
                 []
             ],
             "values": [
-                [
-                    91,
-                    92,
-                    93
-                ],
-                []
+                31,
+                32,
+                33
             ],
             "information": "insert info",
             "category": "",
-            "creationdate": "01.12.2023 22:48"
+            "creationdate": "03.12.2023 20:06"
         },
         "Leistung": {
             "search_terms": [
@@ -34,155 +31,58 @@
                 ]
             ],
             "values": [
-                [
-                    0,
-                    3,
-                    2
-                ],
-                [
-                    1,
-                    0,
-                    0
-                ]
+                22,
+                23,
+                24
             ],
             "information": "insert information",
             "category": "Elecktrotechinck",
             "creationdate": "01.12.2023 23:34"
         },
-        "sdaf": {
+        "Stop": {
             "search_terms": [],
             "formula": [
                 "",
                 []
             ],
             "values": [
-                [
-                    94,
-                    95,
-                    96
-                ],
-                []
-            ],
-            "information": "insert info",
-            "category": "u mum ya",
-            "creationdate": "01.12.2023 23:40"
-        },
-        "unnamed formula 1": {
-            "search_terms": [],
-            "formula": [
-                "",
-                []
-            ],
-            "values": [
-                [
-                    82,
-                    83,
-                    84
-                ],
-                []
+                34,
+                35,
+                36
             ],
             "information": "insert info",
             "category": "",
-            "creationdate": "01.12.2023 19:50"
+            "creationdate": "03.12.2023 20:34"
         },
-        "unnamed formula 2": {
+        "unnamed formula": {
             "search_terms": [],
             "formula": [
                 "",
                 []
             ],
             "values": [
-                [
-                    85,
-                    86,
-                    87
-                ],
-                []
+                28,
+                29,
+                30
             ],
             "information": "insert info",
             "category": "",
-            "creationdate": "01.12.2023 23:37"
+            "creationdate": "03.12.2023 20:06"
         },
-        "unnamed formula 3": {
+        "unnamed formula 1 2 3": {
             "search_terms": [],
             "formula": [
                 "",
                 []
             ],
             "values": [
-                [
-                    88,
-                    89,
-                    90
-                ],
-                []
+                37,
+                38,
+                39
             ],
             "information": "insert info",
             "category": "",
-            "creationdate": "01.12.2023 22:15"
-        },
-        "unnamed formula 4 5 6": {
-            "search_terms": [],
-            "formula": [
-                "",
-                []
-            ],
-            "values": [
-                [
-                    97,
-                    98,
-                    99
-                ],
-                []
-            ],
-            "information": "insert info",
-            "category": "a",
-            "creationdate": "01.12.2023 23:40"
-        },
-        "Uri": {
-            "search_terms": [
-                "Spannung",
-                "Strom",
-                "Wiederstand",
-                "Elektrotechnick"
-            ],
-            "formula": [
-                "U=I*R",
-                "U,I,R"
-            ],
-            "values": [
-                [
-                    0,
-                    1,
-                    2
-                ],
-                [
-                    0,
-                    0,
-                    0
-                ]
-            ],
-            "information": "insert information",
-            "category": "Elecktrotechinck",
-            "creationdate": "01.12.2023 19:37"
-        },
-        "unnamed formula 4 5 7": {
-            "search_terms": [],
-            "formula": [
-                "",
-                []
-            ],
-            "values": [
-                [
-                    100,
-                    101,
-                    102
-                ],
-                []
-            ],
-            "information": "insert info",
-            "category": "Kaimi isch gemein",
-            "creationdate": "03.12.2023 12:46"
+            "creationdate": "03.12.2023 20:46"
         }
     }
 }
