@@ -111,24 +111,22 @@ class Gui:
         self.toplevel = None
         self.user_json_cp = ''
         self.sorting_var = -1
-        self.sort_tip_var =self.translate('alphabetical')
+        #need to translate this
+        self.sort_tip_var ='alphabetical'
         self.sort_but_img = [pngs['abc'],pngs['createdate'],pngs['home-category']]
         self.rm_box = ct.BooleanVar(value=1)
         self.new_frm_name = ct.StringVar()
         self.old_frm_name = ct.StringVar()
+        self.languages =  ['english', 'deutsch', 'français']
+        self.translater = {}
   
     def translate(self, text):
-        # ? source=dlt.lang.GERMAN
-        # ? tred =mt.translate(text,source, t_lang)
-        # ? Create a Translator instance with the desired engine ('mymemory', 'microsoft', etc.)
-        # ? translator = Translator(to_lang=t_lang, from_lang='en', provider='mymemory')
-
-        # ? translation = translator.translate(text)
-        l.append(text)
-        with open ('json_files/lang.json', 'w')as f:
-            json.dump(l,f,indent=4)
-            
-        return text 
+        help = 'help'
+        try:
+            help =self.translater[text]
+        except:
+            print(text)
+        return help
     
     def write_json(self, path:str, inp:any)->any:
         with open (path, 'w') as f:
@@ -357,13 +355,16 @@ class Gui:
     
     def idk_dont_look(self, message, icon, options, justify, sound, title, new_frm_name):
         
-        if self.popup_var or self.messagebox(message,icon, options, justify, sound, title):
+        if self.popup_var.get() or self.messagebox(message,icon, options, justify, sound, title):
             if title ==  self.translate('save'):
                 r_formula_json['formula'][new_frm_name]['creationdate'] = datetime.now().strftime("%d.%m.%Y %H:%M")
                 
                 self.write_json('json_files/formula.json',r_formula_json)
                 self.write_json('json_files/formula_char.json',r_char_json)
                 self.user_settings()
+            elif title == self.translate('leaf'):
+                r_formula_json['formula'].pop(new_frm_name)
+                
  
 
             for kid in frame.winfo_children():
@@ -473,7 +474,7 @@ class Gui:
                         message=self.translate("Bist du sicher das du die Formel: {}{}{} löschen willst?").format("'",formula,"'"),
                         justify='right', icon=False,
                         title=self.translate('delete formula'), option_1=self.translate('delete')) 
-        rm_comp = ct.CTkCheckBox(master = rm_message, text=self.translate('also delet components'), variable=self.rm_box)
+        rm_comp = ct.CTkCheckBox(master = rm_message, text=self.translate('also delete components'), variable=self.rm_box)
         rm_comp.place(x=10,y=160)
         
         if rm_message.get() == self.translate('delete'):
@@ -574,7 +575,7 @@ class Gui:
                                 textvariable=cal_inp_var[i]
                                 )
             unit_label = ct.CTkLabel(master = inp_frame,  font=font1,  fg_color=grey,
-                            text= self.translate(r_char_json[f"{r_formula_json['formula'][f'{formula}']['values'][i]}"]['unit']))
+                            text= r_char_json[f"{r_formula_json['formula'][f'{formula}']['values'][i]}"]['unit'])
             if r_char_json[f"{r_formula_json['formula'][f'{formula}']['values'][i]}"]['value'] != 0:
                 cal_inp_var[i].set(r_char_json[f"{r_formula_json['formula'][formula]['values'][i]}"]['value'])
                 box_x.configure(border_color=grey_disa,state='disabled')
@@ -621,7 +622,7 @@ class Gui:
             unit_label.grid(row = 0, column=3, pady= (8,5), padx=10, sticky='nwes')
         
         #change to listU
-            symb_label = ct.CTkLabel(master = inp_frame  ,text=self.translate(var), font=font1, 
+            symb_label = ct.CTkLabel(master = inp_frame  ,text=var, font=font1, 
                                            fg_color=grey)
             symb_label.grid(row = 0, column=4, pady= (8,5), padx=10, sticky='nwes')
             
@@ -642,12 +643,12 @@ class Gui:
         p_radio =ct.CTkRadioButton(master=self.c_page, text=self.translate('picture'),corner_radius=5,
                                               value='P', variable=self.cal_rad2_var)
         p_radio.grid(row=3, column=1, sticky='nswe', pady=10,padx=10)
-        v_radio =ct.CTkRadioButton(master=self.c_page, text=self.translate('video...en'), corner_radius=5,
+        v_radio =ct.CTkRadioButton(master=self.c_page, text=self.translate('video'), corner_radius=5,
                                               value='V', variable=self.cal_rad2_var)
         v_radio.grid(row=3, column=2, sticky='nswe', pady=10,padx=10)
 
               
-        cal_but = ct.CTkButton(master=self.c_page, text=self.translate('calculata'), height=35,
+        cal_but = ct.CTkButton(master=self.c_page, text=self.translate('calculate'), height=35,
                     command= lambda val =inp, chosen = self.cal_rad_var, 
                     format = self.cal_rad2_var , formula = formula:(self.set_values_check(val,chosen,format, formula)) )
         cal_but.grid(row = 3, column=3, sticky='nwse', pady = 15) 
@@ -655,11 +656,11 @@ class Gui:
     def set_values_check(self, val, chosen, format, formula):
         format.get()
         values = []
-        message = 'are you sure all inputs are right?'
+        message = self.translate('are you sure all inputs are right?')
         sound = False
         icon = 'check'
-        title = 'save inputs'
-        option1 = 'calucalte'
+        title = self.translate('save inputs')
+        option1 = self.translate('calculate')
         for i in range(len(val)):
             
                 if i != chosen.get():
@@ -668,10 +669,10 @@ class Gui:
                         float(val[i].get())
                         values.append(val[i].get())
                     except:
-                        message = 'Es ist ein Fehler aufgetretten'
+                        message = self.translate('There is a mistake somewehre')
                         sound = True
                         option1 = None
-                        title = 'Fehler'   
+                        title = self.translate('Misake')
                         icon =  "cancel"                 
                         
                         
@@ -709,7 +710,7 @@ class Gui:
             #labels = [ formula,umgestellte fomell ,umgestellete formel mit zahlen, Lösung]
             
             for i, data in enumerate(labels):
-                Cal_label = ct.CTkLabel(master=scr_cal, text=self.translate(data))
+                Cal_label = ct.CTkLabel(master=scr_cal, text=data)
                 Cal_label.grid(row=i,column=0)
    
             
@@ -737,7 +738,7 @@ class Gui:
         if si_index[i] != 0:
             self.si_index[i] -=1
 
-        Unit = r_char_json[f"{r_formula_json['formula'][f'{f}']['values'][0][i]}"]['unit']
+        Unit = r_char_json[f"{r_formula_json['formula'][f'{f}']['values'][i]}"]['unit']
         Units[i].configure(text = self.si_str[self.si_index[i]] + f'{Unit}')
                 
     def add(self, si_index, f, i):
@@ -793,7 +794,7 @@ class Gui:
         sort_but.grid(row = 0, column=0, pady =  5, padx=(0,5), sticky='nwe')
         CTkToolTip.CTkToolTip(sort_but,message=self.sort_tip_var)
         
-        search_inp = ct.CTkEntry(master=self.h_page, placeholder_text=self.translate('idk'), 
+        search_inp = ct.CTkEntry(master=self.h_page, placeholder_text=self.translate('formula'), 
                                     width=100, height=40,  fg_color=col_th, 
                                     placeholder_text_color=text_col, border_width=0)
         search_inp.grid(row = 0, column=1, pady= 5, columnspan=1, sticky='nwe')
@@ -813,15 +814,15 @@ class Gui:
             frame_formula.grid_columnconfigure((0,1), weight=(1))
             frame_formula.grid_columnconfigure(2, weight=(2))
 
-            ct.CTkButton(frame_formula,text=self.translate(formula),width=85, text_color=text_col,
+            ct.CTkButton(frame_formula,text=formula,width=85, text_color=text_col,
                          command=lambda k = formula: (self.set_values(k))
                                     ).grid(row=0, column=0, pady = 5, padx=5,sticky='w')
-            ct.CTkLabel(frame_formula, text=self.translate(r_formula_json['formula'][formula]['formula'][0]), 
+            ct.CTkLabel(frame_formula, text=r_formula_json['formula'][formula]['formula'][0], 
                                  font=font1).grid(row=0, column=1, pady =8, padx=5,sticky='we')
             
-            ct.CTkLabel(frame_formula, text=self.translate(r_formula_json['formula'][formula]["category"]), 
+            ct.CTkLabel(frame_formula, text=r_formula_json['formula'][formula]["category"], 
                                    font=font1).grid(row=0, column=2, pady =8, padx=10,sticky='e')
-            ct.CTkLabel(frame_formula, text=self.translate(r_formula_json['formula'][formula]["creationdate"]), 
+            ct.CTkLabel(frame_formula, text=r_formula_json['formula'][formula]["creationdate"], 
                                    font=font1).grid(row=0, column=3, pady =8, padx=10,sticky='e')
     
     def sorting(self, dictionary:dict)-> dict:   
@@ -911,15 +912,15 @@ class Gui:
        
         CTkScrollableDropdown(col_them_menu, values=col_thms, command=self.update_col,
                               scrollbar=False)
-        g = user_json['language']
-        languages =  ['Englisch', 'Deutsch', 'Français']
+
+        
         lang_them_menu = ct.CTkOptionMenu(self.s_page,values=['t_l'],variable=self.lan_menu_var,text_color= text_col)
-        lang_them_menu.set(g)
-        CTkScrollableDropdown(lang_them_menu,values=languages)
+     
+        CTkScrollableDropdown(lang_them_menu,values=self.languages)
         lang_them_menu.grid(row = 2, column=0,pady=30, padx=5 ,sticky='nwe')
         
         
-        less_popu_box = ct.CTkCheckBox(self.s_page, text='Less safty popups',
+        less_popu_box = ct.CTkCheckBox(self.s_page, text=self.translate('Less safty popups'),
                                                    variable=self.popup_var, 
                                                    command=lambda:(self.popup(self.popup_var)))
         less_popu_box.grid(row = 3, column=0,pady=30, padx=5 ,sticky='nwe')
@@ -1006,9 +1007,10 @@ class Gui:
         self.settings()
 
     def user_settings(self):
-        global less_popu, lang, col_th, def_col,  t_lang, auto_app, var_app, user_json, text_col
+        global less_popu, lang, col_th, def_col,  t_lang,tr_lan, auto_app, var_app, user_json, text_col
         with open ('json_files/user_data.json') as f:
             user_json = json.load(f)
+            
         self.user_json_cp = user_json.copy()
         def_col = user_json['def_col']
         if def_col == 'orange':
@@ -1024,6 +1026,18 @@ class Gui:
         #user_language = user_json.get('language')
         #t_lang = language_mapping.get(user_language.lower())
         t_lang = user_json.get('language')
+        self.lan_menu_var.set(t_lang)
+        if t_lang != 'english':
+            with open('json_files/languages/'+ t_lang +'.json') as f:
+                tr_lan = json.load(f)
+        for tr in tr_lan:
+            self.translater[tr[0]] = tr[1]
+        
+                
+                
+                
+        
+                
         self.sound_slider_var.set(value= user_json['volume'][1])
         self.popup_var.set(value= user_json['less_popup'])
         self.auto_th_var.set(value=user_json['auto_app'])

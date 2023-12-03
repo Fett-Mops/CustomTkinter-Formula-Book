@@ -1,20 +1,5 @@
 {
     "formula": {
-        "jkhj": {
-            "search_terms": [],
-            "formula": [
-                "",
-                []
-            ],
-            "values": [
-                31,
-                32,
-                33
-            ],
-            "information": "insert info",
-            "category": "",
-            "creationdate": "03.12.2023 20:06"
-        },
         "Leistung": {
             "search_terms": [
                 "Spannung",
@@ -53,36 +38,6 @@
             "information": "insert info",
             "category": "",
             "creationdate": "03.12.2023 20:34"
-        },
-        "unnamed formula": {
-            "search_terms": [],
-            "formula": [
-                "",
-                []
-            ],
-            "values": [
-                28,
-                29,
-                30
-            ],
-            "information": "insert info",
-            "category": "",
-            "creationdate": "03.12.2023 20:06"
-        },
-        "unnamed formula 1 2 3": {
-            "search_terms": [],
-            "formula": [
-                "",
-                []
-            ],
-            "values": [
-                37,
-                38,
-                39
-            ],
-            "information": "insert info",
-            "category": "",
-            "creationdate": "03.12.2023 20:46"
         }
     }
 }
