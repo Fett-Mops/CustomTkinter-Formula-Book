@@ -1,4 +1,3 @@
-Tkinter
 customtkinter           ==  5.2.1
 CTkToolTip              ==  0.8
 CTkMessagebox           ==  2.5

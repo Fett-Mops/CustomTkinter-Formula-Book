@@ -898,5 +898,32 @@
         "u_name": "",
         "category": "a",
         "information": "insert information"
+    },
+    "100": {
+        "symbol": "change Thies",
+        "s_name": "",
+        "value": 0,
+        "unit": "",
+        "u_name": "",
+        "category": "Kaimi isch gemein",
+        "information": "insert information"
+    },
+    "101": {
+        "symbol": "change Thies",
+        "s_name": "",
+        "value": 0,
+        "unit": "",
+        "u_name": "",
+        "category": "Kaimi isch gemein",
+        "information": "insert information"
+    },
+    "102": {
+        "symbol": "change Thies",
+        "s_name": "",
+        "value": 0,
+        "unit": "",
+        "u_name": "",
+        "category": "Kaimi isch gemein",
+        "information": "insert information"
     }
 }

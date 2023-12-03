@@ -27,7 +27,7 @@ color_def = ['green', 'blue','dark-blue']
 
 root = ct.CTk()
 root.geometry(f'{WIDTH}'+'x'+f'{HEIGHT}')
-#root.state('zoomed')
+
 
 root.title('Formelbüchlein')
 
@@ -39,14 +39,16 @@ root.grid_rowconfigure(1, weight=1)
 red = '#E26579'
 red_b = '#D35B58'
 red_h = '#C77C78'
-main_col ={'green':'#00947D','blue': '#008FBE', 'dark-blue': '#5C84C3', 'orange':'#88364C'}
-menu_col = {'green': '#008180','blue': '#00B1BC', 'dark-blue': '#7764AC','orange':'#88364C'}
-menu_h_col = {'green': '#006E7A','blue': '#0073A0', 'dark-blue': '#4E5C9F','orange':'#88364C'}
-del_col = {'green': '#FFA17A','blue': '#AF4079', 'dark-blue': '#C0697D','orange':'#88364C'}
-del_h_col = {'green': '#F98383','blue': '#9F5399', 'dark-blue': '#88364C','orange':'#88364C'}
-text_col = '#DCE4DB'
-grey='#333333'
-grey_fram = '#2B2B2B'
+main_col ={'green':'#00947D','blue': '#008FBE', 'dark-blue': '#5C84C3', 'orange':'#FFD382'}
+menu_col = {'green': '#008180','blue': '#00B1BC', 'dark-blue': '#7764AC','orange':'#B5AA99'}
+menu_h_col = {'green': '#006E7A','blue': '#0073A0', 'dark-blue': '#4E5C9F','orange':'#4F4537'}
+del_col = {'green': '#FFA17A','blue': '#AF4079', 'dark-blue': '#C0697D','orange':'#FE8A7E'}
+del_h_col = {'green': '#F98383','blue': '#9F5399', 'dark-blue': '#88364C','orange':'#C1554D'}
+text_col = ('#1B231A','#DCE4DB')
+
+
+grey=('#CCCCCC','#333333')
+grey_fram = ('#DBDBDB','#2B2B2B')
 d = '#2FA572'
 grey_disa = '#61676C'
 
@@ -81,7 +83,7 @@ for i in sort_name:
 frame = ct.CTkFrame(root, width=25)
 frame.grid(row = 0,rowspan=2, column=0, sticky='nws', pady=(4,5), padx=(5,5))
 frame.grid_rowconfigure(3,weight=1)
-
+l = []
 
 
 class Gui:
@@ -118,6 +120,10 @@ class Gui:
         # ? translator = Translator(to_lang=t_lang, from_lang='en', provider='mymemory')
 
         # ? translation = translator.translate(text)
+        l.append(text)
+        with open ('json_files/lang.json', 'w')as f:
+            json.dump(l,f,indent=4)
+            
         return text 
     
     def write_json(self, path:str, inp:any)->any:
@@ -141,7 +147,8 @@ class Gui:
         name_formula = ct.CTkEntry(master=self.a_page,
                                 placeholder_text=self.translate('formula name'),
                                 fg_color=col_th,border_width=0,
-                                placeholder_text_color=text_col,justify='center'
+                                placeholder_text_color=text_col,
+                                text_color=text_col,justify='center'
                                 )
         name_formula.insert('end',new_frm_name)
         name_formula.grid(row=0, column=0,columnspan=4, sticky='nswe', pady=(0,5))
@@ -172,7 +179,7 @@ class Gui:
         reload_scr_frame.grid(row=0, column=0)
         
         #scrolable fram
-        scr_frame = ct.CTkScrollableFrame(master=self.a_page)
+        scr_frame = ct.CTkScrollableFrame(master=self.a_page, fg_color=grey_fram)
         scr_frame.grid(row=2, column=0, columnspan=4, sticky='nswe')
         scr_frame.grid_columnconfigure(0, weight=1)
         scr_frame.grid_rowconfigure(0, weight=1)   
@@ -200,29 +207,29 @@ class Gui:
                  
             var_inp = ct.CTkEntry(master=inp_frame
                                     ,width=50, height=35,  fg_color=col_th, border_width=0, bg_color='transparent',
-                                    placeholder_text_color=text_col)
+                                    placeholder_text_color=text_col,text_color=text_col)
             #var_inp.grid(row = 0, column=1, pady= 5, sticky='nwes')
             
 
                                           
             unit_inp = ct.CTkEntry(master=inp_frame
                                     ,width=50, height=35,  fg_color=col_th, border_width=0, bg_color='transparent',
-                                    placeholder_text_color=text_col,)
+                                    placeholder_text_color=text_col,text_color=text_col)
             unit_inp.grid(row = 0, column=2,  pady= 5, padx=(10,0), sticky='nwes')
             
             unit_n_inp = ct.CTkEntry(master=inp_frame
                                     ,width=50, height=35,  fg_color=col_th, border_width=0, bg_color='transparent',
-                                    placeholder_text_color=text_col)
+                                    placeholder_text_color=text_col,text_color=text_col)
             unit_n_inp.grid(row = 0, column=3, pady= 5,padx=(5,0), sticky='nwes')
         
         #change to listU
             symb_label = ct.CTkLabel(master = inp_frame  ,text=self.translate('formula'), font=font1, 
-                                           fg_color=grey)
+                                           fg_color=grey,text_color=text_col)
             symb_label.grid(row = 0, column=4, pady= (8,5), padx=10, sticky='nwes')
             
             symb_n_inp = ct.CTkEntry(master=inp_frame
                                     ,width=50, height=35,  fg_color=col_th, border_width=0, bg_color='transparent',
-                                    placeholder_text_color=text_col)
+                                    placeholder_text_color=text_col,text_color=text_col)
             symb_n_inp.grid(row = 0, column=5, pady= 5, sticky='nwes')
             
             
@@ -234,7 +241,7 @@ class Gui:
             pngs['icon-infoo'].configure(size=(30,30))
             edit_var_info_but = ct.CTkButton(master=inp_frame,
                                            text='' ,
-                                           image=pngs['icon-infoo'],width=30,height= 35, 
+                                           image=pngs['edit-info'],width=30,height= 35, 
                                            command=lambda:(self.edit_info(new_frm_name,info_index[i],i)) )
             edit_var_info_but.grid(row = 0, column=6, sticky='nwe', pady = 5, padx=5) 
             information[1][0].append(unit_inp)
@@ -253,12 +260,12 @@ class Gui:
         
         information.append(inp_category)
 
-        save_but = ct.CTkButton(master=self.a_page, text=self.translate('save'), height=35,
+        save_but = ct.CTkButton(master=self.a_page, text=self.translate('save'), height=35,text_color= text_col,
                                            command= lambda:(self.get_formula(new_frm_name,information)))
         save_but.grid(row = 4, column=2,columnspan= 2, sticky='nwse') 
         
         
-        cancle_but = ct.CTkButton(master=self.a_page, text=self.translate('cancle'),
+        cancle_but = ct.CTkButton(master=self.a_page, text=self.translate('cancle'),text_color= text_col,
                                              height=35, fg_color=del_col[def_col],hover_color=del_h_col[def_col],
                                              command=lambda:(self.idk_dont_look(self.translate("don't save changes"),
                                                                                 None,[self.translate("don't save")],'center', False,self.translate('leaf'), new_frm_name)))
@@ -387,7 +394,8 @@ class Gui:
         save_edit.grid(row=3,column=0, sticky='nswe', padx=5,pady=(0,5))
                 
     def add_formula_name(self):
-        frm_name = ct.CTkInputDialog(title=self.translate('name formula'), text=self.translate('naming the formula'))
+        frm_name = ct.CTkInputDialog(title=self.translate('name formula'), button_text_color= text_col,
+                                     text=self.translate('naming the formula'))
         frm_var = frm_name.get_input()
         frm_safe = self.translate('unnamed formula')
         if  frm_var!= None:
@@ -407,7 +415,8 @@ class Gui:
                                                    'formula':['',[]],
                                                    'values':[[],[]],
                                                    'information': 'insert info',
-                                                   'category' : ''}
+                                                   'category' : '',
+                                                   'creationdate':''}
             
             self.add_formula(frm_safe, len(r_char_json))
                 
@@ -473,7 +482,7 @@ class Gui:
    
     def set_values(self, formula):
 
-        global unit_label, Buttons, Units, edit_formula_but, del_formula_but
+        global unit_label, Buttons, Units, edit_formula_but, del_formula_but, cal_inp_var
         
         add_formula_but.grid_forget()
         pngs['edit-formula'].configure(size=(40,40))
@@ -559,7 +568,7 @@ class Gui:
                         # ! not functional for more var than three
             if r_formula_json['formula'][f'{formula}']['values'][1].index(0) == i:
                 var_inp.configure(state='disabled')
-                var_inp.configure(fg_color=self.colorscale(col_th,0.5))
+                var_inp.configure(fg_color=self.colorscale(col_th,.5))
                 self.cal_rad_var.set(i)
 
             var_inp.grid(row = 0, column=1, pady= 5, padx=(5,0), sticky='nwes')
@@ -724,6 +733,9 @@ class Gui:
     def messagebox(self, message, icon, options, justify, sound, title):
         mis_win = CTkMessagebox.CTkMessagebox(master= root,message=message, 
                                               icon=icon, 
+                                              text_color= ('#1B231A','#DCE4DB'),
+                                              button_text_color= ('#1B231A','#DCE4DB'),
+                                              cancel_button_color= (red_b),
                                               options=options,
                                               option_1= None,
                                               justify=justify,sound=sound,
@@ -735,6 +747,7 @@ class Gui:
         
     def home(self):
         global sort_but
+        
         self.user_settings()
         
        
@@ -765,7 +778,7 @@ class Gui:
         search_inp.grid(row = 0, column=1, pady= 5, columnspan=1, sticky='nwe')
         
         search_but = ct.CTkButton(master=self.h_page, text=self.translate('search'), command=self.search_formula,
-                                        width=100, height=40)
+                                        width=100, height=40,text_color= text_col)
         search_but.grid(row = 0, column=2, pady =  5, padx=5, sticky='nwe')
 
         frame_list = ct.CTkScrollableFrame(self.h_page,fg_color=grey_fram)
@@ -779,7 +792,8 @@ class Gui:
             frame_formula.grid_columnconfigure((0,1), weight=(1))
             frame_formula.grid_columnconfigure(2, weight=(2))
 
-            ct.CTkButton(frame_formula,text=self.translate(formula),width=85, command=lambda k = formula: (self.set_values(k))
+            ct.CTkButton(frame_formula,text=self.translate(formula),width=85, text_color=text_col,
+                         command=lambda k = formula: (self.set_values(k))
                                     ).grid(row=0, column=0, pady = 5, padx=5,sticky='w')
             ct.CTkLabel(frame_formula, text=self.translate(r_formula_json['formula'][formula]['formula'][0]), 
                                  font=font1).grid(row=0, column=1, pady =8, padx=5,sticky='we')
@@ -842,10 +856,10 @@ class Gui:
         sound_slider.grid(row = 0, column=1,pady=30, padx=5 ,sticky='nwe')
         
         sound_but = ct.CTkButton(master=self.s_page, text='', width=60, height=60,
-                                      fg_color='transparent', hover=True, hover_color=menu_h_col[def_col]
-                                      ,image=pngs['speaker_on'], border_width=2,border_color=menu_col[def_col],
-                                      command=lambda bool = self.sound_slider_boo
-                                      ,int = self.sound_slider_var: self.sound_slider((int, bool)))
+                                      fg_color='transparent', hover=True, hover_color=menu_h_col[def_col],
+                                      image=pngs['speaker_on'], border_width=2,border_color=menu_col[def_col],
+                                      command=lambda bool = self.sound_slider_boo, text_color= text_col,
+                                      int = self.sound_slider_var: self.sound_slider((int, bool)))
         sound_but.grid(row = 0, column=0,pady=5, padx=5, sticky='nswe')
         
         if self.sound_slider_var.get() ==0:
@@ -857,19 +871,20 @@ class Gui:
         #TODO disabled and not better seeable
         
         manuell_th_swi = ct.CTkSwitch(self.s_page,text='Light/Dark-Mode',
-                                                 variable=self.man_th_var,
-                                                 command=lambda:(self.mode(self.man_th_var)))
+                                      text_color= ('#1B231A','#DCE4DB'), variable=self.man_th_var,
+                                      command=lambda:(self.mode(self.man_th_var)))
         manuell_th_swi.grid(row = 1, column=1,pady=30, padx=5 ,sticky='nwe')
         if self.auto_th_var.get():
             manuell_th_swi.configure(state='disabled')        
                 
         auto_th_swi = ct.CTkSwitch(self.s_page, text=self.translate('get system mode'), 
                                               variable=self.auto_th_var,
+                                              text_color=('#1B231A','#DCE4DB'),
                                               command=lambda:(self.auto_thm(self.auto_th_var)))
         auto_th_swi.grid(row = 1, column=0,pady=30, padx=5 ,sticky='nwe')
         
         col_thms = ['green', 'blue', 'dark-blue', 'orange']
-        col_them_menu = ct.CTkOptionMenu(self.s_page,values=[def_col])
+        col_them_menu = ct.CTkOptionMenu(self.s_page,values=[def_col], text_color= text_col)
         
         col_them_menu.grid(row = 2, column=1,pady=30, padx=5 ,sticky='nwe')
        
@@ -877,7 +892,7 @@ class Gui:
                               scrollbar=False)
         g = user_json['language']
         languages =  ['Englisch', 'Deutsch', 'Français']
-        lang_them_menu = ct.CTkOptionMenu(self.s_page,values=['t_l'],variable=self.lan_menu_var)
+        lang_them_menu = ct.CTkOptionMenu(self.s_page,values=['t_l'],variable=self.lan_menu_var,text_color= text_col)
         lang_them_menu.set(g)
         CTkScrollableDropdown(lang_them_menu,values=languages)
         lang_them_menu.grid(row = 2, column=0,pady=30, padx=5 ,sticky='nwe')
@@ -890,17 +905,18 @@ class Gui:
         
         
         
-        save_but = ct.CTkButton(self.s_page, text=self.translate('save'), command=self.save_settings)
+        save_but = ct.CTkButton(self.s_page, text=self.translate('save'), command=self.save_settings,text_color= text_col)
         save_but.grid(row = 5, column=1, sticky='nesw', pady=(4,5), padx=(5,5))
 
     def auto_thm (self,bool):
         if bool.get() == 1:
-            manuell_th_swi.configure(state='disabled')
+
+            #manuell_th_swi.configure(state='disabled',button_color =grey_disa, fg_color=self.colorscale( col_th, .25) )
             ct.set_appearance_mode('System')
             self.user_json_cp['auto_app'] = True
             
         else:
-            manuell_th_swi.configure(state='Normal')
+            #manuell_th_swi.configure(state='Normal',button_color =grey_disa, fg_color=self.colorscale( col_th, .25))
             self.user_json_cp['auto_app'] = False
             if self.man_th_var.get() == 1:
                 ct.set_appearance_mode('dark')
@@ -969,11 +985,15 @@ class Gui:
         self.settings()
 
     def user_settings(self):
-        global less_popu, lang, col_th, def_col,  t_lang, auto_app, var_app, user_json
+        global less_popu, lang, col_th, def_col,  t_lang, auto_app, var_app, user_json, text_col
         with open ('json_files/user_data.json') as f:
             user_json = json.load(f)
         self.user_json_cp = user_json.copy()
         def_col = user_json['def_col']
+        if def_col == 'orange':
+            text_col = '#2B2B2B'
+        else:
+            text_col = ('#1B231A','#DCE4DB')
        
 
         #language_mapping = {
@@ -990,6 +1010,7 @@ class Gui:
             self.man_th_var.set(value=1)
         else:
             self.man_th_var.set(value=0)
+   
             
       
         #
@@ -1031,8 +1052,13 @@ class Gui:
                                    command=lambda: (self.home()), fg_color=menu_col[def_col], hover_color=menu_h_col[def_col])
         CTkToolTip.CTkToolTip(home_but, message=self.translate('home'))
         home_but.grid(row=5,column=0,pady=10, sticky='nwe', padx=10)
+    
+    def zoomed(self):
+        pass
+          #root.state('zoomed')
         
     def run(self):
+        
         global r_formula_json, r_char_json, r_con_json, user_json
         with open ('json_files/formula.json') as f:
             r_formula_json = json.load(f)
@@ -1045,10 +1071,17 @@ class Gui:
         
 
         
-        self.user_settings()
-        self.sorting(r_formula_json)
+        
+        
+        
         self.home()
+        
+        self.sorting(r_formula_json)
         self.menue_buts()
+        self.zoomed()
+        
+        
+            
         root.mainloop()
 
 if __name__ == '__main__':
