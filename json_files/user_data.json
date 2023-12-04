@@ -5,7 +5,7 @@
     ],
     "auto_app": false,
     "var_app": "dark",
-    "def_col": "dark-blue",
-    "less_popup": 0,
-    "language": "deutsch"
+    "def_col": "orange",
+    "less_popup": 1,
+    "language": "English"
 }

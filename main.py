@@ -117,16 +117,23 @@ class Gui:
         self.rm_box = ct.BooleanVar(value=1)
         self.new_frm_name = ct.StringVar()
         self.old_frm_name = ct.StringVar()
-        self.languages =  ['english', 'deutsch', 'français']
+        self.languages =  ['English', 'Deutsch', 'Français']
         self.translater = {}
+        self.color_lang = {'English':['green', 'blue', 'dark-blue', 'orange'],
+                           'Deutsch':['Grün', 'Blau','Dunkel-Blau', 'Orange'],
+                           'Français':['vert', 'blue', 'dark-blue', 'orange']}
+        self.var_inps = []
   
     def translate(self, text):
         help = 'help'
-        try:
-            help =self.translater[text]
-        except:
-            print(text)
-        return help
+        if self.lan_menu_var.get()== 'English':
+            return text
+        else:
+            try:
+                help =self.translater[text]
+            except:
+                print(text)
+            return help
     
     def write_json(self, path:str, inp:any)->any:
         with open (path, 'w') as f:
@@ -244,7 +251,7 @@ class Gui:
          #\frac = /
          #\frac{\frac{1}{x}+\frac{1}{y}}{y-z}
     def edit_var(self, formula:str, number:int, first_var : int):
-        
+        self.var_inps = [ct.StringVar() for _ in range(number)]
         for i in range(number):            
             inp_frame = ct.CTkFrame(master=scr_frame, fg_color=grey)
             inp_frame.grid(row=i+1, column=0, columnspan=4,sticky='nswe', pady=5, padx=5)
@@ -258,8 +265,8 @@ class Gui:
             boxes.append(box_x)
             box_x.grid(row=0, column=0, pady=5, padx=(10,0))    
                  
-            var_inp = ct.CTkEntry(master=inp_frame
-                                    ,width=50, height=35,  fg_color=grey, border_width=0, bg_color='transparent',
+            var_inp = ct.CTkEntry(master=inp_frame,textvariable=self.var_inps[i],
+                                    width=50, height=35,  fg_color=grey, border_width=0, bg_color='transparent',
                                     placeholder_text_color=text_col,text_color=text_col, state='disabled')
             
             var_inp.grid(row = 0, column=1, pady= 5, sticky='nwes')
@@ -308,7 +315,8 @@ class Gui:
         if var_inp[index].cget('fg_color') == grey:
             var_inp[index].configure(fg_color=col_th, state='normal')
         else:
-            var_inp[index].configure(fg_color=grey)
+            var_inp[index].configure(fg_color=grey, state='disabled')
+            self.var_inps[index].set(value='')
     
     def get_formula(self, new_frm_name, information):
         r_formula_json['formula'][new_frm_name] = r_formula_json['formula'].pop(self.old_frm_name.get())
@@ -905,8 +913,9 @@ class Gui:
                                               command=lambda:(self.auto_thm(self.auto_th_var)))
         auto_th_swi.grid(row = 1, column=0,pady=30, padx=5 ,sticky='nwe')
         
-        col_thms = ['green', 'blue', 'dark-blue', 'orange']
-        col_them_menu = ct.CTkOptionMenu(self.s_page,values=[def_col], text_color= text_col)
+        col_thms = self.color_lang[self.lan_menu_var.get()]
+        col_thms[ self.color_lang['English'].index(def_col)]
+        col_them_menu = ct.CTkOptionMenu(self.s_page, values=[col_thms[ self.color_lang['English'].index(def_col)]], text_color= text_col)
         
         col_them_menu.grid(row = 2, column=1,pady=30, padx=5 ,sticky='nwe')
        
@@ -957,9 +966,10 @@ class Gui:
         self.user_json_cp['less_popup'] = bool.get()
         
     def update_col(self, col_change):
-
+        ind = self.color_lang[self.lan_menu_var.get()].index(col_change)
+        
+        col_change = self.color_lang['English'][ind]
         self.user_json_cp['def_col'] = col_change
-
         ct.set_default_color_theme(col_change)
         for child in frame.winfo_children():      
             child.configure(fg_color=menu_col[col_change])
@@ -967,7 +977,7 @@ class Gui:
             
         
         self.settings()
-        col_them_menu.set(col_change)
+        col_them_menu.set(self.color_lang[self.lan_menu_var.get()][ind])
        
     def sound_slider(self, value):
         
@@ -1021,22 +1031,20 @@ class Gui:
 
         #language_mapping = {
         #'german': dlt.lang.GERMAN,
-        #'english': dlt.lang.ENGLISH,
+        #'English': dlt.lang.English,
         #}
         #user_language = user_json.get('language')
         #t_lang = language_mapping.get(user_language.lower())
         t_lang = user_json.get('language')
         self.lan_menu_var.set(t_lang)
-        if t_lang != 'english':
+        if t_lang != 'English':
             with open('json_files/languages/'+ t_lang +'.json') as f:
                 tr_lan = json.load(f)
+        else:
+            tr_lan = []
         for tr in tr_lan:
             self.translater[tr[0]] = tr[1]
-        
-                
-                
-                
-        
+
                 
         self.sound_slider_var.set(value= user_json['volume'][1])
         self.popup_var.set(value= user_json['less_popup'])

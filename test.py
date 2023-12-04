@@ -3,29 +3,46 @@ import time
 from datetime import datetime
 list = [['Elecktrotechnick', 'Mechanick', 'Physik', 'mathe','banana'], ['Mechanick', 'Physik', 'mathe','banana']]
 #print(process.extract("bandna", list[0], scorer=fuzz.token_set_ratio))
+from CTkScrollableDropdown import *
+import customtkinter
+from CTkScrollableDropdown import *
+import customtkinter
 
-import time
-from datetime import datetime
-import random
-import json
+root = customtkinter.CTk()
 
-# Create a list of datetime objects
-time_objects = []
+customtkinter.CTkLabel(root, text="Different Dropdown Styles").pack(pady=5)
 
+# Some option list
+values = ["python","tkinter","customtkinter","widgets",
+          "options","menu","combobox","dropdown","search"]
 
-    
-import time
-from datetime import datetime
-import json
+# Attach to OptionMenu 
+optionmenu = customtkinter.CTkOptionMenu(root, width=240)
+optionmenu.pack(fill="x", padx=10, pady=10)
 
+CTkScrollableDropdown(optionmenu, values=values)
 
-with open ('json_files/formula.json') as f:
-            r_formula_json = json.load(f)
-            
-with open ('json_files/formula_char.json') as f:
-            r_char_json = json.load(f)
-                   
+# Attach to Combobox
+combobox = customtkinter.CTkComboBox(root, width=240)
+combobox.pack(fill="x", padx=10, pady=10)
 
-print()
-print(r_char_json.pop(f"{r_formula_json['formula']['unnamed formula 1']['values'][1]}"))
+CTkScrollableDropdown(combobox, values=values, justify="left", button_color="transparent")
+
+# Attach to Entry
+customtkinter.CTkLabel(root, text="Live Search Values").pack()
+
+entry = customtkinter.CTkEntry(root, width=240)
+entry.pack(fill="x", padx=10, pady=10)
+
+CTkScrollableDropdown(entry, values=values, command=lambda e: entry.insert(1, e),
+                      autocomplete=True) # Using autocomplete
+
+# Attach to Button 
+button = customtkinter.CTkButton(root, text="choose options", width=240)
+button.pack(fill="x", padx=10, pady=10)
+
+CTkScrollableDropdown(button, values=values, height=270, resize=False, button_height=30,
+                      scrollbar=False, command=lambda e: button.configure(text=e))
+
+root.mainloop()
 

@@ -23,21 +23,6 @@
             "information": "insert information",
             "category": "Elecktrotechinck",
             "creationdate": "01.12.2023 23:34"
-        },
-        "Stop": {
-            "search_terms": [],
-            "formula": [
-                "",
-                []
-            ],
-            "values": [
-                34,
-                35,
-                36
-            ],
-            "information": "insert info",
-            "category": "",
-            "creationdate": "03.12.2023 20:34"
         }
     }
 }
