@@ -110,7 +110,7 @@ class Gui:
         self.toplevell = False
         self.toplevel = None
         self.user_json_cp = ''
-        self.sorting_var = -1
+        self.sorting_var = 0
         #need to translate this
         self.sort_tip_var ='alphabetical'
         self.sort_but_img = [pngs['abc'],pngs['createdate'],pngs['home-category']]
@@ -123,6 +123,7 @@ class Gui:
                            'Deutsch':['Grün', 'Blau','Dunkel-Blau', 'Orange'],
                            'Français':['vert', 'blue', 'dark-blue', 'orange']}
         self.var_inps = []
+        self.search_inp = ct.StringVar()
   
     def translate(self, text):
         help = 'help'
@@ -142,6 +143,8 @@ class Gui:
     def add_formula(self, new_frm_name:str, first_var:int):
         # TODO if added not sorted pls change
         global scr_frame, boxes, information,info_index
+        
+        
         for kid in frame.winfo_children():
             kid.configure(state='disabled') 
             kid.configure(fg_color=self.colorscale(col_th, .5))
@@ -201,7 +204,7 @@ class Gui:
         labl_frame.grid_rowconfigure(0, weight=1)
         cal_label = ct.CTkLabel(master=labl_frame,
                                 text=self.translate('con value'), font=font1)
-        cal_label.grid(row=0, column=0, sticky='nswe', padx=5)
+        cal_label.grid(row=0, column=0, padx=5)
         
         cal_label = ct.CTkLabel(master=labl_frame,
                                 text=self.translate('Unit'), font=font1)
@@ -217,7 +220,7 @@ class Gui:
         cal_label.grid(row=0, column=4, sticky='nswe', padx=5)
         cal_label = ct.CTkLabel(master=labl_frame,
                                 text=self.translate('info'), font=font1)
-        cal_label.grid(row=0, column=5, sticky='nswe', padx=5)
+        cal_label.grid(row=0, column=5, padx=5)
         
         
         boxes,  info_index = [], []
@@ -250,12 +253,15 @@ class Gui:
         pass
          #\frac = /
          #\frac{\frac{1}{x}+\frac{1}{y}}{y-z}
+    
     def edit_var(self, formula:str, number:int, first_var : int):
         self.var_inps = [ct.StringVar() for _ in range(number)]
         for i in range(number):            
             inp_frame = ct.CTkFrame(master=scr_frame, fg_color=grey)
             inp_frame.grid(row=i+1, column=0, columnspan=4,sticky='nswe', pady=5, padx=5)
             inp_frame.grid_columnconfigure([1,2,3,4,5], weight=2)
+            
+                
 
             inp_frame.grid_rowconfigure( [j for j in range(number)], weight=1)  
             
@@ -310,7 +316,7 @@ class Gui:
             information[1][2].append(symb_n_inp)
             #info box
             information[1][3].append(var_inp)
-    
+          
     def add_con(self, index:int, var_inp: Widget):
         if var_inp[index].cget('fg_color') == grey:
             var_inp[index].configure(fg_color=col_th, state='normal')
@@ -378,7 +384,7 @@ class Gui:
             for kid in frame.winfo_children():
                     kid.configure(state='normal') 
                     kid.configure(fg_color=col_th)
-            self.sorting(r_formula_json)
+            self.sorting(r_formula_json, False)
             self.home()    
                     
     def open_file(self):
@@ -512,11 +518,60 @@ class Gui:
     
             self.home()
 
-    def search_formula(self):
-        pass
+
+
+    def search_formula(self,Shit:any, Search_Term:str)-> any:
+        search= {'formula': [formula for formula in r_formula_json['formula']],
+                 'variables': [r_char_json[variable]['s_name'] for variable in r_char_json],
+                 'search_terms': [r_formula_json['formula'][term]['search_terms'] for term in r_formula_json['formula']],
+                 'category': [r_formula_json['formula'][category]['category'] for category in r_formula_json['formula']]}
+        cat_fr = ''
+        searched_formula = []
+        
+        for cat in search:
+            if cat != 'search_terms':
+                if Search_Term in search[cat]:
+                        cat_fr = cat
+                        print(cat, Search_Term)
+                        
+            else:
+                for term in range(len(search[cat])):
+                    if Search_Term in search[cat][term]:
+                        cat_fr = cat
+                        print(cat, Search_Term)
+               
+            if cat_fr == 'formula':
+                searched_formula.append(Search_Term)
+                   
+            elif cat_fr == 'variables':
+                for variable in r_char_json:
+                    if Search_Term == r_char_json[variable]:
+                        searched_formula.append(variable)            
+            else:
+                for formula in r_formula_json['formula']:
+                    if cat_fr == 'category':
+                        if Search_Term == r_formula_json['formula'][formula][cat_fr]:
+                            searched_formula.append(formula)
+                   
+                    else: 
+                        if Search_Term in r_formula_json['formula'][formula]['search_terms']:
+                            searched_formula.append(formula)
+        if cat_fr != '':
+            
+            r_formula_json_cp = r_formula_json.copy()
+            r_formula_json_cp = {'formula':{key: value for key, value in r_formula_json["formula"].items() if key in searched_formula}}
+            self.show_formulas(r_formula_json_cp)
+        else:
+            self.show_formulas({'formula':{}})
+            
+                    
+            
+            
    
     def edit_formula(self):
         pass
+   
+
    
     def set_values(self, formula):
 
@@ -776,7 +831,7 @@ class Gui:
             return True
         
     def home(self):
-        global sort_but
+        global sort_but, frame_list
         
         self.user_settings()
         
@@ -795,27 +850,42 @@ class Gui:
         self.h_page.grid_rowconfigure(1, weight=1)
         self.h_page.tkraise()
         
+        
+        
 
         
         sort_but = ct.CTkButton(master=self.h_page, text='',image=self.sort_but_img[self.sorting_var],
-                                command=lambda: (self.sorting(r_formula_json)),height=40,width=35)
+                                command=lambda: (self.sorting(r_formula_json,True)),height=40,width=35)
         sort_but.grid(row = 0, column=0, pady =  5, padx=(0,5), sticky='nwe')
         CTkToolTip.CTkToolTip(sort_but,message=self.sort_tip_var)
         
         search_inp = ct.CTkEntry(master=self.h_page, placeholder_text=self.translate('formula'), 
                                     width=100, height=40,  fg_color=col_th, 
-                                    placeholder_text_color=text_col, border_width=0)
+                                    placeholder_text_color=text_col, border_width=0,
+                                    textvariable=self.search_inp)
         search_inp.grid(row = 0, column=1, pady= 5, columnspan=1, sticky='nwe')
         
-        search_but = ct.CTkButton(master=self.h_page, text=self.translate('search'), command=self.search_formula,
+        search_inp.bind('<Return>', lambda Event:self.search_formula( Event,self.search_inp.get()))
+    
+        
+        search_but = ct.CTkButton(master=self.h_page, text=self.translate('search'), command=
+                                  lambda:(self.search_formula('shit',self.search_inp.get())),
                                         width=100, height=40,text_color= text_col)
         search_but.grid(row = 0, column=2, pady =  5, padx=5, sticky='nwe')
+        
 
+        
+        self.show_formulas(r_formula_json)
+        
+        
+    
+    def show_formulas(self, Formulas:dict):
+        
         frame_list = ct.CTkScrollableFrame(self.h_page,fg_color=grey_fram)
         frame_list.grid(row=1,column=0,columnspan=3, sticky='nwes')
         frame_list.grid_columnconfigure(0, weight=1)
 
-        for i, formula in enumerate(r_formula_json['formula']):
+        for i, formula in enumerate(Formulas['formula']):
            
             frame_formula = ct.CTkFrame(frame_list,width=250, height=75,fg_color=grey)
             frame_formula.grid(row=i,column=0,pady=5, padx=5, sticky='nswe')
@@ -825,18 +895,18 @@ class Gui:
             ct.CTkButton(frame_formula,text=formula,width=85, text_color=text_col,
                          command=lambda k = formula: (self.set_values(k))
                                     ).grid(row=0, column=0, pady = 5, padx=5,sticky='w')
-            ct.CTkLabel(frame_formula, text=r_formula_json['formula'][formula]['formula'][0], 
+            ct.CTkLabel(frame_formula, text=Formulas['formula'][formula]['formula'][0], 
                                  font=font1).grid(row=0, column=1, pady =8, padx=5,sticky='we')
             
-            ct.CTkLabel(frame_formula, text=r_formula_json['formula'][formula]["category"], 
+            ct.CTkLabel(frame_formula, text=Formulas['formula'][formula]["category"], 
                                    font=font1).grid(row=0, column=2, pady =8, padx=10,sticky='e')
-            ct.CTkLabel(frame_formula, text=r_formula_json['formula'][formula]["creationdate"], 
+            ct.CTkLabel(frame_formula, text=Formulas['formula'][formula]["creationdate"], 
                                    font=font1).grid(row=0, column=3, pady =8, padx=10,sticky='e')
     
-    def sorting(self, dictionary:dict)-> dict:   
+    def sorting(self, dictionary:dict, bool: bool)-> dict:   
         global r_formula_json, sort_but
-        
-        self.sorting_var +=1
+        if bool:
+            self.sorting_var +=1
         
         if self.sorting_var == 3:
            self.sorting_var = 0
@@ -1112,7 +1182,7 @@ class Gui:
         
         self.home()
         
-        self.sorting(r_formula_json)
+        self.sorting(r_formula_json, False)
         self.menue_buts()
         self.zoomed()
         

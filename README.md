@@ -4,12 +4,14 @@
 These functions are already in the project:
 - Calculate formula with values and connstants
 - add new formula
+- formula notes
+- advanced formula creating
 - formula documentation(basics of latex)
 - edit formula
 - ~~delet formula~~
+- ~~Simple search~~
 - Fuzzy search
 - ~~decent settings~~
-- Add complexity
 - **if the project is at least usable here will be a pinguin**
 
 

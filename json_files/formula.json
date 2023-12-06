@@ -1,11 +1,49 @@
 {
     "formula": {
+        "FFFOW": {
+            "search_terms": [
+                "jdfajd",
+                "hs"
+            ],
+            "formula": [
+                "",
+                []
+            ],
+            "values": [
+                28,
+                29,
+                30
+            ],
+            "information": "insert info",
+            "category": "Deusch",
+            "creationdate": "06.12.2023 19:22"
+        },
+        "Kaimi": {
+            "search_terms": [
+                "Fortnite",
+                "Mechanicker",
+                "Philips",
+                "Schl\u00c3\u00bcssel"
+            ],
+            "formula": [
+                "",
+                []
+            ],
+            "values": [
+                31,
+                32,
+                33
+            ],
+            "information": "insert info",
+            "category": "Isch Gemein",
+            "creationdate": "06.12.2023 19:22"
+        },
         "Leistung": {
             "search_terms": [
                 "Spannung",
                 "Strom",
                 "Wiederstand",
-                "Elektrotechnick"
+                "Elektrotechnik"
             ],
             "formula": [
                 "U=I*R",
@@ -21,8 +59,79 @@
                 24
             ],
             "information": "insert information",
-            "category": "Elecktrotechinck",
+            "category": "Elektrotechink",
             "creationdate": "01.12.2023 23:34"
+        },
+        "Test1": {
+            "search_terms": [
+                "Elektrotechnik",
+                "insert info",
+                "dance with you"
+            ],
+            "formula": [
+                "",
+                []
+            ],
+            "values": [
+                34,
+                35,
+                36
+            ],
+            "information": "insert info",
+            "category": "Fettmops",
+            "creationdate": "06.12.2023 19:23"
+        },
+        "Test2": {
+            "search_terms": [
+                "Deutsch",
+                "Stift"
+            ],
+            "formula": [
+                "",
+                []
+            ],
+            "values": [
+                37,
+                38,
+                39
+            ],
+            "information": "insert info",
+            "category": "Fett",
+            "creationdate": "06.12.2023 19:23"
+        },
+        "Test3": {
+            "search_terms": [
+                "Elektrotechnik",
+                "Strom",
+                "HS"
+            ],
+            "formula": [
+                "",
+                []
+            ],
+            "values": [
+                40,
+                41,
+                42
+            ],
+            "information": "insert info",
+            "category": "Buch",
+            "creationdate": "06.12.2023 19:23"
+        },
+        "Deusch": {
+            "search_terms": ["hs"],
+            "formula": [
+                "",
+                []
+            ],
+            "values": [
+                43,
+                44,
+                45
+            ],
+            "information": "insert info",
+            "category": "Kaimi",
+            "creationdate": "06.12.2023 21:49"
         }
     }
 }
