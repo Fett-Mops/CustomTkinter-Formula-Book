@@ -6,7 +6,7 @@ These functions are already in the project:
 - Calculate formula Error Messages
 - ~~add new formula~~
 - add the formula to add formula(:
-- formula notes -currently working on 
+- formula notes (currently working on)
 - advanced formula creating
 - formula documentation(basics of latex)
 - ~~edit formula~~
