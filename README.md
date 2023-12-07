@@ -1,12 +1,13 @@
 # CustomTkinter Formula Book
 
 ## Important
+**The function i am currently working on is marked with a cute pinguin**
 These functions are already in the project:
 - Calculate formula with values and connstants
 - Calculate formula Error Messages
 - ~~add new formula~~
 - add the formula to add formula(:
-- formula notes (currently working on)
+- formula notes ![working on](https://storage.googleapis.com/sticker-prod/EdCLfPirTqeKzshtd2yQ/17.webp)
 - advanced formula creating
 - formula documentation(basics of latex)
 - ~~edit formula~~
@@ -14,7 +15,7 @@ These functions are already in the project:
 - ~~Simple search~~
 - Fuzzy search
 - ~~decent settings~~
-- **if the project is at least usable here will be a pinguin**
+
 
 
 ## Introduction
