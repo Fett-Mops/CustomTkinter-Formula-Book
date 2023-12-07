@@ -84,7 +84,7 @@ for i in sort_name:
 frame = ct.CTkFrame(root, width=25)
 frame.grid(row = 0,rowspan=2, column=0, sticky='nws', pady=(4,5), padx=(5,5))
 frame.grid_rowconfigure(3,weight=1)
-l = []
+
 
 
 class Gui:
@@ -124,6 +124,9 @@ class Gui:
                            'Français':['vert', 'blue', 'dark-blue', 'orange']}
         self.var_inps = []
         self.search_inp = ct.StringVar()
+        self.inp_formula_var = ct.StringVar()
+        self.cat_inp = ct.StringVar()
+        self.edit_bool = False
   
     def translate(self, text):
         help = 'help'
@@ -133,16 +136,22 @@ class Gui:
             try:
                 help =self.translater[text]
             except:
+                # ? only print with excuse
+                
                 print(text)
             return help
     
     def write_json(self, path:str, inp:any)->any:
         with open (path, 'w') as f:
             json.dump(inp, f, indent=4)
-    
+            
+    def read_json(self, path:str)->any:
+        with open (path) as f:
+            return json.load(f)
+         
     def add_formula(self, new_frm_name:str, first_var:int):
         # TODO if added not sorted pls change
-        global scr_frame, boxes, information,info_index
+        global scr_frame, boxes, information,info_index, coc
         
         
         for kid in frame.winfo_children():
@@ -169,7 +178,8 @@ class Gui:
         inp_formula = ct.CTkEntry(master=self.a_page,width=50, height=35,
                                          fg_color=col_th, border_width=0, bg_color='transparent',
                                         placeholder_text=self.translate('formula'),
-                                        placeholder_text_color=text_col)
+                                        placeholder_text_color=text_col,
+                                        textvariable=self.inp_formula_var)
         inp_formula.grid(row=1, column=0,columnspan=3, sticky='nswe', pady=(0,5))
         
         helpful_frame = ct.CTkFrame(master=self.a_page, fg_color='transparent')
@@ -192,6 +202,7 @@ class Gui:
                                         command=lambda:(self.read_formula(inp_formula)))
         reload_scr_frame.grid(row=0, column=0)
         
+        
         #scrolable fram
         scr_frame = ct.CTkScrollableFrame(master=self.a_page, fg_color=grey_fram)
         scr_frame.grid(row=2, column=0, columnspan=4, sticky='nswe')
@@ -202,6 +213,7 @@ class Gui:
         labl_frame.grid(row=0,column=0,sticky='nswe',padx=5, pady=5)
         labl_frame.grid_columnconfigure([0,1,2,3,4,5], weight=1)
         labl_frame.grid_rowconfigure(0, weight=1)
+        
         cal_label = ct.CTkLabel(master=labl_frame,
                                 text=self.translate('con value'), font=font1)
         cal_label.grid(row=0, column=0, padx=5)
@@ -222,9 +234,13 @@ class Gui:
                                 text=self.translate('info'), font=font1)
         cal_label.grid(row=0, column=5, padx=5)
         
+            
+        
         
         boxes,  info_index = [], []
-        information = [[inp_formula],[[],[],[],[]]]        
+        information = [[inp_formula],]   
+        
+        coc =[]     #TODO: rm name thks
         number = 3
         
         self.edit_var(new_frm_name,number, first_var)
@@ -232,22 +248,28 @@ class Gui:
         inp_category = ct.CTkEntry(master=self.a_page,
                                          fg_color=col_th, border_width=0, bg_color='transparent',
                                         placeholder_text=self.translate('category'),height=35,
-                                        placeholder_text_color=text_col)
+                                        placeholder_text_color=text_col,
+                                        textvariable=self.cat_inp)
         inp_category.grid(row=3, column=0,columnspan=4, sticky='we', pady=5)
         
         information.append(inp_category)
 
         save_but = ct.CTkButton(master=self.a_page, text=self.translate('save'), height=35,text_color= text_col,
-                                           command= lambda:(self.get_formula(name_formula.get(),information)))
+                                           command= lambda:(self.get_formula(name_formula.get(),information,'not pp')))
         save_but.grid(row = 4, column=2,columnspan= 2, sticky='nwse') 
         
         
         cancle_but = ct.CTkButton(master=self.a_page, text=self.translate('cancle'),text_color= text_col,
                                              height=35, fg_color=del_col[def_col],hover_color=del_h_col[def_col],
-                                             command=lambda:(self.idk_dont_look(self.translate("don't save changes"),
-                                                                                None,[self.translate("don't save")],'center', False,self.translate('leaf'), new_frm_name)))
+                                             command=lambda:(self.get_formula(new_frm_name,information,'pp')))
         
         cancle_but.grid(row = 4, column=0, columnspan= 2,sticky='nwse',padx=(0,5)) 
+        try:
+            self.new_frm_name.set(new_frm_name)
+            self.inp_formula_var.set(r_formula_json['formula'][new_frm_name]['formula'][0])
+            self.cat_inp.set(r_formula_json['formula'][new_frm_name]['category'])
+        except:
+            pass
     
     def read_formula(self, l_formula):
         pass
@@ -256,6 +278,11 @@ class Gui:
     
     def edit_var(self, formula:str, number:int, first_var : int):
         self.var_inps = [ct.StringVar() for _ in range(number)]
+        self.unit_inps = [ct.StringVar() for _ in range(number)]
+        self.unit_n_inps = [ct.StringVar() for _ in range(number)]
+        self.symb_n_inps = [ct.StringVar() for _ in range(number)]
+        self.boxes = [ct.Variable() for _ in range(number)]
+        
         for i in range(number):            
             inp_frame = ct.CTkFrame(master=scr_frame, fg_color=grey)
             inp_frame.grid(row=i+1, column=0, columnspan=4,sticky='nswe', pady=5, padx=5)
@@ -267,7 +294,8 @@ class Gui:
             
             box_x = ct.CTkCheckBox(master=inp_frame,text='', width=5,
                                                 corner_radius=5,
-                                                command=lambda i = i: (self.add_con(i, information[1][3])))
+                                                variable=self.boxes[i],
+                                                command=lambda i = i: (self.add_con(i, coc)))
             boxes.append(box_x)
             box_x.grid(row=0, column=0, pady=5, padx=(10,0))    
                  
@@ -279,22 +307,22 @@ class Gui:
             
 
                                           
-            unit_inp = ct.CTkEntry(master=inp_frame
+            unit_inp = ct.CTkEntry(master=inp_frame,textvariable=self.unit_inps[i]
                                     ,width=50, height=35,  fg_color=col_th, border_width=0, bg_color='transparent',
                                     placeholder_text_color=text_col,text_color=text_col)
             unit_inp.grid(row = 0, column=2,  pady= 5, padx=(5,0), sticky='nwes')
             
-            unit_n_inp = ct.CTkEntry(master=inp_frame
+            unit_n_inp = ct.CTkEntry(master=inp_frame,textvariable=self.unit_n_inps[i]
                                     ,width=50, height=35,  fg_color=col_th, border_width=0, bg_color='transparent',
                                     placeholder_text_color=text_col,text_color=text_col)
             unit_n_inp.grid(row = 0, column=3, pady= 5,padx=(5,0), sticky='nwes')
         
         #change to listU
             symb_label = ct.CTkLabel(master = inp_frame  ,text=self.translate('formula'), font=font1, 
-                                           fg_color=grey,text_color=text_col)
+                                           fg_color=grey,text_color=text_col,)
             symb_label.grid(row = 0, column=4, pady= (8,5), padx=10, sticky='nwes')
             
-            symb_n_inp = ct.CTkEntry(master=inp_frame
+            symb_n_inp = ct.CTkEntry(master=inp_frame,textvariable=self.symb_n_inps[i]
                                     ,width=50, height=35,  fg_color=col_th, border_width=0, bg_color='transparent',
                                     placeholder_text_color=text_col,text_color=text_col)
             symb_n_inp.grid(row = 0, column=5, pady= 5, sticky='nwes')
@@ -309,13 +337,25 @@ class Gui:
             edit_var_info_but = ct.CTkButton(master=inp_frame,
                                            text='' ,
                                            image=pngs['edit-info'],width=30,height= 35, 
-                                           command=lambda:(self.edit_info(formula,info_index[i],i)) )
+                                           command=lambda i = i:(self.edit_info(formula,info_index[i])) )
             edit_var_info_but.grid(row = 0, column=6, sticky='nwe', pady = 5, padx=5) 
-            information[1][0].append(unit_inp)
-            information[1][1].append(unit_n_inp)
-            information[1][2].append(symb_n_inp)
-            #info box
-            information[1][3].append(var_inp)
+            
+            coc.append(var_inp)
+            try:
+                short = r_char_json[f"{r_formula_json['formula'][formula]['values'][i]}"]
+                
+                self.symb_n_inps[i].set(value=short['s_name'])
+                self.unit_inps[i].set(value=short['unit'])
+                self.unit_n_inps[i].set(value=short['u_name'])
+                #TODO: Val if cancle not pop but leafe idk
+                if short['value'] != None:
+                    self.var_inps[i].set(value=short['value'])
+                    self.boxes[i].set(value=1)
+                    var_inp.configure(fg_color=col_th, state='normal')
+                    
+
+            except:
+                pass
           
     def add_con(self, index:int, var_inp: Widget):
         if var_inp[index].cget('fg_color') == grey:
@@ -324,60 +364,119 @@ class Gui:
             var_inp[index].configure(fg_color=grey, state='disabled')
             self.var_inps[index].set(value='')
     
-    def get_formula(self, new_frm_name, information):
-        r_formula_json['formula'][new_frm_name] = r_formula_json['formula'].pop(self.old_frm_name.get())
-
+    def get_formula(self, new_frm_name : str, information:list[str,list[str],str], *args):
+        
+        if  args[0] == 'pp':
             
-        print( r_formula_json['formula'][new_frm_name])
-
-        #information = [[inp_formula,edit_info_box],[[unit_inp],[unit_n_inp],[symb_n_inp][info_box]],category] 
-        print(information[0][0].get())
-        print(information[2].get())
-        r_formula_json['formula'][new_frm_name]['formula'][0] = information[0][0].get()
+            
+            self.idk_dont_look(self.translate("don't save changes"),
+                               None,[self.translate("don't save")],
+                               'center', False,self.translate('leaf'),
+                               new_frm_name)  
+        elif self.edit_bool:
+            self.edit_for_var(new_frm_name , information)
+        else:
+            
+            
+            self.add_for_var(new_frm_name, information)
+        
+    def edit_for_var(self,new_frm_name , information):
+        
+        
+        r_char_json_cp = r_char_json.copy()
+        r_formula_json_cp = r_formula_json.copy()
+        
+        r_formula_json_cp['formula'][new_frm_name] = r_formula_json_cp['formula'].pop(self.old_frm_name.get())
+  
+        
+        r_formula_json_cp['formula'][new_frm_name]['formula'][0] = self.inp_formula_var.get()
+        
+        r_formula_json_cp['formula'][new_frm_name]['category'] = self.cat_inp.get()    
+       
+        
+        
+        for  i, var in enumerate(r_formula_json_cp['formula'][new_frm_name]['values']):
+              
+            if self.var_inps[i].get() == '':
+                r_char_json_cp[f'{var}']['value'] = None
+            else:
+                r_char_json_cp[f'{var}']['value'] = self.var_inps[i].get()
+            r_char_json_cp[f'{var}']['u_name'] = self.unit_n_inps[i].get()
+            r_char_json_cp[f'{var}']['s_name'] = self.symb_n_inps[i].get()
+            #r_char_json[char_len+i]['information'] = information[1][3][i].get()
+        
+    
+        
+        
+        self.idk_dont_look(self.translate('save chages'), None,[self.translate('save')],
+                           'center', False,self.translate('save'),new_frm_name)
+    
+    def add_for_var(self,new_frm_name, information):
+        
+        r_formula_json['formula'][new_frm_name] = r_formula_json['formula'].pop(self.old_frm_name.get())
+        #information = [[inp_formula,edit_info_box],
+        #print(self.var_inps)
+        #self.unit_inps
+        #self.unit_n_inps
+        #self.symb_n_inps
+        #self.symb_inps
+        # category] 
+       
+        r_formula_json['formula'][new_frm_name]['formula'][0] = self.inp_formula_var.get()
+        #information[0][0].get()
         #r_formula_json['formula'][new_frm_name]['information'] = information[0][1].get() 
-        r_formula_json['formula'][new_frm_name]['category'] = information[2].get()    
+        r_formula_json['formula'][new_frm_name]['category'] = self.cat_inp.get()     
             
         char_len = len(r_char_json)
         # char exept symbol is working
-        for  i, var in enumerate(information[1][0]):
+
+            
+        for  i, var in enumerate(self.var_inps):
             r_formula_json['formula'][new_frm_name]['values'].append(char_len+i)
             r_char_json[char_len+i] ={
                             "symbol": 'change Thies',
                             "s_name": "",
                             "value": 0,
-                            "unit": var.get(),
+                            "unit": "",
                             "u_name": '',
-                            "category": information[2].get(),
+                            "category": self.cat_inp.get(),
                             "information": "insert information"}
-            r_char_json[char_len+i]['u_name'] = information[1][1][i].get()
-            r_char_json[char_len+i]['s_name'] = information[1][2][i].get()
+    
+            if self.var_inps[i].get() == '':
+                r_char_json[char_len+i]['value'] = None
+            r_char_json[char_len+i]['u_name'] = self.unit_n_inps[i].get()
+            r_char_json[char_len+i]['s_name'] = self.symb_n_inps[i].get()
             #r_char_json[char_len+i]['information'] = information[1][3][i].get()
-
             
-        print(r_char_json[char_len])
-        print(r_char_json[char_len+1])
-        print(r_char_json[char_len+2])
-        #print(char_len)
-        print(r_formula_json['formula'][new_frm_name])
-     
-
-            
-            
-                
         self.idk_dont_look(self.translate('save chages'), None,[self.translate('save')],
                            'center', False,self.translate('save'),new_frm_name)
-    
+
     def idk_dont_look(self, message, icon, options, justify, sound, title, new_frm_name):
         
+        global r_formula_json, r_char_json
+    
         if self.popup_var.get() or self.messagebox(message,icon, options, justify, sound, title):
+           
             if title ==  self.translate('save'):
                 r_formula_json['formula'][new_frm_name]['creationdate'] = datetime.now().strftime("%d.%m.%Y %H:%M")
-                
                 self.write_json('json_files/formula.json',r_formula_json)
                 self.write_json('json_files/formula_char.json',r_char_json)
+                r_formula_json = self.read_json('json_files/formula.json')
+                r_char_json = self.read_json('json_files/formula_char.json')
+                
+                
+                
                 self.user_settings()
+                
             elif title == self.translate('leaf'):
-                r_formula_json['formula'].pop(new_frm_name)
+                if self.edit_bool:
+
+                    self.edit_bool = False
+                else:
+                    
+                    r_formula_json['formula'].pop(new_frm_name)
+             
+                    
                 
  
 
@@ -385,8 +484,7 @@ class Gui:
                     kid.configure(state='normal') 
                     kid.configure(fg_color=col_th)
             self.sorting(r_formula_json, False)
-            self.home()    
-                    
+                             
     def open_file(self):
         os.system('start formula_syntax.pdf')
         
@@ -413,8 +511,10 @@ class Gui:
 
         return "#%02x%02x%02x" % (r, g, b)
     
-    def edit_info(self, formula, var, i):
-        print(i)
+    
+    
+    def edit_info(self, formula, var):
+        
         
         if self.toplevell :
             self.toplevell = False
@@ -450,6 +550,8 @@ class Gui:
             edit_info_win.insert('end',r_formula_json['formula'][formula]['information'])
         save_edit = ct.CTkButton(self.toplevel, text=self.translate('save'))
         save_edit.grid(row=3,column=0, sticky='nswe', padx=5,pady=(0,5))
+          
+          
                 
     def add_formula_name(self):
         frm_name = ct.CTkInputDialog(title=self.translate('name formula'), button_text_color= text_col,
@@ -465,14 +567,14 @@ class Gui:
                     if i >=1:
                         try: 
                             r_formula_json['formula'][frm_safe +f' {i}' ]
-                            print(i)
+                            
                         except:                      
                             frm_safe = frm_safe +f' {i}' 
-                            print(i)
+                            
             self.new_frm_name.set(frm_safe)
             self.old_frm_name.set(frm_safe)
             r_formula_json['formula'][frm_safe] = {'search_terms':[],
-                                                   'formula':['',[]],
+                                                   'formula':['2=1*1',[1,1,1]],
                                                    'values':[],
                                                    'information': 'insert info',
                                                    'category' : '',
@@ -496,6 +598,7 @@ class Gui:
                 for var in r_formula_json['formula']:
                         if formula == var:
                             break
+                        #TODO: Understand and fix
                         
                         for i in range(len(r_formula_json['formula'][formula]['values'])):
                             current_value = r_formula_json['formula'][formula]['values'][i]
@@ -503,10 +606,9 @@ class Gui:
                             if current_value not in r_formula_json['formula'][var]['values']:
                                 try:
                                     r_char_json.pop(current_value)
-                                    print(1, current_value)
+                                    
                                 except KeyError:
-                                    print(2, f"{current_value} not found in r_char_json")
-
+                                    pass
                                 self.write_json('json_files/formula_char.json', r_char_json)
   
                                     
@@ -517,8 +619,6 @@ class Gui:
 
     
             self.home()
-
-
 
     def search_formula(self,Shit:any, Search_Term:str)-> any:
         search= {'formula': [formula for formula in r_formula_json['formula']],
@@ -532,13 +632,12 @@ class Gui:
             if cat != 'search_terms':
                 if Search_Term in search[cat]:
                         cat_fr = cat
-                        print(cat, Search_Term)
                         
             else:
                 for term in range(len(search[cat])):
                     if Search_Term in search[cat][term]:
                         cat_fr = cat
-                        print(cat, Search_Term)
+                        
                
             if cat_fr == 'formula':
                 searched_formula.append(Search_Term)
@@ -562,16 +661,12 @@ class Gui:
             r_formula_json_cp = {'formula':{key: value for key, value in r_formula_json["formula"].items() if key in searched_formula}}
             self.show_formulas(r_formula_json_cp)
         else:
-            self.show_formulas({'formula':{}})
-            
-                    
-            
-            
+            self.show_formulas({'formula':{}})       
    
-    def edit_formula(self):
-        pass
-   
-
+    def edit_formula(self, formula:str):
+        self.edit_bool = True
+        self.old_frm_name.set(value=formula)
+        self.add_formula(formula,len(r_char_json))
    
     def set_values(self, formula):
 
@@ -581,7 +676,8 @@ class Gui:
         pngs['edit-formula'].configure(size=(40,40))
         edit_formula_but = ct.CTkButton(master=frame, image=pngs['edit-formula'],
                                         text='', width=60, height=60,fg_color=menu_col[def_col],
-                                        hover_color=menu_h_col[def_col])
+                                        hover_color=menu_h_col[def_col], 
+                                        command=lambda: self.edit_formula(formula))
         edit_formula_but.grid(row=1 ,column=0,pady=10, padx=10)
         
         
@@ -620,6 +716,7 @@ class Gui:
         cal_inp_var = [ct.StringVar(value='') for _ in range(len(r_formula_json['formula'][formula]['formula'][1]))]
         ryd_loop =r_formula_json['formula'][f'{formula}']['formula'][0].replace('*', '').replace('+', '').replace('-', '').replace('=', '').replace('/', '')
         Units, Buttons, inp = [], [[],[]], []
+        cover = True
         for i, var in enumerate(ryd_loop)  :            
             inp_frame = ct.CTkFrame(master=scr_frame, fg_color=grey)
             inp_frame.grid(row=i, column=0, sticky='nswe', pady=(0,5))
@@ -639,7 +736,7 @@ class Gui:
                                 )
             unit_label = ct.CTkLabel(master = inp_frame,  font=font1,  fg_color=grey,
                             text= r_char_json[f"{r_formula_json['formula'][f'{formula}']['values'][i]}"]['unit'])
-            if r_char_json[f"{r_formula_json['formula'][f'{formula}']['values'][i]}"]['value'] != 0:
+            if r_char_json[f"{r_formula_json['formula'][f'{formula}']['values'][i]}"]['value'] != None:
                 cal_inp_var[i].set(r_char_json[f"{r_formula_json['formula'][formula]['values'][i]}"]['value'])
                 box_x.configure(border_color=grey_disa,state='disabled')
                
@@ -655,10 +752,14 @@ class Gui:
                     
                     
                     # ! not functional for more var than three
-            if r_formula_json['formula'][f'{formula}']['values'][1] == i:
-                var_inp.configure(state='disabled')
-                var_inp.configure(fg_color=self.colorscale(col_th,.5))
-                self.cal_rad_var.set(i)
+            
+            if r_char_json[f"{r_formula_json['formula'][formula]['values'][i]}"]['value'] == None:
+                if cover:
+                    
+                    var_inp.configure(state='disabled')
+                    var_inp.configure(fg_color=self.colorscale(col_th,.5))
+                    self.cal_rad_var.set(i)
+                    cover = False
 
             var_inp.grid(row = 0, column=1, pady= 5, padx=(5,0), sticky='nwes')
             inp.append(var_inp)
@@ -785,14 +886,13 @@ class Gui:
             pass
     
     def disable_inp(self, inp, formula):
-        
-        
         for i , var in enumerate(inp):
             if int(self.cal_rad_var.get()) == i:
                 var.configure(state='disabled')
                 var.configure(fg_color=self.colorscale(col_th, .5))
                 cal_inp_var[i].set('')
-            elif r_formula_json['formula'][f'{formula}']['values'][1][i] != 1:
+                
+            elif r_char_json[f"{r_formula_json['formula'][f'{formula}']['values'][i]}"]['value'] == None:
                 var.configure(state=NORMAL)
                 var.configure(fg_color=col_th)
 
@@ -834,7 +934,7 @@ class Gui:
         global sort_but, frame_list
         
         self.user_settings()
-        
+        self.Sound_effects('Home')
        
         for child in frame.winfo_children():      
             child.configure(fg_color=menu_col[def_col])
@@ -875,9 +975,7 @@ class Gui:
         
 
         
-        self.show_formulas(r_formula_json)
-        
-        
+        self.show_formulas(r_formula_json) 
     
     def show_formulas(self, Formulas:dict):
         
@@ -1079,17 +1177,13 @@ class Gui:
         self.user_json_cp['language'] = self.lan_menu_var.get()
         user_json = self.user_json_cp
         
-        with open ('json_files/user_data.json', 'w') as f:
-            
-            json.dump(user_json,f , indent=4)
-      
+        self.write_json('json_files/user_data.json', user_json)
         self.user_settings()
         self.settings()
 
     def user_settings(self):
         global less_popu, lang, col_th, def_col,  t_lang,tr_lan, auto_app, var_app, user_json, text_col
-        with open ('json_files/user_data.json') as f:
-            user_json = json.load(f)
+        user_json = self.read_json('json_files/user_data.json')
             
         self.user_json_cp = user_json.copy()
         def_col = user_json['def_col']
@@ -1108,8 +1202,7 @@ class Gui:
         t_lang = user_json.get('language')
         self.lan_menu_var.set(t_lang)
         if t_lang != 'English':
-            with open('json_files/languages/'+ t_lang +'.json') as f:
-                tr_lan = json.load(f)
+            tr_lan = self.read_json('json_files/languages/'+ t_lang +'.json') 
         else:
             tr_lan = []
         for tr in tr_lan:
@@ -1169,15 +1262,16 @@ class Gui:
     def zoomed(self):
         pass
           #root.state('zoomed')
-        
+    
+    def Sound_effects(self, Soundtype:str)->None:
+        """"possible Values: Button, Home, Save, Cancle, calc"""
+        pass
+    
     def run(self):
         
         global r_formula_json, r_char_json, user_json
-        with open ('json_files/formula.json') as f:
-            r_formula_json = json.load(f)
-            
-        with open ('json_files/formula_char.json') as f:
-            r_char_json = json.load(f)
+        r_formula_json = self.read_json('json_files/formula.json')
+        r_char_json = self.read_json('json_files/formula_char.json')
                    
         
         self.home()

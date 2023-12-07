@@ -110,7 +110,7 @@
     "12": {
         "symbol": "N<sub>L</sub>",
         "s_name": "Loschmidt constant",
-        "value": "2.686778*10^25",
+        "value": null,
         "unit": "per cubic meter",
         "category": "Chemical physics",
         "information": "insert information",
@@ -227,7 +227,7 @@
     "25": {
         "symbol": "change Thies",
         "s_name": "",
-        "value": 0,
+        "value": null,
         "unit": "",
         "u_name": "",
         "category": "",
@@ -236,7 +236,7 @@
     "26": {
         "symbol": "change Thies",
         "s_name": "",
-        "value": 0,
+        "value": null,
         "unit": "",
         "u_name": "",
         "category": "",
@@ -245,7 +245,7 @@
     "27": {
         "symbol": "change Thies",
         "s_name": "",
-        "value": 0,
+        "value": null,
         "unit": "",
         "u_name": "",
         "category": "",
@@ -254,82 +254,82 @@
     "28": {
         "symbol": "change Thies",
         "s_name": "",
-        "value": 0,
+        "value": null,
         "unit": "",
         "u_name": "",
-        "category": "Deusch",
+        "category": "ell0",
         "information": "insert information"
     },
     "29": {
         "symbol": "change Thies",
         "s_name": "",
-        "value": 0,
+        "value": null,
         "unit": "",
         "u_name": "",
-        "category": "Deusch",
+        "category": "ell0",
         "information": "insert information"
     },
     "30": {
         "symbol": "change Thies",
         "s_name": "",
-        "value": 0,
+        "value": null,
         "unit": "",
         "u_name": "",
-        "category": "Deusch",
+        "category": "ell0",
         "information": "insert information"
     },
     "31": {
         "symbol": "change Thies",
         "s_name": "",
-        "value": 0,
+        "value": null,
         "unit": "",
         "u_name": "",
-        "category": "Isch Gemein",
+        "category": "a",
         "information": "insert information"
     },
     "32": {
         "symbol": "change Thies",
         "s_name": "",
-        "value": 0,
+        "value": null,
         "unit": "",
         "u_name": "",
-        "category": "Isch Gemein",
+        "category": "a",
         "information": "insert information"
     },
     "33": {
         "symbol": "change Thies",
         "s_name": "",
-        "value": 0,
+        "value": null,
         "unit": "",
         "u_name": "",
-        "category": "Isch Gemein",
+        "category": "a",
         "information": "insert information"
     },
     "34": {
         "symbol": "change Thies",
         "s_name": "",
-        "value": 0,
+        "value": null,
         "unit": "",
         "u_name": "",
-        "category": "Fettmops",
+        "category": "",
         "information": "insert information"
     },
     "35": {
         "symbol": "change Thies",
         "s_name": "",
-        "value": 0,
+        "value": null,
         "unit": "",
         "u_name": "",
-        "category": "Fettmops",
+        "category": "",
         "information": "insert information"
     },
     "36": {
         "symbol": "change Thies",
         "s_name": "",
-        "value": 0,
+        "value": null,
         "unit": "",
         "u_name": "",
-        "category": "Fettmops",
+        "category": "",
         "information": "insert information"
     },
     "37": {
@@ -338,8 +338,8 @@
         "value": 0,
         "unit": "",
         "u_name": "",
-        "category": "Fett",
-        "information": "insert information"
+        "category": "",
+        "information": "cock 37"
     },
     "38": {
         "symbol": "change Thies",
@@ -347,70 +347,34 @@
         "value": 0,
         "unit": "",
         "u_name": "",
-        "category": "Fett",
-        "information": "insert information"
+        "category": "",
+        "information": "cock 38"
     },
     "39": {
         "symbol": "change Thies",
         "s_name": "",
-        "value": 0,
+        "value": null,
         "unit": "",
         "u_name": "",
-        "category": "Fett",
+        "category": "",
         "information": "insert information"
     },
     "40": {
         "symbol": "change Thies",
         "s_name": "",
-        "value": 0,
+        "value": null,
         "unit": "",
         "u_name": "",
-        "category": "Buch",
+        "category": "",
         "information": "insert information"
     },
     "41": {
         "symbol": "change Thies",
         "s_name": "",
-        "value": 0,
+        "value": null,
         "unit": "",
         "u_name": "",
-        "category": "Buch",
-        "information": "insert information"
-    },
-    "42": {
-        "symbol": "change Thies",
-        "s_name": "",
-        "value": 0,
-        "unit": "",
-        "u_name": "",
-        "category": "Buch",
-        "information": "insert information"
-    },
-    "43": {
-        "symbol": "change Thies",
-        "s_name": "",
-        "value": 0,
-        "unit": "",
-        "u_name": "",
-        "category": "Kaimi",
-        "information": "insert information"
-    },
-    "44": {
-        "symbol": "change Thies",
-        "s_name": "",
-        "value": 0,
-        "unit": "",
-        "u_name": "",
-        "category": "Kaimi",
-        "information": "insert information"
-    },
-    "45": {
-        "symbol": "change Thies",
-        "s_name": "",
-        "value": 0,
-        "unit": "",
-        "u_name": "",
-        "category": "Kaimi",
+        "category": "",
         "information": "insert information"
     }
 }

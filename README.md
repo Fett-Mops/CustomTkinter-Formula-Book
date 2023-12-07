@@ -4,11 +4,12 @@
 These functions are already in the project:
 - Calculate formula with values and connstants
 - Calculate formula Error Messages
-- add new formula
+- ~~add new formula~~
+- add the formula to add formula(:
 - formula notes
 - advanced formula creating
 - formula documentation(basics of latex)
-- edit formula
+- ~~edit formula~~
 - ~~delet formula~~
 - ~~Simple search~~
 - Fuzzy search

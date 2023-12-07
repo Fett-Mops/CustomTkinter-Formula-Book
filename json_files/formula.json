@@ -1,32 +1,9 @@
 {
     "formula": {
-        "FFFOW": {
-            "search_terms": [
-                "jdfajd",
-                "hs"
-            ],
+        "a": {
+            "search_terms": [],
             "formula": [
-                "",
-                []
-            ],
-            "values": [
-                28,
-                29,
-                30
-            ],
-            "information": "insert info",
-            "category": "Deusch",
-            "creationdate": "06.12.2023 19:22"
-        },
-        "Kaimi": {
-            "search_terms": [
-                "Fortnite",
-                "Mechanicker",
-                "Philips",
-                "Schl\u00c3\u00bcssel"
-            ],
-            "formula": [
-                "",
+                "a",
                 []
             ],
             "values": [
@@ -35,42 +12,56 @@
                 33
             ],
             "information": "insert info",
-            "category": "Isch Gemein",
-            "creationdate": "06.12.2023 19:22"
+            "category": "a",
+            "creationdate": "07.12.2023 21:51"
         },
-        "Leistung": {
-            "search_terms": [
-                "Spannung",
-                "Strom",
-                "Wiederstand",
-                "Elektrotechnik"
-            ],
+        "adaf": {
+            "search_terms": [],
             "formula": [
-                "U=I*R",
+                "1=1+1",
                 [
-                    "U",
-                    "I",
-                    "R"
+                    1,
+                    1,
+                    1
                 ]
             ],
             "values": [
-                22,
+                24,
                 23,
-                24
+                12
             ],
-            "information": "insert information",
-            "category": "Elektrotechink",
-            "creationdate": "01.12.2023 23:34"
+            "information": "insert info",
+            "category": "",
+            "creationdate": "07.12.2023 21:26"
         },
-        "Test1": {
-            "search_terms": [
-                "Elektrotechnik",
-                "insert info",
-                "dance with you"
-            ],
+        "Hallo": {
+            "search_terms": [],
             "formula": [
-                "",
-                []
+                "2=3+3",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                1,
+                1,
+                1
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "07.12.2023 21:27"
+        },
+        "Kaimi isch gemein": {
+            "search_terms": [],
+            "formula": [
+                "Helllo",
+                [
+                    1,
+                    1,
+                    1
+                ]
             ],
             "values": [
                 34,
@@ -78,60 +69,27 @@
                 36
             ],
             "information": "insert info",
-            "category": "Fettmops",
-            "creationdate": "06.12.2023 19:23"
+            "category": "l+Ratio",
+            "creationdate": "07.12.2023 22:01"
         },
-        "Test2": {
-            "search_terms": [
-                "Deutsch",
-                "Stift"
-            ],
+        "unnamed formula 1 2 3": {
+            "search_terms": [],
             "formula": [
-                "",
-                []
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
             ],
             "values": [
-                37,
-                38,
-                39
-            ],
-            "information": "insert info",
-            "category": "Fett",
-            "creationdate": "06.12.2023 19:23"
-        },
-        "Test3": {
-            "search_terms": [
-                "Elektrotechnik",
-                "Strom",
-                "HS"
-            ],
-            "formula": [
-                "",
-                []
-            ],
-            "values": [
+                39,
                 40,
-                41,
-                42
+                41
             ],
             "information": "insert info",
-            "category": "Buch",
-            "creationdate": "06.12.2023 19:23"
-        },
-        "Deusch": {
-            "search_terms": ["hs"],
-            "formula": [
-                "",
-                []
-            ],
-            "values": [
-                43,
-                44,
-                45
-            ],
-            "information": "insert info",
-            "category": "Kaimi",
-            "creationdate": "06.12.2023 21:49"
+            "category": "x",
+            "creationdate": "07.12.2023 22:06"
         }
     }
 }
