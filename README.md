@@ -1,7 +1,8 @@
 # CustomTkinter Formula Book
 
 ## Important
-**The function i am currently working on is marked with a cute pinguin**;
+**The function i am currently working on is marked with a cute pinguin**\
+
 These functions are already in the project:
 - Calculate formula with values and connstants
 - Calculate formula Error Messages
