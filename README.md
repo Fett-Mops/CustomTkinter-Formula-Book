@@ -7,7 +7,7 @@ These functions are already in the project:
 - Calculate formula Error Messages
 - ~~add new formula~~
 - add the formula to add formula(:
-- formula notes ![working on](https://storage.googleapis.com/sticker-prod/EdCLfPirTqeKzshtd2yQ/17.webp)
+- formula notes ![working on](https://storage.googleapis.com/sticker-prod/EdCLfPirTqeKzshtd2yQ/17.webp, width=20, height=20)
 - advanced formula creating
 - formula documentation(basics of latex)
 - ~~edit formula~~
