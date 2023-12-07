@@ -3,6 +3,7 @@
 ## Important
 These functions are already in the project:
 - Calculate formula with values and connstants
+- Calculate formula Error Messages
 - add new formula
 - formula notes
 - advanced formula creating
