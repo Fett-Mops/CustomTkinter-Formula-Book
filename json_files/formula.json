@@ -70,7 +70,7 @@
             ],
             "information": "insert info",
             "category": "l+Ratio",
-            "creationdate": "07.12.2023 22:01"
+            "creationdate": "08.12.2023 19:32"
         },
         "unnamed formula 1 2 3": {
             "search_terms": [],
@@ -90,6 +90,101 @@
             "information": "insert info",
             "category": "x",
             "creationdate": "07.12.2023 22:06"
+        },
+        "unnamed formula 1 2 4": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                42,
+                43,
+                44
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "08.12.2023 19:40"
+        },
+        "unnamed formula 1 2 5": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                57,
+                58,
+                59
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "08.12.2023 19:40"
+        },
+        "unnamed formula 1 2 6": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                60,
+                61,
+                62
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "08.12.2023 19:43"
+        },
+        "unnamed formula 1 2 7": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                63,
+                64,
+                65
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "08.12.2023 20:21"
+        },
+        "unnamed formula 1 2 8": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                66,
+                67,
+                68
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "08.12.2023 20:30"
         }
     }
 }

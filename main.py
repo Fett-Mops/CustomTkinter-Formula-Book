@@ -197,7 +197,7 @@ class Gui:
         
         edit_info_but = ct.CTkButton(master= helpful_frame, height=35, text = '',
                                                   image=pngs['edit-info'],
-                                                  width=10, command=lambda:(self.edit_info(new_frm_name,None)))
+                                                  width=10, command=lambda:(self.edit_info(new_frm_name,None, None)))
         edit_info_but.grid(row=0, column=1, padx=(5,0))
         
 
@@ -280,11 +280,15 @@ class Gui:
          #\frac{\frac{1}{x}+\frac{1}{y}}{y-z}
     
     def edit_var(self, formula:str, number:int, first_var : int):
+        global info_index
         self.var_inps = [ct.StringVar() for _ in range(number)]
         self.unit_inps = [ct.StringVar() for _ in range(number)]
         self.unit_n_inps = [ct.StringVar() for _ in range(number)]
         self.symb_n_inps = [ct.StringVar() for _ in range(number)]
+        self.notes = [ct.StringVar() for _ in range(number+1)]
         self.boxes = [ct.Variable() for _ in range(number)]
+        over_gang = []
+        
         
         for i in range(number):            
             inp_frame = ct.CTkFrame(master=scr_frame, fg_color=grey)
@@ -330,28 +334,6 @@ class Gui:
                                     placeholder_text_color=text_col,text_color=text_col)
             symb_n_inp.grid(row = 0, column=5, pady= 5, sticky='nwes')
             
-            
-            #info   
-     
-            info_index.append(first_var + i)
-            r_formula_json['formula'][formula]['values'].append(var)
-            r_char_json[info_index[i]] ={
-                            "symbol": 'change Thies',
-                            "s_name": "",
-                            "value": None,
-                            "unit": '',
-                            "u_name": '',
-                            "category": '',
-                            "information": "cock " +f'{info_index[i]}'}
-       
-            #Help
-            pngs['icon-infoo'].configure(size=(30,30))
-            edit_var_info_but = ct.CTkButton(master=inp_frame,
-                                           text='' ,
-                                           image=pngs['edit-info'],width=30,height= 35, 
-                                           command=lambda i = i:(self.edit_info(formula,info_index[i])) )
-            edit_var_info_but.grid(row = 0, column=6, sticky='nwe', pady = 5, padx=5) 
-            
             coc.append(var_inp)
             try:
                 short = r_char_json[f"{r_formula_json['formula'][formula]['values'][i]}"]
@@ -365,10 +347,40 @@ class Gui:
                     self.boxes[i].set(value=1)
                     var_inp.configure(fg_color=col_th, state='normal')
                     
-
             except:
-                pass
-          
+                info_index.append(first_var + i)
+                r_formula_json['formula'][formula]['values'].append(first_var+i)
+  
+                r_char_json[info_index[i]] ={
+                            "symbol": 'change Thies',
+                            "s_name": "",
+                            "value": None,
+                            "unit": '',
+                            "u_name": '',
+                            "category": '',
+                            "information": "Du Suckst Dick " +f'{info_index[i]}' + " mal"}
+            
+            
+            #info   
+            
+            if self.edit_bool:
+                over_gang.append(r_formula_json['formula'][formula]['values'][i])
+                
+            else:
+                over_gang = info_index
+
+                
+            
+            
+       
+            #Help
+            pngs['icon-infoo'].configure(size=(30,30))
+            edit_var_info_but = ct.CTkButton(master=inp_frame,
+                                           text='' ,
+                                           image=pngs['edit-info'],width=30,height= 35, 
+                                           command=lambda i = i:(self.edit_info(formula,over_gang,i)) )
+            edit_var_info_but.grid(row = 0, column=6, sticky='nwe', pady = 5, padx=5) 
+        
     def add_con(self, index:int, var_inp: Widget):
         if var_inp[index].cget('fg_color') == grey:
             var_inp[index].configure(fg_color=col_th, state='normal')
@@ -376,7 +388,7 @@ class Gui:
             var_inp[index].configure(fg_color=grey, state='disabled')
             self.var_inps[index].set(value='')
     
-    def get_formula(self, new_frm_name : str, information:list[str,list[str],str], *args):
+    def get_formula(self, new_frm_name : str, *args):
         
         if  args[0] == 'pp':
             
@@ -386,13 +398,13 @@ class Gui:
                                'center', False,self.translate('leaf'),
                                new_frm_name)  
         elif self.edit_bool:
-            self.edit_for_var(new_frm_name , information)
+            self.edit_for_var(new_frm_name )
         else:
             
             
-            self.add_for_var(new_frm_name, information)
+            self.add_for_var(new_frm_name)
         
-    def edit_for_var(self,new_frm_name , information):
+    def edit_for_var(self,new_frm_name ):
         
         
         r_char_json_cp = r_char_json.copy()
@@ -403,11 +415,13 @@ class Gui:
         
         r_formula_json_cp['formula'][new_frm_name]['formula'][0] = self.inp_formula_var.get()
         
-        r_formula_json_cp['formula'][new_frm_name]['category'] = self.cat_inp.get()    
+        r_formula_json_cp['formula'][new_frm_name]['category'] = self.cat_inp.get()   
+        print(r_formula_json_cp['formula'][new_frm_name]['values']) 
        
         
         
-        for  i, var in enumerate(r_formula_json_cp['formula'][new_frm_name]['values']):
+        for  i, var in enumerate(info_index):
+            print(i)
               
             if self.var_inps[i].get() == '':
                 r_char_json_cp[f'{var}']['value'] = None
@@ -415,7 +429,7 @@ class Gui:
                 r_char_json_cp[f'{var}']['value'] = self.var_inps[i].get()
             r_char_json_cp[f'{var}']['u_name'] = self.unit_n_inps[i].get()
             r_char_json_cp[f'{var}']['s_name'] = self.symb_n_inps[i].get()
-            #r_char_json[char_len+i]['information'] = information[1][3][i].get()
+            r_char_json[f'{var}']['information'] = self.notes[i].get()
         
     
         
@@ -423,7 +437,7 @@ class Gui:
         self.idk_dont_look(self.translate('save chages'), None,[self.translate('save')],
                            'center', False,self.translate('save'),new_frm_name)
     
-    def add_for_var(self,new_frm_name, information):
+    def add_for_var(self,new_frm_name):
         
         r_formula_json['formula'][new_frm_name] = r_formula_json['formula'].pop(self.old_frm_name.get())
         #information = [[inp_formula,edit_info_box],
@@ -444,12 +458,12 @@ class Gui:
 
             
         for  i, var in enumerate(self.var_inps):
-            r_char_json[char_len+i]['u_name'] = self.unit_n_inps[i].get()
-            r_char_json[char_len+i]['s_name'] = self.symb_n_inps[i].get()
-            r_char_json[char_len+i]['category'] = self.cat_inp.get()
+            r_char_json[info_index[i]]['u_name'] = self.unit_n_inps[i].get()
+            r_char_json[info_index[i]]['s_name'] = self.symb_n_inps[i].get()
+            r_char_json[info_index[i]]['category'] = self.cat_inp.get()
             #r_char_json[char_len+i]['information'] = information[1][3][i].get()
             if self.var_inps[i].get() == '':
-                r_char_json[char_len+i]['value'] = None
+                r_char_json[info_index[i]]['value'] = None
             
             
         self.idk_dont_look(self.translate('save chages'), None,[self.translate('save')],
@@ -512,9 +526,7 @@ class Gui:
 
         return "#%02x%02x%02x" % (r, g, b)
     
-    
-    
-    def edit_info(self, formula, var):
+    def edit_info(self, formula:str, var:int, i):
         
         
         if self.toplevell :
@@ -532,22 +544,24 @@ class Gui:
         edit_info_win = ct.CTkTextbox(self.toplevel,fg_color=grey)
         #independent
         edit_info_win.grid(row=1,column=0, sticky='nswe', pady=5, padx=5)
+
         
-        if var != None:
+        if i != None:
             var_sym = ct.CTkTextbox(self.toplevel,fg_color=grey)
             var_sym.grid(row=0,column=0, sticky='nswe', pady=(5,0), padx=5)
-            edit_info_win.insert('end',r_char_json[var]['information'])
+            d = r_char_json[f'{var[i]}']['information']
+            edit_info_win.insert('end',d)
         else:
             formula_la = ct.CTkTextbox(self.toplevel,fg_color=grey)
+            
             formula_la.grid(row=0,column=0, sticky='nswe', pady=(5,0), padx=5)
+            
 
-            terms_inp = ct.CTkTextbox(self.toplevel,fg_color=grey)
-            terms_inp.grid(row=0,column=1, rowspan=2, sticky='nswe', pady=(5,0), padx=5)
-            terms_inp.insert('end', r_formula_json['formula'][formula]['search_terms'])
+ 
             
             edit_info_win.insert('end',r_formula_json['formula'][formula]['information'])
-
-        save_edit = ct.CTkButton(self.toplevel, text=self.translate('save'))
+        
+        save_edit = ct.CTkButton(self.toplevel, text=self.translate('save'),command=lambda:self.add_for_var(formula))
         save_edit.grid(row=3,column=0, sticky='nswe', padx=5,pady=(0,5))
           
           
@@ -716,7 +730,7 @@ class Gui:
         ryd_loop =r_formula_json['formula'][f'{formula}']['formula'][0].replace('*', '').replace('+', '').replace('-', '').replace('=', '').replace('/', '')
         Units, Buttons, inp = [], [[],[]], []
         cover = True
-        self.si_index[8 for _ in range(ryd_loop)]
+        self.si_index = [8 for _ in range(len(ryd_loop))]
         for i, var in enumerate(ryd_loop)  :            
             inp_frame = ct.CTkFrame(master=scr_frame, fg_color=grey)
             inp_frame.grid(row=i, column=0, sticky='nswe', pady=(0,5))
