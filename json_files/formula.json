@@ -1,21 +1,25 @@
 {
     "formula": {
-        "a": {
+        "aad 1": {
             "search_terms": [],
             "formula": [
-                "a",
-                []
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
             ],
             "values": [
-                31,
-                32,
-                33
+                138,
+                139,
+                140
             ],
             "information": "insert info",
-            "category": "a",
-            "creationdate": "07.12.2023 21:51"
+            "category": "",
+            "creationdate": "08.12.2023 23:22"
         },
-        "adaf": {
+        "aad": {
             "search_terms": [],
             "formula": [
                 "1=1+1",
@@ -33,6 +37,44 @@
             "information": "insert info",
             "category": "",
             "creationdate": "07.12.2023 21:26"
+        },
+        "addddddddddddddddddd": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1ad",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                141,
+                142,
+                143
+            ],
+            "information": "insert info",
+            "category": "ada",
+            "creationdate": "08.12.2023 23:22"
+        },
+        "h": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                135,
+                136,
+                137
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "08.12.2023 23:15"
         },
         "Hallo": {
             "search_terms": [],
@@ -60,6 +102,9 @@
                 [
                     1,
                     1,
+                    1,
+                    1,
+                    1,
                     1
                 ]
             ],
@@ -70,9 +115,9 @@
             ],
             "information": "insert info",
             "category": "l+Ratio",
-            "creationdate": "08.12.2023 19:32"
+            "creationdate": "08.12.2023 23:20"
         },
-        "unnamed formula 1 2 3": {
+        "sd": {
             "search_terms": [],
             "formula": [
                 "2=1*1",
@@ -83,108 +128,13 @@
                 ]
             ],
             "values": [
-                39,
-                40,
-                41
-            ],
-            "information": "insert info",
-            "category": "x",
-            "creationdate": "07.12.2023 22:06"
-        },
-        "unnamed formula 1 2 4": {
-            "search_terms": [],
-            "formula": [
-                "2=1*1",
-                [
-                    1,
-                    1,
-                    1
-                ]
-            ],
-            "values": [
-                42,
-                43,
-                44
+                144,
+                145,
+                146
             ],
             "information": "insert info",
             "category": "",
-            "creationdate": "08.12.2023 19:40"
-        },
-        "unnamed formula 1 2 5": {
-            "search_terms": [],
-            "formula": [
-                "2=1*1",
-                [
-                    1,
-                    1,
-                    1
-                ]
-            ],
-            "values": [
-                57,
-                58,
-                59
-            ],
-            "information": "insert info",
-            "category": "",
-            "creationdate": "08.12.2023 19:40"
-        },
-        "unnamed formula 1 2 6": {
-            "search_terms": [],
-            "formula": [
-                "2=1*1",
-                [
-                    1,
-                    1,
-                    1
-                ]
-            ],
-            "values": [
-                60,
-                61,
-                62
-            ],
-            "information": "insert info",
-            "category": "",
-            "creationdate": "08.12.2023 19:43"
-        },
-        "unnamed formula 1 2 7": {
-            "search_terms": [],
-            "formula": [
-                "2=1*1",
-                [
-                    1,
-                    1,
-                    1
-                ]
-            ],
-            "values": [
-                63,
-                64,
-                65
-            ],
-            "information": "insert info",
-            "category": "",
-            "creationdate": "08.12.2023 20:21"
-        },
-        "unnamed formula 1 2 8": {
-            "search_terms": [],
-            "formula": [
-                "2=1*1",
-                [
-                    1,
-                    1,
-                    1
-                ]
-            ],
-            "values": [
-                66,
-                67,
-                68
-            ],
-            "information": "insert info",
-            "category": "",
-            "creationdate": "08.12.2023 20:30"
+            "creationdate": "08.12.2023 23:23"
         }
     }
 }

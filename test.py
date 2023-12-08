@@ -5,44 +5,36 @@ list = [['Elecktrotechnick', 'Mechanick', 'Physik', 'mathe','banana'], ['Mechani
 #print(process.extract("bandna", list[0], scorer=fuzz.token_set_ratio))
 from CTkScrollableDropdown import *
 import customtkinter
-from CTkScrollableDropdown import *
-import customtkinter
+import json
 
-root = customtkinter.CTk()
+def name_handler( name:str)->str:
+        return name
+def translate(text:str)->str:
+    return text
 
-customtkinter.CTkLabel(root, text="Different Dropdown Styles").pack(pady=5)
+def read_json( path:str)->any:
+    with open (path) as f:
+        return json.load(f)
+    
+def name_handler(name:str)->str:
+    reserve_name = 'unnamed'
+    if name == '':
+        name = reserve_name
+    
 
-# Some option list
-values = ["python","tkinter","customtkinter","widgets",
-          "options","menu","combobox","dropdown","search"]
+    for key in r['formula'].keys():
+        
+        try:
+            int(key[-1])
+            print('int')
+        except:
+            pass
+    if name in r['formula'].keys():
+        pass
+    return name
+r = read_json('json_files/formula.json')
 
-# Attach to OptionMenu 
-optionmenu = customtkinter.CTkOptionMenu(root, width=240)
-optionmenu.pack(fill="x", padx=10, pady=10)
-
-CTkScrollableDropdown(optionmenu, values=values)
-
-# Attach to Combobox
-combobox = customtkinter.CTkComboBox(root, width=240)
-combobox.pack(fill="x", padx=10, pady=10)
-
-CTkScrollableDropdown(combobox, values=values, justify="left", button_color="transparent")
-
-# Attach to Entry
-customtkinter.CTkLabel(root, text="Live Search Values").pack()
-
-entry = customtkinter.CTkEntry(root, width=240)
-entry.pack(fill="x", padx=10, pady=10)
-
-CTkScrollableDropdown(entry, values=values, command=lambda e: entry.insert(1, e),
-                      autocomplete=True) # Using autocomplete
-
-# Attach to Button 
-button = customtkinter.CTkButton(root, text="choose options", width=240)
-button.pack(fill="x", padx=10, pady=10)
-
-CTkScrollableDropdown(button, values=values, height=270, resize=False, button_height=30,
-                      scrollbar=False, command=lambda e: button.configure(text=e))
-
-root.mainloop()
-
+while True:
+    
+    l=input('input name: ')
+    name_handler(l)     
