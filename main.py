@@ -95,7 +95,7 @@ class Gui:
         self.s_page =  ct.CTkFrame(root, fg_color='transparent')
         self.a_page =  ct.CTkFrame(root, fg_color='transparent')
         self.c1_page =  ct.CTkFrame(root, fg_color='transparent')
-        self.si_index = [8 for _ in range(3)]
+        self.si_index = []
         self.si_str = si_prefix.SI_PREFIX_UNITS
         self.cal_rad_var = ct.IntVar(value=0)
         self.cal_rad2_var = ct.StringVar(value='T')
@@ -148,6 +148,9 @@ class Gui:
     def read_json(self, path:str)->any:
         with open (path) as f:
             return json.load(f)
+
+    def open_file(self, file:str)->None:
+        os.system('start '+file)
          
     def add_formula(self, new_frm_name:str, first_var:int):
         # TODO if added not sorted pls change
@@ -331,6 +334,15 @@ class Gui:
             #info   
      
             info_index.append(first_var + i)
+            r_formula_json['formula'][formula]['values'].append(var)
+            r_char_json[info_index[i]] ={
+                            "symbol": 'change Thies',
+                            "s_name": "",
+                            "value": None,
+                            "unit": '',
+                            "u_name": '',
+                            "category": '',
+                            "information": "cock " +f'{info_index[i]}'}
        
             #Help
             pngs['icon-infoo'].configure(size=(30,30))
@@ -432,21 +444,13 @@ class Gui:
 
             
         for  i, var in enumerate(self.var_inps):
-            r_formula_json['formula'][new_frm_name]['values'].append(char_len+i)
-            r_char_json[char_len+i] ={
-                            "symbol": 'change Thies',
-                            "s_name": "",
-                            "value": 0,
-                            "unit": "",
-                            "u_name": '',
-                            "category": self.cat_inp.get(),
-                            "information": "insert information"}
-    
-            if self.var_inps[i].get() == '':
-                r_char_json[char_len+i]['value'] = None
             r_char_json[char_len+i]['u_name'] = self.unit_n_inps[i].get()
             r_char_json[char_len+i]['s_name'] = self.symb_n_inps[i].get()
+            r_char_json[char_len+i]['category'] = self.cat_inp.get()
             #r_char_json[char_len+i]['information'] = information[1][3][i].get()
+            if self.var_inps[i].get() == '':
+                r_char_json[char_len+i]['value'] = None
+            
             
         self.idk_dont_look(self.translate('save chages'), None,[self.translate('save')],
                            'center', False,self.translate('save'),new_frm_name)
@@ -484,10 +488,7 @@ class Gui:
                     kid.configure(state='normal') 
                     kid.configure(fg_color=col_th)
             self.sorting(r_formula_json, False)
-                             
-    def open_file(self):
-        os.system('start formula_syntax.pdf')
-        
+                                 
     def clamp(self, val, minimum=0, maximum=255):
         if val < minimum:
             return minimum
@@ -535,19 +536,17 @@ class Gui:
         if var != None:
             var_sym = ct.CTkTextbox(self.toplevel,fg_color=grey)
             var_sym.grid(row=0,column=0, sticky='nswe', pady=(5,0), padx=5)
-            r_formula_json['formula'][formula]['values'].append(var)
-            r_char_json[var] ={
-                            "symbol": 'change Thies',
-                            "s_name": "",
-                            "value": 0,
-                            "unit": '',
-                            "u_name": '',
-                            "category": '',
-                            "information": "cock " +f'{var}'}
-            
             edit_info_win.insert('end',r_char_json[var]['information'])
         else:
+            formula_la = ct.CTkTextbox(self.toplevel,fg_color=grey)
+            formula_la.grid(row=0,column=0, sticky='nswe', pady=(5,0), padx=5)
+
+            terms_inp = ct.CTkTextbox(self.toplevel,fg_color=grey)
+            terms_inp.grid(row=0,column=1, rowspan=2, sticky='nswe', pady=(5,0), padx=5)
+            terms_inp.insert('end', r_formula_json['formula'][formula]['search_terms'])
+            
             edit_info_win.insert('end',r_formula_json['formula'][formula]['information'])
+
         save_edit = ct.CTkButton(self.toplevel, text=self.translate('save'))
         save_edit.grid(row=3,column=0, sticky='nswe', padx=5,pady=(0,5))
           
@@ -717,6 +716,7 @@ class Gui:
         ryd_loop =r_formula_json['formula'][f'{formula}']['formula'][0].replace('*', '').replace('+', '').replace('-', '').replace('=', '').replace('/', '')
         Units, Buttons, inp = [], [[],[]], []
         cover = True
+        self.si_index[8 for _ in range(ryd_loop)]
         for i, var in enumerate(ryd_loop)  :            
             inp_frame = ct.CTkFrame(master=scr_frame, fg_color=grey)
             inp_frame.grid(row=i, column=0, sticky='nswe', pady=(0,5))
@@ -766,7 +766,7 @@ class Gui:
 
             ud_frame = ct.CTkFrame(master =inp_frame,bg_color='transparent', fg_color=grey)
             ud_frame.grid(column=2, row=0)
-        
+            
 
             pngs['u_arrow'].configure(size=(20,20))
             up_but = ct.CTkButton(master=ud_frame, image=pngs['u_arrow'],
