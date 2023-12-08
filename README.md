@@ -2,6 +2,7 @@
 
 ## Important
 **The function i am currently working on is marked with a cute pinguin**
+
 These functions are already in the project:
 <ul>
   <li>
