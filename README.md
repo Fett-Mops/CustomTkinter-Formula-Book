@@ -2,20 +2,60 @@
 
 ## Important
 **The function i am currently working on is marked with a cute pinguin**
-
 These functions are already in the project:
-- Calculate formula with values and connstants
-- Calculate formula Error Messages
-- ~~add new formula~~
-- add the formula to add formula(:
-- formula notes <img src="https://img-13.stickers.cloud/packs/ca9c8132-130e-46e3-b3ca-8c7057d184d8/webp/bad9adf5-410a-42f6-b199-c89dde341da6.webp" width="35" height="35">
-- advanced formula creating
-- formula documentation(basics of latex)
-- ~~edit formula~~
-- ~~delet formula~~
-- ~~Simple search~~
-- Fuzzy search
-- ~~decent settings~~
+<ul>
+  <li>
+  Calculate formula with values and connstantsy
+  <img style="vertical-align:middle" src="https://clipart-library.com/images/yikroKr4T.png" width="15" alt="cross">
+  </li>
+
+  <li>Calculate formula Error Messages
+  <img style="vertical-align:middle" src="https://clipart-library.com/images/yikroKr4T.png" width="15" alt="cross">
+  </li>
+
+  <li>
+  add new formula  <img style="vertical-align" src="https://www.freeiconspng.com/thumbs/checkmark-png/checkmark-png-5.png" width="15">
+  </li>
+
+  <li>
+  add the formula to add formula <img style="vertical-align:middle" src="https://clipart-library.com/images/yikroKr4T.png" width="15" alt="cross"> 
+  </li>
+
+  <li>
+  formula/variable notes <img style="vertical-align:middle" src="https://www.clipartmax.com/png/middle/480-4800827_little-penguin-simple-cute-penguin-cartoon.png" width="40" alt="A grey image showing text 60 x 60">
+  </li>
+
+  <li>
+  advanced formula creating
+  <img style="vertical-align:middle" src="https://clipart-library.com/images/yikroKr4T.png" width="15" alt="cross">
+  </li>
+
+  <li>
+  formula documentation(basics of latex)
+  <img style="vertical-align:middle" src="https://clipart-library.com/images/yikroKr4T.png" width="15" alt="cross">
+  </li>
+
+  <li>edit formula  <img style="vertical-align" src="https://www.freeiconspng.com/thumbs/checkmark-png/checkmark-png-5.png" width="15"></li>
+
+  <li>
+  delet formula <img style="vertical-align" src="https://www.freeiconspng.com/thumbs/checkmark-png/checkmark-png-5.png" width="15">
+  </li>
+
+  <li>
+  Simple search <img style="vertical-align" src="https://www.freeiconspng.com/thumbs/checkmark-png/checkmark-png-5.png" width="15">
+  </li>
+
+  <li>
+  Fuzzy search
+  <img style="vertical-align:middle" src="https://clipart-library.com/images/yikroKr4T.png" width="15" alt="cross">
+  </li>
+
+  <li>
+  decent settings <img style="vertical-align" src="https://www.freeiconspng.com/thumbs/checkmark-png/checkmark-png-5.png" width="15">
+  </li>
+
+</ul>
+
 
 
 
