@@ -6,35 +6,25 @@ list = [['Elecktrotechnick', 'Mechanick', 'Physik', 'mathe','banana'], ['Mechani
 from CTkScrollableDropdown import *
 import customtkinter
 import json
+d = True
 
-def name_handler( name:str)->str:
-        return name
-def translate(text:str)->str:
-    return text
 
-def read_json( path:str)->any:
-    with open (path) as f:
-        return json.load(f)
-    
-def name_handler(name:str)->str:
-    reserve_name = 'unnamed'
-    if name == '':
-        name = reserve_name
-    
 
-    for key in r['formula'].keys():
-        
-        try:
-            int(key[-1])
-            print('int')
-        except:
-            pass
-    if name in r['formula'].keys():
-        pass
-    return name
+
+
 r = read_json('json_files/formula.json')
 
-while True:
+# Example usage:
+existing_names_list = r['formula'].keys()
+
+
+
+
+
+while d is True:
     
     l=input('input name: ')
-    name_handler(l)     
+    if l == 'q':
+        d = False
+    print(r['formula'].keys())
+    print(generate_unique_name(existing_names_list,l))

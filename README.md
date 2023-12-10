@@ -19,6 +19,11 @@ These functions are already in the project:
   </li>
 
   <li>
+  auto renaming <img style="vertical-align" src="https://www.freeiconspng.com/thumbs/checkmark-png/checkmark-png-5.png" width="15">
+  </li>
+
+
+  <li>
   add the formula to add formula <img style="vertical-align:middle" src="https://clipart-library.com/images/yikroKr4T.png" width="15" alt="cross"> 
   </li>
 

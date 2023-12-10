@@ -5,6 +5,7 @@ import CTkMessagebox
 import CTkToolTip
 from CTkScrollableDropdown import *
 from pylatex import *
+from thefuzz import fuzz, process
 
 import os
 import time
@@ -17,6 +18,7 @@ from datetime import datetime
 from PIL import Image, ImageTk
 import json
 import si_prefix
+import re
 
 
 
@@ -413,18 +415,20 @@ class Gui:
         r_char_json_cp = r_char_json.copy()
         r_formula_json_cp = r_formula_json.copy()
         
-        r_formula_json_cp['formula'][new_frm_name] = r_formula_json_cp['formula'].pop(self.old_frm_name.get())
-  
+        if new_frm_name != self.old_frm_name.get():
+            new_frm_name = self.name_handler(new_frm_name)
+            r_formula_json['formula'][new_frm_name] = r_formula_json['formula'].pop(self.old_frm_name.get())
+       
         
         r_formula_json_cp['formula'][new_frm_name]['formula'][0] = self.inp_formula_var.get()
         
         r_formula_json_cp['formula'][new_frm_name]['category'] = self.cat_inp.get()   
-        print(r_formula_json_cp['formula'][new_frm_name]['values']) 
+        #print(r_formula_json_cp['formula'][new_frm_name]['values']) 
        
         
         
         for  i, var in enumerate(info_index):
-            print(i)
+            #print(i)
               
             if self.var_inps[i].get() == '':
                 r_char_json_cp[f'{var}']['value'] = None
@@ -443,8 +447,10 @@ class Gui:
     def add_for_var(self,new_frm_name):
         
        
-        new_frm_name = self.name_handler(new_frm_name)
-        r_formula_json['formula'][new_frm_name] = r_formula_json['formula'].pop(self.old_frm_name.get())
+        #
+        if new_frm_name != self.old_frm_name.get():
+            new_frm_name = self.name_handler(new_frm_name)
+            r_formula_json['formula'][new_frm_name] = r_formula_json['formula'].pop(self.old_frm_name.get())
         #information = [[inp_formula,edit_info_box],
         #print(self.var_inps)
         #self.unit_inps
@@ -508,7 +514,20 @@ class Gui:
             self.sorting(r_formula_json, False)
     
     def name_handler(self, name:str)->str:
-        return name
+        
+        
+        existing_names = r_formula_json['formula']
+        if not name:
+            name = self.translate("Unnamed")
+
+        if name not in existing_names:
+            return name
+
+        count = 1
+        while f"{name} {count}" in existing_names:
+            count += 1
+
+        return f"{name} {count}"      
                           
     def clamp(self, val, minimum=0, maximum=255):
         if val < minimum:
@@ -536,17 +555,32 @@ class Gui:
     def edit_info(self, formula:str, var:int, i):
         
         
-        if self.toplevell :
-            self.toplevell = False
-            
-        if not self.toplevell:
-            self.toplevel = ct.CTkToplevel()
-            self.toplevel.geometry("400x500")
-            self.toplevel.rowconfigure(1, weight=2)
-            self.toplevel.rowconfigure(0, weight=1)            
-            self.toplevel.columnconfigure(0, weight=1)
-            self.toplevel.attributes("-topmost", True)
-            self.toplevell = True
+        
+        
+        
+        self.toplevel = ct.CTkToplevel(root)
+        #forgor at top
+        self.toplevel.attributes()
+        self.toplevel.minsize(400,500)
+        self.toplevel.rowconfigure(1, weight=2)
+        self.toplevel.rowconfigure(0, weight=1)            
+        self.toplevel.columnconfigure(0, weight=1)
+        self.toplevel.lift()
+        self.toplevell = True
+        self.toplevel.winfo_exists()
+        
+        counter = 0
+        for child in root.winfo_children():
+        
+            if fuzz.partial_ratio(str(child),'.!ctktoplevel') == 100:
+                if child.winfo_exists():
+                    counter +=1
+                    if counter == 2:
+                        child.destroy()
+                        
+                    
+    
+    
             
         edit_info_win = ct.CTkTextbox(self.toplevel,fg_color=grey)
         #independent
@@ -558,6 +592,7 @@ class Gui:
             d = r_char_json[f'{var[i]}']['information']
             edit_info_win.insert('end',d)
         else:
+
             formula_la = ct.CTkTextbox(self.toplevel,fg_color=grey)
             
             formula_la.grid(row=0,column=0, sticky='nswe', pady=(5,0), padx=5)
@@ -567,40 +602,26 @@ class Gui:
             
             edit_info_win.insert('end',r_formula_json['formula'][formula]['information'])
         
-        save_edit = ct.CTkButton(self.toplevel, text=self.translate('save'),command=lambda:self.add_for_var(formula))
+        save_edit = ct.CTkButton(self.toplevel, text=self.translate('save'))
         save_edit.grid(row=3,column=0, sticky='nswe', padx=5,pady=(0,5))
-          
-          
-                
+                  
     def add_formula_name(self):
+        
         frm_name = ct.CTkInputDialog(title=self.translate('name formula'), button_text_color= text_col,
                                      text=self.translate('naming the formula'))
-        frm_var = frm_name.get_input()
-        frm_safe = self.translate('unnamed formula')
-        # TODO if delt and new errors possible
-        if  frm_var!= None:
-            if frm_var != '':
-                frm_safe = frm_var
-            else:
-                for i in range(len(r_formula_json['formula'])):
-                    if i >=1:
-                        try: 
-                            r_formula_json['formula'][frm_safe +f' {i}' ]
+        frm_safe = self.name_handler(frm_name.get_input())
                             
-                        except:                      
-                            frm_safe = frm_safe +f' {i}' 
-                            
-            self.new_frm_name.set(frm_safe)
-            self.old_frm_name.set(frm_safe)
-            r_formula_json['formula'][frm_safe] = {'search_terms':[],
+        self.new_frm_name.set(frm_safe)
+        self.old_frm_name.set(frm_safe)
+        r_formula_json['formula'][frm_safe] = {'search_terms':[],
                                                    'formula':['2=1*1',[1,1,1]],
                                                    'values':[],
                                                    'information': 'insert info',
                                                    'category' : '',
                                                    'creationdate':''}
-            frm_safe = self.translate('unnamed formula')
+
             
-            self.add_formula(self.new_frm_name.get(), len(r_char_json))
+        self.add_formula(self.new_frm_name.get(), len(r_char_json))
                 
     def remove_formula(self,formula):
         
@@ -1035,7 +1056,10 @@ class Gui:
             
         if self.sorting_var == 0:
             #alphabetical
+            # ! 10 is before 2 fixx
             sorted_data = dict(sorted(dictionary["formula"].items(), key=lambda x: (x[0].lower(), x[0])))
+            
+            
             r_formula_json = {"formula": sorted_data}
             self.sort_tip_var = self.translate('alphabetical')
 
@@ -1215,14 +1239,6 @@ class Gui:
             text_col = '#2B2B2B'
         else:
             text_col = ('#1B231A','#DCE4DB')
-       
-
-        #language_mapping = {
-        #'german': dlt.lang.GERMAN,
-        #'English': dlt.lang.English,
-        #}
-        #user_language = user_json.get('language')
-        #t_lang = language_mapping.get(user_language.lower())
         t_lang = user_json.get('language')
         self.lan_menu_var.set(t_lang)
         if t_lang != 'English':

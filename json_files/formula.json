@@ -1,6 +1,25 @@
 {
     "formula": {
-        "aad 1": {
+        "aaadfd 3": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                192,
+                193,
+                194
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "10.12.2023 18:10"
+        },
+        "aad 1d": {
             "search_terms": [],
             "formula": [
                 "2=1*1",
@@ -19,10 +38,10 @@
             "category": "",
             "creationdate": "08.12.2023 23:22"
         },
-        "aad": {
+        "aad 1h": {
             "search_terms": [],
             "formula": [
-                "1=1+1",
+                "2=1*1",
                 [
                     1,
                     1,
@@ -30,15 +49,129 @@
                 ]
             ],
             "values": [
-                24,
-                23,
-                12
+                138,
+                139,
+                140
             ],
             "information": "insert info",
             "category": "",
-            "creationdate": "07.12.2023 21:26"
+            "creationdate": "08.12.2023 23:22"
+        },
+        "aad 2": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                180,
+                181,
+                182
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "10.12.2023 18:08"
+        },
+        "aad 3": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                192,
+                193,
+                194
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "10.12.2023 18:10"
+        },
+        "aad 4": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                198,
+                199,
+                200
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "10.12.2023 18:12"
+        },
+        "aad adf4": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                198,
+                199,
+                200
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "10.12.2023 18:12"
+        },
+        "aads 2": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                180,
+                181,
+                182
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "10.12.2023 18:08"
         },
         "addddddddddddddddddd": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1ad",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                141,
+                142,
+                143
+            ],
+            "information": "insert info",
+            "category": "ada",
+            "creationdate": "08.12.2023 23:22"
+        },
+        "adddddddddddddddddddd": {
             "search_terms": [],
             "formula": [
                 "2=1*1ad",
@@ -95,6 +228,66 @@
             "category": "",
             "creationdate": "07.12.2023 21:27"
         },
+        "Hdafdfallo": {
+            "search_terms": [],
+            "formula": [
+                "2=3+3",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                1,
+                1,
+                1
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "07.12.2023 21:27"
+        },
+        "hsdf": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                135,
+                136,
+                137
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "08.12.2023 23:15"
+        },
+        "Kaimafi isch gemein": {
+            "search_terms": [],
+            "formula": [
+                "Helllo",
+                [
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                34,
+                35,
+                36
+            ],
+            "information": "insert info",
+            "category": "l+Ratio",
+            "creationdate": "08.12.2023 23:20"
+        },
         "Kaimi isch gemein": {
             "search_terms": [],
             "formula": [
@@ -117,6 +310,25 @@
             "category": "l+Ratio",
             "creationdate": "08.12.2023 23:20"
         },
+        "safd": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                144,
+                145,
+                146
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "08.12.2023 23:23"
+        },
         "sd": {
             "search_terms": [],
             "formula": [
@@ -135,6 +347,481 @@
             "information": "insert info",
             "category": "",
             "creationdate": "08.12.2023 23:23"
+        },
+        "Un2named 9": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                204,
+                205,
+                206
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "10.12.2023 18:12"
+        },
+        "Unanamed": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                174,
+                175,
+                176
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "10.12.2023 18:07"
+        },
+        "Unn22amed 6": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                177,
+                178,
+                179
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "10.12.2023 18:07"
+        },
+        "Unn2amed 5": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                171,
+                172,
+                173
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "10.12.2023 18:06"
+        },
+        "Unna2med 7": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                186,
+                187,
+                188
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "10.12.2023 18:09"
+        },
+        "Unna2med 8": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                201,
+                202,
+                203
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "10.12.2023 18:12"
+        },
+        "Unnadmed 3": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                162,
+                163,
+                164
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "10.12.2023 18:04"
+        },
+        "Unnamadfed 2": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                150,
+                151,
+                152
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "10.12.2023 18:02"
+        },
+        "Unnamed": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                174,
+                175,
+                176
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "10.12.2023 18:07"
+        },
+        "Unnamed 1": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                147,
+                148,
+                149
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "10.12.2023 18:02"
+        },
+        "Unnamed 10": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                195,
+                196,
+                197
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "10.12.2023 18:10"
+        },
+        "Unnamed 11": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                207,
+                208,
+                209
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "10.12.2023 18:29"
+        },
+        "Unnamed 2": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                150,
+                151,
+                152
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "10.12.2023 18:02"
+        },
+        "Unnamed 3": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                162,
+                163,
+                164
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "10.12.2023 18:04"
+        },
+        "Unnamed 4": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                156,
+                157,
+                158
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "10.12.2023 18:03"
+        },
+        "Unnamed 5": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                171,
+                172,
+                173
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "10.12.2023 18:06"
+        },
+        "Unnamed 6": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                177,
+                178,
+                179
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "10.12.2023 18:07"
+        },
+        "Unnamed 7": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                186,
+                187,
+                188
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "10.12.2023 18:09"
+        },
+        "Unnamed 8": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                201,
+                202,
+                203
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "10.12.2023 18:12"
+        },
+        "Unnamed 9": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                204,
+                205,
+                206
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "10.12.2023 18:12"
+        },
+        "Unnamed erwer11": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                207,
+                208,
+                209
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "10.12.2023 18:29"
+        },
+        "Unndafamed 10": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                195,
+                196,
+                197
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "10.12.2023 18:10"
+        },
+        "Unnfdamed 1": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                147,
+                148,
+                149
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "10.12.2023 18:02"
+        },
+        "Unnwamed 4": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                156,
+                157,
+                158
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "10.12.2023 18:03"
+        },
+        "Unnamed 12": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                210,
+                211,
+                212
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "10.12.2023 19:48"
         }
     }
 }
