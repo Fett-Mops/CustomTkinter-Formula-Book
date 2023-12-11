@@ -28,7 +28,8 @@ These functions are already in the project:
   </li>
 
   <li>
-  add/edit notes <img style="vertical-align:middle" src="https://www.clipartmax.com/png/middle/480-4800827_little-penguin-simple-cute-penguin-cartoon.png" width="40" alt="Pinguin">
+  add/edit notes 
+  <img style="vertical-align:middle" src="https://clipart-library.com/images/yikroKr4T.png" width="15" alt="cross">
   </li>
 
   <li>
@@ -58,7 +59,8 @@ These functions are already in the project:
 
   <li>
   Fuzzy search
-  <img style="vertical-align:middle" src="https://clipart-library.com/images/yikroKr4T.png" width="15" alt="cross">
+  <img style="vertical-align:middle" src="https://www.clipartmax.com/png/middle/480-4800827_little-penguin-simple-cute-penguin-cartoon.png" width="40" alt="Pinguin">
+ 
   </li>
 
   <li>

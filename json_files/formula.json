@@ -134,7 +134,7 @@
             "creationdate": "10.12.2023 18:12"
         },
         "aads 2": {
-            "search_terms": [],
+            "search_terms": ["Strom"],
             "formula": [
                 "2=1*1",
                 [
@@ -168,7 +168,7 @@
                 143
             ],
             "information": "insert info",
-            "category": "ada",
+            "category": "Strom",
             "creationdate": "08.12.2023 23:22"
         },
         "adddddddddddddddddddd": {

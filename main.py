@@ -553,6 +553,7 @@ class Gui:
         return "#%02x%02x%02x" % (r, g, b)
     
     def edit_info(self, formula:str, var:int, i):
+        # ? long not finished
         
         
         
@@ -660,11 +661,58 @@ class Gui:
     
             self.home()
 
-    def search_formula(self,Shit:any, Search_Term:str)-> any:
+    def search_formula(self,Shit, Search_Term:str)-> any:
+        # ! help
         search= {'formula': [formula for formula in r_formula_json['formula']],
                  'variables': [r_char_json[variable]['s_name'] for variable in r_char_json],
                  'search_terms': [r_formula_json['formula'][term]['search_terms'] for term in r_formula_json['formula']],
                  'category': [r_formula_json['formula'][category]['category'] for category in r_formula_json['formula']]}
+        
+        cat_fr = ''
+        searched_formula = []
+        
+        for cat in search:
+            if cat != 'search_terms':
+                if Search_Term in search[cat]:
+                        cat_fr = cat
+                        
+            else:
+                for term in range(len(search[cat])):
+                    if Search_Term in search[cat][term]:
+                        cat_fr = cat
+            print(cat_fr)
+                        
+               
+            if cat_fr == 'formula':
+                searched_formula.append(Search_Term)
+                   
+            elif cat_fr == 'variables':
+                for variable in r_char_json:
+                    if Search_Term == r_char_json[variable]:
+                        searched_formula.append(variable)            
+            else:
+                for formula in r_formula_json['formula']:
+                    if cat_fr == 'category':
+                        if Search_Term == r_formula_json['formula'][formula][cat_fr]:
+                            searched_formula.append(formula)
+                   
+                    else: 
+                        if Search_Term in r_formula_json['formula'][formula]['search_terms']:
+                            searched_formula.append(formula)
+        if cat_fr != '':
+            
+            r_formula_json_cp = r_formula_json.copy()
+            r_formula_json_cp = {'formula':{key: value for key, value in r_formula_json["formula"].items() if key in searched_formula}}
+            self.show_formulas(r_formula_json_cp)
+        else:
+            self.show_formulas({'formula':{}})  
+                 
+    def fuzz_search_formula(self,Shit:any, Search_Term:str)-> any:
+        search= {'formula': [formula for formula in r_formula_json['formula']],
+                 'variables': [r_char_json[variable]['s_name'] for variable in r_char_json],
+                 'search_terms': [r_formula_json['formula'][term]['search_terms'] for term in r_formula_json['formula']],
+                 'category': [r_formula_json['formula'][category]['category'] for category in r_formula_json['formula']]}
+        
         cat_fr = ''
         searched_formula = []
         
