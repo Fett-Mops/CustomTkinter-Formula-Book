@@ -58,15 +58,17 @@ These functions are already in the project:
   </li>
 
   <li>
-  Fuzzy search
-  <img style="vertical-align:middle" src="https://www.clipartmax.com/png/middle/480-4800827_little-penguin-simple-cute-penguin-cartoon.png" width="40" alt="Pinguin">
+  Fuzzy search <img style="vertical-align" src="https://www.freeiconspng.com/thumbs/checkmark-png/checkmark-png-5.png" width="15">
+  
  
   </li>
+  <li>
+  Live Search Options
+  <img style="vertical-align:middle" src="https://www.clipartmax.com/png/middle/480-4800827_little-penguin-simple-cute-penguin-cartoon.png" width="40" alt="Pinguin">
 
   <li>
   decent settings <img style="vertical-align" src="https://www.freeiconspng.com/thumbs/checkmark-png/checkmark-png-5.png" width="15">
   </li>
-
 </ul>
 
 

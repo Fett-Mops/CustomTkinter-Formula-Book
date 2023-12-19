@@ -379,7 +379,7 @@ class Gui:
             
        
             #Help
-            pngs['icon-infoo'].configure(size=(30,30))
+            pngs['edit-info'].configure(size=(30,30))
             edit_var_info_but = ct.CTkButton(master=inp_frame,
                                            text='' ,
                                            image=pngs['edit-info'],width=30,height= 35, 
@@ -661,7 +661,7 @@ class Gui:
     
             self.home()
 
-    def search_formula(self,Shit, Search_Term:str)-> any:
+    def simple_search_formula(self,Shit, Search_Term:str)-> any:
         # ! help
         search= {'formula': [formula for formula in r_formula_json['formula']],
                  'variables': [r_char_json[variable]['s_name'] for variable in r_char_json],
@@ -707,50 +707,70 @@ class Gui:
         else:
             self.show_formulas({'formula':{}})  
                  
-    def fuzz_search_formula(self,Shit:any, Search_Term:str)-> any:
+    def fuzz_search_formula( self, Shit:any, Search_Term:str)-> any:
         search= {'formula': [formula for formula in r_formula_json['formula']],
                  'variables': [r_char_json[variable]['s_name'] for variable in r_char_json],
                  'search_terms': [r_formula_json['formula'][term]['search_terms'] for term in r_formula_json['formula']],
                  'category': [r_formula_json['formula'][category]['category'] for category in r_formula_json['formula']]}
         
-        cat_fr = ''
-        searched_formula = []
+        proxil, searched_formula = [], []
+      
+        if searched_formula != []:
+            for cat in search:
+                
+           
+                if cat != 'search_terms':
+                
+                    for tp in process.extractBests(Search_Term,search[cat], scorer=fuzz.partial_ratio,limit=100):
+                        if tp[1] == 100:
+                            if cat == 'variables':
+                                for key, var in r_char_json.items():
+                                    if var["s_name"] == tp[0]:
+                                        tp3 = (key, cat)
+                                        print(tp3)
+                            else:
+                                tp3 = (tp[0] ,cat)
+                            
+                        
+                            proxil.append(tp3)
+                        
+                else:
+                
+                    for term in range(len(search[cat])):
+                        for tp in process.extractBests(Search_Term,search[cat][term], scorer=fuzz.partial_ratio, limit=100):
+                            if tp[1] == 100:
+                                tp3 = (tp[0] ,cat)
+                                proxil.append(tp3)
+                            
+            for tp in proxil:      
+                    if tp[1] == 'formula':
+                        searched_formula.append(tp[0])  
+                    else:
+                        for formula in r_formula_json['formula']:
+                            if tp[1] == 'category':
+                                if r_formula_json['formula'][formula][tp[1]] == tp[0]:
+                                    searched_formula.append(formula)
+                                
+                            elif tp[1] == 'variables':
+                                    if int(tp[0]) in r_formula_json['formula'][formula]['values']:
+                                        if formula not in searched_formula:
+                                            searched_formula.append(formula)
+                   
+                            else: 
+                                if tp[0] in   r_formula_json['formula'][formula]['search_terms']:
+                                    searched_formula.append(formula)       
+
         
-        for cat in search:
-            if cat != 'search_terms':
-                if Search_Term in search[cat]:
-                        cat_fr = cat
-                        
-            else:
-                for term in range(len(search[cat])):
-                    if Search_Term in search[cat][term]:
-                        cat_fr = cat
-                        
-               
-            if cat_fr == 'formula':
-                searched_formula.append(Search_Term)
-                   
-            elif cat_fr == 'variables':
-                for variable in r_char_json:
-                    if Search_Term == r_char_json[variable]:
-                        searched_formula.append(variable)            
-            else:
-                for formula in r_formula_json['formula']:
-                    if cat_fr == 'category':
-                        if Search_Term == r_formula_json['formula'][formula][cat_fr]:
-                            searched_formula.append(formula)
-                   
-                    else: 
-                        if Search_Term in r_formula_json['formula'][formula]['search_terms']:
-                            searched_formula.append(formula)
-        if cat_fr != '':
+ 
             
             r_formula_json_cp = r_formula_json.copy()
             r_formula_json_cp = {'formula':{key: value for key, value in r_formula_json["formula"].items() if key in searched_formula}}
+            print(searched_formula)
+        
             self.show_formulas(r_formula_json_cp)
         else:
-            self.show_formulas({'formula':{}})       
-   
+            self.show_formulas({'formula':{}})
+    
     def edit_formula(self, formula:str):
         self.edit_bool = True
         self.old_frm_name.set(value=formula)
@@ -1058,11 +1078,11 @@ class Gui:
                                     textvariable=self.search_inp)
         search_inp.grid(row = 0, column=1, pady= 5, columnspan=1, sticky='nwe')
         
-        search_inp.bind('<Return>', lambda Event:self.search_formula( Event,self.search_inp.get()))
+        search_inp.bind('<Return>', lambda Event:self.fuzz_search_formula( Event,self.search_inp.get()))
     
         
         search_but = ct.CTkButton(master=self.h_page, text=self.translate('search'), command=
-                                  lambda:(self.search_formula('shit',self.search_inp.get())),
+                                  lambda:(self.fuzz_search_formula('shit',self.search_inp.get())),
                                         width=100, height=40,text_color= text_col)
         search_but.grid(row = 0, column=2, pady =  5, padx=5, sticky='nwe')
         
@@ -1093,7 +1113,15 @@ class Gui:
                                    font=font1).grid(row=0, column=2, pady =8, padx=10,sticky='e')
             ct.CTkLabel(frame_formula, text=Formulas['formula'][formula]["creationdate"], 
                                    font=font1).grid(row=0, column=3, pady =8, padx=10,sticky='e')
-    
+                      
+            pngs['icon-infoo'].configure(size=(30,30))
+            #self.edit_info(formula,over_gang,i)
+            edit_var_info_but = ct.CTkButton(master=frame_formula,
+                                           text='' ,
+                                           image=pngs['icon-infoo'],width=20,height= 40, 
+                                           command=lambda i = i:(print(i)) )
+            edit_var_info_but.grid(row = 0, column=4, sticky='nwe', pady = 5, padx=5) 
+
     def sorting(self, dictionary:dict, bool: bool)-> dict:   
         global r_formula_json, sort_but
         if bool:
@@ -1268,8 +1296,6 @@ class Gui:
             sound_but.configure(hover_color=menu_h_col[def_col])
     
     def save_settings(self):
-
-      
         self.user_json_cp['language'] = self.lan_menu_var.get()
         user_json = self.user_json_cp
         
