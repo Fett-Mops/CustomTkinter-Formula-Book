@@ -76,12 +76,12 @@ sort_name = ['home-category',
              'speaker_off',
              'speaker_on',
              'createdate',
-             'abc']
-pngs = {}
-for i in sort_name:
-    pngs[i] =ct.CTkImage(dark_image=Image.open("pictures/white/"+i+'.png'),
-                   light_image=Image.open("pictures/black/"+i+'.png'),
-                   size=(30, 30))
+             'abc',
+             'err',
+             'l_arrow']
+pngs = {i: ct.CTkImage(dark_image=Image.open(f"pictures/white/{i}.png"),
+                      light_image=Image.open(f"pictures/black/{i}.png"),
+                      size=(30, 30)) for i in set(sort_name)}
 
 frame = ct.CTkFrame(root, width=25)
 frame.grid(row = 0,rowspan=2, column=0, sticky='nws', pady=(4,5), padx=(5,5))
@@ -152,7 +152,7 @@ class Gui:
             return json.load(f)
 
     def open_file(self, file:str)->None:
-        os.system('start '+file)
+        os.system('start '+ file)
          
     def add_formula(self, new_frm_name:str, first_var:int):
         # TODO if added not sorted pls change
@@ -715,10 +715,8 @@ class Gui:
         
         proxil, searched_formula = [], []
       
-        if searched_formula != []:
+        if Search_Term != '':
             for cat in search:
-                
-           
                 if cat != 'search_terms':
                 
                     for tp in process.extractBests(Search_Term,search[cat], scorer=fuzz.partial_ratio,limit=100):
@@ -732,8 +730,7 @@ class Gui:
                                 tp3 = (tp[0] ,cat)
                             
                         
-                            proxil.append(tp3)
-                        
+                            proxil.append(tp3)   
                 else:
                 
                     for term in range(len(search[cat])):
@@ -760,14 +757,14 @@ class Gui:
                                 if tp[0] in   r_formula_json['formula'][formula]['search_terms']:
                                     searched_formula.append(formula)       
 
-        
- 
+            if searched_formula != None:
             
-            r_formula_json_cp = r_formula_json.copy()
-            r_formula_json_cp = {'formula':{key: value for key, value in r_formula_json["formula"].items() if key in searched_formula}}
-            print(searched_formula)
+                r_formula_json_cp = r_formula_json.copy()
+                r_formula_json_cp = {'formula':{key: value for key, value in r_formula_json["formula"].items() if key in searched_formula}}
         
-            self.show_formulas(r_formula_json_cp)
+                self.show_formulas(r_formula_json_cp)
+            else:
+                self.show_formulas({'formula':{}})
         else:
             self.show_formulas({'formula':{}})
     
@@ -1091,37 +1088,46 @@ class Gui:
         self.show_formulas(r_formula_json) 
     
     def show_formulas(self, Formulas:dict):
-        
-        frame_list = ct.CTkScrollableFrame(self.h_page,fg_color=grey_fram)
-        frame_list.grid(row=1,column=0,columnspan=3, sticky='nwes')
-        frame_list.grid_columnconfigure(0, weight=1)
+        if Formulas != {'formula':{}}:
+            frame_list = ct.CTkScrollableFrame(self.h_page,fg_color=grey_fram)
+            frame_list.grid(row=1,column=0,columnspan=3, sticky='nwes')
+            frame_list.grid_columnconfigure(0, weight=1)
+       
 
-        for i, formula in enumerate(Formulas['formula']):
+            for i, formula in enumerate(Formulas['formula']):
            
-            frame_formula = ct.CTkFrame(frame_list,width=250, height=75,fg_color=grey)
-            frame_formula.grid(row=i,column=0,pady=5, padx=5, sticky='nswe')
-            frame_formula.grid_columnconfigure((0,1), weight=(1))
-            frame_formula.grid_columnconfigure(2, weight=(2))
+                frame_formula = ct.CTkFrame(frame_list,width=250, height=75,fg_color=grey)
+                frame_formula.grid(row=i,column=0,pady=5, padx=5, sticky='nswe')
+                frame_formula.grid_columnconfigure((0,1), weight=(1))
+                frame_formula.grid_columnconfigure(2, weight=(2))
 
-            ct.CTkButton(frame_formula,text=formula,width=85, text_color=text_col,
+                ct.CTkButton(frame_formula,text=formula,width=85, text_color=text_col,
                          command=lambda k = formula: (self.set_values(k))
                                     ).grid(row=0, column=0, pady = 5, padx=5,sticky='w')
-            ct.CTkLabel(frame_formula, text=Formulas['formula'][formula]['formula'][0], 
+                ct.CTkLabel(frame_formula, text=Formulas['formula'][formula]['formula'][0], 
                                  font=font1).grid(row=0, column=1, pady =8, padx=5,sticky='we')
             
-            ct.CTkLabel(frame_formula, text=Formulas['formula'][formula]["category"], 
+                ct.CTkLabel(frame_formula, text=Formulas['formula'][formula]["category"], 
                                    font=font1).grid(row=0, column=2, pady =8, padx=10,sticky='e')
-            ct.CTkLabel(frame_formula, text=Formulas['formula'][formula]["creationdate"], 
+                ct.CTkLabel(frame_formula, text=Formulas['formula'][formula]["creationdate"], 
                                    font=font1).grid(row=0, column=3, pady =8, padx=10,sticky='e')
                       
-            pngs['icon-infoo'].configure(size=(30,30))
-            #self.edit_info(formula,over_gang,i)
-            edit_var_info_but = ct.CTkButton(master=frame_formula,
+                pngs['icon-infoo'].configure(size=(30,30))
+                #self.edit_info(formula,over_gang,i)
+                edit_var_info_but = ct.CTkButton(master=frame_formula,
                                            text='' ,
                                            image=pngs['icon-infoo'],width=20,height= 40, 
                                            command=lambda i = i:(print(i)) )
-            edit_var_info_but.grid(row = 0, column=4, sticky='nwe', pady = 5, padx=5) 
-
+                edit_var_info_but.grid(row = 0, column=4, sticky='nwe', pady = 5, padx=5) 
+        else:
+            frame_err = ct.CTkFrame(self.h_page,fg_color=grey_fram)
+            frame_err.grid(row=1,column=0,columnspan=3, sticky='nwes')
+            frame_err.grid_columnconfigure(0, weight=1)
+            
+            pngs['err'].configure(size=(500,600))            
+            error_lab = ct.CTkLabel(frame_err,font=font1,text='',image=pngs['err'])
+            error_lab.grid(row=2,column=0, sticky='nswe')
+            
     def sorting(self, dictionary:dict, bool: bool)-> dict:   
         global r_formula_json, sort_but
         if bool:
@@ -1357,14 +1363,14 @@ class Gui:
         CTkToolTip.CTkToolTip(add_formula_but, message=self.translate('new formula'))   
         add_formula_but.grid(row=0, column=0,pady=10, padx=10)
 
-        #settings
-        pngs['settings'].configure(size=(40,40))
-        setting_but = ct.CTkButton(master=frame, image=pngs['settings'],
-                                   text='', width=60, height=60,
-                                       command= self.settings, fg_color=menu_col[def_col],
-                                       hover_color=menu_h_col[def_col])
-        CTkToolTip.CTkToolTip(setting_but, message=self.translate('settings'))
-        setting_but.grid(row=4, column=0,pady=10, padx=10, sticky='nwe')
+        
+        
+        #back
+        pngs['l_arrow'].configure(size=(40,40))
+        back_but = ct.CTkButton(frame, image=pngs['l_arrow'],text='', width=60, height=45,
+                                fg_color=menu_col[def_col], hover_color=menu_h_col[def_col])
+        CTkToolTip.CTkToolTip(back_but, message=self.translate('back'))
+        back_but.grid(row=4,column=0, sticky='nwe', padx=10)
     
         #home
         pngs['home'].configure(size=(40,40))
@@ -1372,6 +1378,16 @@ class Gui:
                                    command=lambda: (self.home()), fg_color=menu_col[def_col], hover_color=menu_h_col[def_col])
         CTkToolTip.CTkToolTip(home_but, message=self.translate('home'))
         home_but.grid(row=5,column=0,pady=10, sticky='nwe', padx=10)
+        #settings
+        pngs['settings'].configure(size=(40,40))
+        setting_but = ct.CTkButton(master=frame, image=pngs['settings'],
+                                   text='', width=60, height=60,
+                                       command= self.settings, fg_color=menu_col[def_col],
+                                       hover_color=menu_h_col[def_col])
+        CTkToolTip.CTkToolTip(setting_but, message=self.translate('settings'))
+        setting_but.grid(row=6, column=0,pady=(0,10), padx=10, sticky='nwe')
+        
+        
     
     def zoomed(self):
         pass
@@ -1401,3 +1417,4 @@ class Gui:
 if __name__ == '__main__':
     app = Gui()
     app.run()
+vv = ''
