@@ -6,7 +6,7 @@
 These functions are already in the project:
 <ul>
   <li>
-  Calculate formula with values and connstantsy
+  Calculate formula with values and connstans
   <img style="vertical-align:middle" src="https://clipart-library.com/images/yikroKr4T.png" width="15" alt="cross">
   </li>
 
