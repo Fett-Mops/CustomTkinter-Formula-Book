@@ -249,6 +249,25 @@
             "category": "",
             "creationdate": "07.12.2023 21:27"
         },
+        "help": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                318,
+                319,
+                320
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "25.12.2023 13:01"
+        },
         "hsdf": {
             "search_terms": [],
             "formula": [
@@ -387,6 +406,25 @@
             "information": "insert info",
             "category": "",
             "creationdate": "10.12.2023 18:07"
+        },
+        "Unbennant": {
+            "search_terms": [],
+            "formula": [
+                "2=1*1",
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "values": [
+                324,
+                325,
+                326
+            ],
+            "information": "insert info",
+            "category": "",
+            "creationdate": "25.12.2023 13:03"
         },
         "Unn22amed 6": {
             "search_terms": [],

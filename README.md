@@ -50,7 +50,11 @@ These functions are already in the project:
   <li>edit formula  <img style="vertical-align" src="https://www.freeiconspng.com/thumbs/checkmark-png/checkmark-png-5.png" width="15"></li>
 
   <li>
-  delet formula <img style="vertical-align" src="https://www.freeiconspng.com/thumbs/checkmark-png/checkmark-png-5.png" width="15">
+  delete formula <img style="vertical-align" src="https://www.freeiconspng.com/thumbs/checkmark-png/checkmark-png-5.png" width="15">
+  </li>
+  
+  <li>
+  Last page   <img style="vertical-align:middle" src="https://www.clipartmax.com/png/middle/480-4800827_little-penguin-simple-cute-penguin-cartoon.png" width="40" alt="Pinguin">
   </li>
 
   <li>
@@ -63,8 +67,8 @@ These functions are already in the project:
  
   </li>
   <li>
-  Live Search Options
-  <img style="vertical-align:middle" src="https://www.clipartmax.com/png/middle/480-4800827_little-penguin-simple-cute-penguin-cartoon.png" width="40" alt="Pinguin">
+  Live Search Options <img style="vertical-align:middle" src="https://clipart-library.com/images/yikroKr4T.png" width="15" alt="cross">
+ 
 
   <li>
   decent settings <img style="vertical-align" src="https://www.freeiconspng.com/thumbs/checkmark-png/checkmark-png-5.png" width="15">

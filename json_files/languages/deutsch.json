@@ -1,6 +1,6 @@
 [
     ["search","Suchen"],
-    ["unnamed","Unbennant"],
+    ["Unnamed","Unbennant"],
     ["alphabetical","Alphabetisch"],
     ["new formula","Neue Formel"],
     ["settings", "Einstellungen"],
@@ -39,7 +39,9 @@
     ["Misake", "Fehler"],
     ["save inputs","Inputs Speichern"],
     ["are you sure all inputs are right?","Bist du sicher das alle Inputs stimmen?"],
-    ["save chages", "\u00e4nderungen Speicher"]
+    ["save chages", "\u00e4nderungen Speicher"],
+    ["formulabook", "Formelb\u00fcchlein"],
+    ["back", "zur\u00fcck"]
 
 
 ]

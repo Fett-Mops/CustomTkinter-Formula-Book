@@ -6,20 +6,12 @@ import CTkToolTip
 from CTkScrollableDropdown import *
 from pylatex import *
 from thefuzz import fuzz, process
-
 import os
-import time
 from datetime import datetime
-#import dl_translate as dlt
-#from dl_translate import *
-#from translate import Translator
-
-
 from PIL import Image, ImageTk
 import json
 import si_prefix
-import re
-
+from watchpoints import *
 
 
 
@@ -27,14 +19,10 @@ WIDTH, HEIGHT = 600,600
 appearance = ['System', 'light', 'dark']
 color_def = ['green', 'blue','dark-blue']
 
-
 root = ct.CTk()
 root.geometry(f'{WIDTH}'+'x'+f'{HEIGHT}')
 
 
-root.title('Formelbüchlein')
-
-# Grid configer
 root.grid_columnconfigure(1, weight=1)
 root.grid_rowconfigure(1, weight=1)
 
@@ -610,11 +598,12 @@ class Gui:
         
         frm_name = ct.CTkInputDialog(title=self.translate('name formula'), button_text_color= text_col,
                                      text=self.translate('naming the formula'))
-        frm_safe = self.name_handler(frm_name.get_input())
+        if frm_name.get_input() != None:
+            frm_safe = self.name_handler(frm_name.get_input())
                             
-        self.new_frm_name.set(frm_safe)
-        self.old_frm_name.set(frm_safe)
-        r_formula_json['formula'][frm_safe] = {'search_terms':[],
+            self.new_frm_name.set(frm_safe)
+            self.old_frm_name.set(frm_safe)
+            r_formula_json['formula'][frm_safe] = {'search_terms':[],
                                                    'formula':['2=1*1',[1,1,1]],
                                                    'values':[],
                                                    'information': 'insert info',
@@ -622,7 +611,8 @@ class Gui:
                                                    'creationdate':''}
 
             
-        self.add_formula(self.new_frm_name.get(), len(r_char_json))
+            self.add_formula(self.new_frm_name.get(), len(r_char_json))
+      
                 
     def remove_formula(self,formula):
         
@@ -767,7 +757,29 @@ class Gui:
                 self.show_formulas({'formula':{}})
         else:
             self.show_formulas({'formula':{}})
-    
+    def live_search(self, Shit:any, Search_Term:str)->any:
+        search= {'formula': [formula for formula in r_formula_json['formula']],
+                 'variables': [r_char_json[variable]['s_name'] for variable in r_char_json],
+                 'search_terms': [r_formula_json['formula'][term]['search_terms'] for term in r_formula_json['formula']],
+                 'category': [r_formula_json['formula'][category]['category'] for category in r_formula_json['formula']]}
+        
+        proxil= []
+      
+        if Search_Term != '':
+            for cat in search:
+                if cat != 'search_terms':
+                
+                    for tp in process.extractBests(Search_Term,search[cat], scorer=fuzz.partial_ratio,limit=100):
+                        if tp[1] == 100:
+                                tp3 = (tp[0] ,cat)  
+                else:
+                    for term in range(len(search[cat])):
+                        for tp in process.extractBests(Search_Term,search[cat][term], scorer=fuzz.partial_ratio, limit=100):
+                            if tp[1] == 100:
+                                tp3 = (tp[0] ,cat)
+                                proxil.append(tp3[0])
+            CTkScrollableDropdown(search_inp,values=proxil)    
+        
     def edit_formula(self, formula:str):
         self.edit_bool = True
         self.old_frm_name.set(value=formula)
@@ -1041,7 +1053,7 @@ class Gui:
             return True
         
     def home(self):
-        global sort_but, frame_list
+        global sort_but, frame_list, search_inp
         
         self.user_settings()
         self.Sound_effects('Home')
@@ -1059,11 +1071,7 @@ class Gui:
         self.h_page.grid_columnconfigure(1, weight=1)
         self.h_page.grid_rowconfigure(1, weight=1)
         self.h_page.tkraise()
-        
-        
-        
 
-        
         sort_but = ct.CTkButton(master=self.h_page, text='',image=self.sort_but_img[self.sorting_var],
                                 command=lambda: (self.sorting(r_formula_json,True)),height=40,width=35)
         sort_but.grid(row = 0, column=0, pady =  5, padx=(0,5), sticky='nwe')
@@ -1074,16 +1082,19 @@ class Gui:
                                     placeholder_text_color=text_col, border_width=0,
                                     textvariable=self.search_inp)
         search_inp.grid(row = 0, column=1, pady= 5, columnspan=1, sticky='nwe')
+ 
+        CTkScrollableDropdown(search_inp, values=['s','s'])
         
         search_inp.bind('<Return>', lambda Event:self.fuzz_search_formula( Event,self.search_inp.get()))
+        
+        
     
         
         search_but = ct.CTkButton(master=self.h_page, text=self.translate('search'), command=
-                                  lambda:(self.fuzz_search_formula('shit',self.search_inp.get())),
+                                  lambda:(self.live_search('shit',self.search_inp.get())),
                                         width=100, height=40,text_color= text_col)
         search_but.grid(row = 0, column=2, pady =  5, padx=5, sticky='nwe')
         
-
         
         self.show_formulas(r_formula_json) 
     
@@ -1387,8 +1398,6 @@ class Gui:
         CTkToolTip.CTkToolTip(setting_but, message=self.translate('settings'))
         setting_but.grid(row=6, column=0,pady=(0,10), padx=10, sticky='nwe')
         
-        
-    
     def zoomed(self):
         pass
           #root.state('zoomed')
@@ -1402,12 +1411,13 @@ class Gui:
         global r_formula_json, r_char_json, user_json
         r_formula_json = self.read_json('json_files/formula.json')
         r_char_json = self.read_json('json_files/formula_char.json')
-                   
+          
         
         self.home()
         
         self.sorting(r_formula_json, False)
         self.menue_buts()
+        root.title(self.translate('formulabook'))
         self.zoomed()
         
         
