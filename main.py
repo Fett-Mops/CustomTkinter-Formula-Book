@@ -13,6 +13,7 @@ import json
 import si_prefix
 from watchpoints import *
 import sys
+import difflib
 
 
 
@@ -73,8 +74,8 @@ pngs = {i: ct.CTkImage(dark_image=Image.open(f"pictures/white/{i}.png"),
                       size=(30, 30)) for i in set(sort_name)}
 
 frame = ct.CTkFrame(root, width=25)
-#frame.grid(row = 0,rowspan=2, column=0, sticky='nws', pady=(4,5), padx=(5,5))
-#frame.grid_rowconfigure(3,weight=1)
+frame.grid(row = 0,rowspan=2, column=0, sticky='nws', pady=(4,5), padx=(5,5))
+frame.grid_rowconfigure(3,weight=1)
 
 class ScrDropDownMod(ct.CTkToplevel):
     def __init__(self, attach, values = [],x=None,y=None,**button_kwargs) -> None:
@@ -84,6 +85,7 @@ class ScrDropDownMod(ct.CTkToplevel):
         self.lift()
         self.alpha = 0.7
         self.attach = attach
+        self.resize  =False
         self.update()
         
         if sys.platform.startswith("win"):
@@ -114,6 +116,7 @@ class ScrDropDownMod(ct.CTkToplevel):
             
         self.frame = ct.CTkScrollableFrame(self, bg_color=self.transparent_color, fg_color=self.fg_color,
                                         scrollbar_button_hover_color=self.scroll_hover_color,
+                                    
                                        
                                         scrollbar_button_color=self.scroll_button_color,
                                         border_color=self.frame_border_color)
@@ -121,13 +124,15 @@ class ScrDropDownMod(ct.CTkToplevel):
         self.frame.pack(expand=True, fill="both")
         self.dummy_entry = ct.CTkEntry(self.frame, fg_color="transparent", border_width=0, height=1, width=1)
         self.no_match = ct.CTkLabel(self.frame, text="No Match")
-        self.height = 100
-        self.height_new = 100
-        self.width = 200
+        self.height = 400
+        self.height_new = 400
+        self.width=attach.winfo_width()
+        print(self.width)
         self.fade = False
         self.var_update = ct.StringVar()
         self.appear = False
         self.justify = "c"
+        self.focus_something = False
             
         self.button_height = 30
         self.values = values
@@ -136,17 +141,17 @@ class ScrDropDownMod(ct.CTkToplevel):
 
         self.resizable(width=False, height=False)
         self.transient(self.master)
-        self.attach.bind('<Button-1>', lambda e: self._iconify(), add="+")
+        self._iconify()
                 
-        self.attach.bind("<Destroy>", lambda _: self._destroy(), add="+")
+        #self.attach.bind("<Destroy>", lambda _: self._destroy(), add="+")
         
         self.update_idletasks()
         self.x = x
         self.y = y
 
-        self.deiconify()
         
-        self.withdraw()
+    
+        
         
         self.attributes("-alpha", self.alpha)
 
@@ -159,6 +164,7 @@ class ScrDropDownMod(ct.CTkToplevel):
         
         self.event_generate("<<Closed>>")
         self.hide = True
+        print(22)
 
     def _update(self, a, b, c):
         self.live_update(self.attach._entry.get())
@@ -209,22 +215,23 @@ class ScrDropDownMod(ct.CTkToplevel):
             self.widgets[self.i].pack(fill="x", pady=2, padx=(5, 0))
             self.i+=1
  
-        self.hide = False
-            
+        self.hide = True
+      
     def destroy_popup(self):
         self.destroy()
+        print('77')
         self.disable = True
 
     def place_dropdown(self):
-        self.x_pos = self.attach.winfo_rootx() if self.x is None else self.x + self.attach.winfo_rootx()
-        self.y_pos = self.attach.winfo_rooty() + self.attach.winfo_reqheight() + 5 if self.y is None else self.y + self.attach.winfo_rooty()
+        self.x_pos = self.attach.winfo_rootx() if None is None else None + self.attach.winfo_rootx()+240
+        self.y_pos = self.attach.winfo_rooty() + self.attach.winfo_reqheight() + 5 if None is None else None + self.attach.winfo_rooty()
         self.width_new = self.attach.winfo_width() if self.width is None else self.width
         
         if self.resize:
             if self.button_num<=5:      
                 self.height_new = self.button_height * self.button_num + 55
             else:
-                self.height_new = self.button_height * self.button_num + 35
+                self.height_new = self.button_height * self.button_num + 55
             if self.height_new>self.height:
                 self.height_new = self.height
 
@@ -233,23 +240,29 @@ class ScrDropDownMod(ct.CTkToplevel):
         self.fade_in()
         self.attributes('-alpha', self.alpha)
         self.attach.focus()
+        print('place')
 
     def _iconify(self):
+        print(2)
         if self.disable: return
         if self.hide:
+        
             self.event_generate("<<Opened>>")
             self._deiconify()        
             self.focus()
             self.hide = False
+          
             self.place_dropdown()
             if self.focus_something:
                 self.dummy_entry.pack()
                 self.dummy_entry.focus_set()
                 self.after(100, self.dummy_entry.pack_forget)
         else:
+         
             self.withdraw()
             self.hide = True
-            
+            print(55)
+
     def _attach_key_press(self, k):
         self.event_generate("<<Selected>>")
         self.fade = True
@@ -261,7 +274,7 @@ class ScrDropDownMod(ct.CTkToplevel):
         self.hide = True
             
     def live_update(self, string=None):
-        if not self.appear: return
+        if self.appear: return
         if self.disable: return
         if self.fade: return
         if string:
@@ -297,7 +310,7 @@ class ScrDropDownMod(ct.CTkToplevel):
         self.appear = False
         
     def insert(self, value, **kwargs):
-        self.widgets[self.i] = ctr.CTkButton(self.frame,
+        self.widgets[self.i] = ct.CTkButton(self.frame,
                                                        text=value,
                                                        height=self.button_height,
                                                        fg_color=self.button_color,
@@ -309,8 +322,9 @@ class ScrDropDownMod(ct.CTkToplevel):
         self.values.append(value)
         
     def _deiconify(self):
-        if len(self.values)>0:
-            self.deiconify()
+        pass
+        #if len(self.values)>0:
+        #    self.deiconify()
 
     def popup(self, x=None, y=None):
         self.x = x
@@ -355,12 +369,7 @@ class ScrDropDownMod(ct.CTkToplevel):
                 
         for key in self.widgets.keys():
             self.widgets[key].configure(**kwargs)
-
-        
-
-        
-
-
+  
 
 class Gui:
     def __init__(self):
@@ -1043,12 +1052,12 @@ class Gui:
                 self.show_formulas({'formula':{}})
         else:
             self.show_formulas({'formula':{}})
+   
     def live_search(self, Shit:any, Search_Term:str)->any:
         search= {'formula': [formula for formula in r_formula_json['formula']],
                  'variables': [r_char_json[variable]['s_name'] for variable in r_char_json],
                  'search_terms': [r_formula_json['formula'][term]['search_terms'] for term in r_formula_json['formula']],
                  'category': [r_formula_json['formula'][category]['category'] for category in r_formula_json['formula']]}
-        
         proxil= []
       
         if Search_Term != '':
@@ -1057,14 +1066,24 @@ class Gui:
                 
                     for tp in process.extractBests(Search_Term,search[cat], scorer=fuzz.partial_ratio,limit=100):
                         if tp[1] == 100:
-                                tp3 = (tp[0] ,cat)  
+                            if cat == 'variables':
+                                for key, var in r_char_json.items():
+                                    if var["s_name"] == tp[0]:
+                                        tp3 = (key, cat)
+                                        print(tp3)
+                            else:
+                                tp3 = (tp[0] ,cat)
+                            
+                        
+                            proxil.append(tp3)   
                 else:
                     for term in range(len(search[cat])):
                         for tp in process.extractBests(Search_Term,search[cat][term], scorer=fuzz.partial_ratio, limit=100):
                             if tp[1] == 100:
                                 tp3 = (tp[0] ,cat)
-                                proxil.append(tp3[0])
-            ScrDropDownMod(proxil)    
+                                proxil.append(tp3)
+            ScrDropDownMod(search_inp,proxil)  
+            print(search_inp.winfo_width())
         
     def edit_formula(self, formula:str):
         self.edit_bool = True
@@ -1699,18 +1718,25 @@ class Gui:
         r_char_json = self.read_json('json_files/formula_char.json')
           
         
-        #self.home()
+        self.home()
         
-        #self.sorting(r_formula_json, False)
-        #self.menue_buts()
-        #root.title(self.translate('formulabook'))
-        #self.zoomed()
+        self.sorting(r_formula_json, False)
+        self.menue_buts()
+        root.title(self.translate('formulabook'))
+        self.zoomed()
         
-        d = ct.CTkEntry(root)
-        d.grid(row=0,column=0)
+        #d = ct.CTkEntry(root)
+        #root.grid_rowconfigure(0,weight=1)
+        #root.grid_columnconfigure(0,weight=1)
+        #d.grid(row=0,column=0,sticky='we')
+
+        
    
         
-        ScrDropDownMod(attach=d,values=['2',34,'de'])
+        #c=ScrDropDownMod(attach=d,values=['2','34','de'])
+        
+
+        
         root.mainloop()
 
 if __name__ == '__main__':
