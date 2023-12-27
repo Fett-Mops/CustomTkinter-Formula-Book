@@ -77,9 +77,9 @@ frame = ct.CTkFrame(root, width=25)
 frame.grid(row = 0,rowspan=2, column=0, sticky='nws', pady=(4,5), padx=(5,5))
 frame.grid_rowconfigure(3,weight=1)
 
-class ScrDropDownMod(ct.CTkToplevel):
+class ScrDropDownMod(ct.CTkFrame):
     def __init__(self, attach, values = [],x=None,y=None,**button_kwargs) -> None:
-        super().__init__(takefocus=1)
+        super().__init__(master=attach.winfo_toplevel(), bg_color=attach.cget("bg_color"))
         print(attach)
         self.focus()
         self.lift()
@@ -88,23 +88,10 @@ class ScrDropDownMod(ct.CTkToplevel):
         self.resize  =False
         self.update()
         
-        if sys.platform.startswith("win"):
-            self.after(100, lambda: self.overrideredirect(True))
-            self.transparent_color = self._apply_appearance_mode(self._fg_color)
-            self.attributes("-transparentcolor", self.transparent_color)
-        elif sys.platform.startswith("darwin"):
-            self.overrideredirect(True)
-            self.transparent_color = 'systemTransparent'
-            self.attributes("-transparent", True)
-            self.focus_something = True
-        else:
-            self.overrideredirect(True)
-            self.transparent_color = '#000001'
 
-            self.padding = 18
-            self.withdraw()
+
             
-        self.attributes('-alpha', 0)
+        #self.attributes('-alpha', 0)
         self.disable = False
         self.fg_color = ct.ThemeManager.theme["CTkFrame"]["fg_color"]
         self.scroll_button_color = ct.ThemeManager.theme["CTkScrollbar"]["button_color"] 
@@ -114,7 +101,7 @@ class ScrDropDownMod(ct.CTkToplevel):
         self.text_color = ct.ThemeManager.theme["CTkLabel"]["text_color"]
 
             
-        self.frame = ct.CTkScrollableFrame(self, bg_color=self.transparent_color, fg_color=self.fg_color,
+        self.frame = ct.CTkScrollableFrame(self, fg_color=self.fg_color,
                                         scrollbar_button_hover_color=self.scroll_hover_color,
                                     
                                        
@@ -139,8 +126,7 @@ class ScrDropDownMod(ct.CTkToplevel):
         self.button_num = len(self.values)
         self._init_buttons(**button_kwargs)
 
-        self.resizable(width=False, height=False)
-        self.transient(self.master)
+       
         self._iconify()
                 
         #self.attach.bind("<Destroy>", lambda _: self._destroy(), add="+")
@@ -152,8 +138,7 @@ class ScrDropDownMod(ct.CTkToplevel):
         
     
         
-        
-        self.attributes("-alpha", self.alpha)
+
 
     def _destroy(self):
         self.after(500, self.destroy_popup)
@@ -223,24 +208,19 @@ class ScrDropDownMod(ct.CTkToplevel):
         self.disable = True
 
     def place_dropdown(self):
-        self.x_pos = self.attach.winfo_rootx() if None is None else None + self.attach.winfo_rootx()+240
-        self.y_pos = self.attach.winfo_rooty() + self.attach.winfo_reqheight() + 5 if None is None else None + self.attach.winfo_rooty()
-        self.width_new = self.attach.winfo_width() if self.width is None else self.width
+        self.x_pos = self.attach.winfo_x() 
+        self.y_pos = self.attach.winfo_y() 
+        self.width_new = self.attach.winfo_width() -200
         
-        if self.resize:
-            if self.button_num<=5:      
-                self.height_new = self.button_height * self.button_num + 55
-            else:
-                self.height_new = self.button_height * self.button_num + 55
-            if self.height_new>self.height:
-                self.height_new = self.height
-
-        self.geometry('{}x{}+{}+{}'.format(self.width_new, self.height_new,
-                                           self.x_pos, self.y_pos))
-        self.fade_in()
-        self.attributes('-alpha', self.alpha)
+        self.frame.configure(width=self.width_new, height=self.height_new)
+        self.place(x=self.x_pos, y=self.y_pos)
+        
+        if sys.platform.startswith("darwin"):
+            self.dummy_entry.pack()
+            self.after(100, self.dummy_entry.pack_forget())
+            
+        self.lift()
         self.attach.focus()
-        print('place')
 
     def _iconify(self):
         print(2)
@@ -269,8 +249,7 @@ class ScrDropDownMod(ct.CTkToplevel):
         if self.command:
             self.command(k)
         self.fade = False
-        self.fade_out()
-        self.withdraw()
+        self.place_forget()
         self.hide = True
             
     def live_update(self, string=None):
@@ -1082,8 +1061,10 @@ class Gui:
                             if tp[1] == 100:
                                 tp3 = (tp[0] ,cat)
                                 proxil.append(tp3)
+            search_inp.place(y=search_inp.winfo_y(),x= search_inp.winfo_x())
             ScrDropDownMod(search_inp,proxil)  
             print(search_inp.winfo_width())
+            search_inp.configure(width = search_inp.winfo_width())
         
     def edit_formula(self, formula:str):
         self.edit_bool = True
@@ -1718,10 +1699,11 @@ class Gui:
         r_char_json = self.read_json('json_files/formula_char.json')
           
         
-        self.home()
+        
         
         self.sorting(r_formula_json, False)
         self.menue_buts()
+       
         root.title(self.translate('formulabook'))
         self.zoomed()
         
