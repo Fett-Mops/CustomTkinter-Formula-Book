@@ -12,6 +12,7 @@ from PIL import Image, ImageTk
 import json
 import si_prefix
 from watchpoints import *
+import sys
 
 
 
@@ -72,8 +73,292 @@ pngs = {i: ct.CTkImage(dark_image=Image.open(f"pictures/white/{i}.png"),
                       size=(30, 30)) for i in set(sort_name)}
 
 frame = ct.CTkFrame(root, width=25)
-frame.grid(row = 0,rowspan=2, column=0, sticky='nws', pady=(4,5), padx=(5,5))
-frame.grid_rowconfigure(3,weight=1)
+#frame.grid(row = 0,rowspan=2, column=0, sticky='nws', pady=(4,5), padx=(5,5))
+#frame.grid_rowconfigure(3,weight=1)
+
+class ScrDropDownMod(ct.CTkToplevel):
+    def __init__(self, attach, values = [],x=None,y=None,**button_kwargs) -> None:
+        super().__init__(takefocus=1)
+        print(attach)
+        self.focus()
+        self.lift()
+        self.alpha = 0.7
+        self.attach = attach
+        self.update()
+        
+        if sys.platform.startswith("win"):
+            self.after(100, lambda: self.overrideredirect(True))
+            self.transparent_color = self._apply_appearance_mode(self._fg_color)
+            self.attributes("-transparentcolor", self.transparent_color)
+        elif sys.platform.startswith("darwin"):
+            self.overrideredirect(True)
+            self.transparent_color = 'systemTransparent'
+            self.attributes("-transparent", True)
+            self.focus_something = True
+        else:
+            self.overrideredirect(True)
+            self.transparent_color = '#000001'
+
+            self.padding = 18
+            self.withdraw()
+            
+        self.attributes('-alpha', 0)
+        self.disable = False
+        self.fg_color = ct.ThemeManager.theme["CTkFrame"]["fg_color"]
+        self.scroll_button_color = ct.ThemeManager.theme["CTkScrollbar"]["button_color"] 
+        self.scroll_hover_color = ct.ThemeManager.theme["CTkScrollbar"]["button_hover_color"] 
+        self.frame_border_color = ct.ThemeManager.theme["CTkFrame"]["border_color"] 
+        self.button_color = ct.ThemeManager.theme["CTkFrame"]["top_fg_color"] 
+        self.text_color = ct.ThemeManager.theme["CTkLabel"]["text_color"]
+
+            
+        self.frame = ct.CTkScrollableFrame(self, bg_color=self.transparent_color, fg_color=self.fg_color,
+                                        scrollbar_button_hover_color=self.scroll_hover_color,
+                                       
+                                        scrollbar_button_color=self.scroll_button_color,
+                                        border_color=self.frame_border_color)
+        self.frame._scrollbar.grid_configure(padx=3)
+        self.frame.pack(expand=True, fill="both")
+        self.dummy_entry = ct.CTkEntry(self.frame, fg_color="transparent", border_width=0, height=1, width=1)
+        self.no_match = ct.CTkLabel(self.frame, text="No Match")
+        self.height = 100
+        self.height_new = 100
+        self.width = 200
+        self.fade = False
+        self.var_update = ct.StringVar()
+        self.appear = False
+        self.justify = "c"
+            
+        self.button_height = 30
+        self.values = values
+        self.button_num = len(self.values)
+        self._init_buttons(**button_kwargs)
+
+        self.resizable(width=False, height=False)
+        self.transient(self.master)
+        self.attach.bind('<Button-1>', lambda e: self._iconify(), add="+")
+                
+        self.attach.bind("<Destroy>", lambda _: self._destroy(), add="+")
+        
+        self.update_idletasks()
+        self.x = x
+        self.y = y
+
+        self.deiconify()
+        
+        self.withdraw()
+        
+        self.attributes("-alpha", self.alpha)
+
+    def _destroy(self):
+        self.after(500, self.destroy_popup)
+        
+    def _withdraw(self):
+        if self.winfo_viewable() and self.hide:
+            self.withdraw()
+        
+        self.event_generate("<<Closed>>")
+        self.hide = True
+
+    def _update(self, a, b, c):
+        self.live_update(self.attach._entry.get())
+        
+    def bind_autocomplete(self, ):
+        def appear(x):
+            self.appear = True
+            
+        if self.attach.winfo_name().startswith("!ctkcombobox"):
+            self.attach._entry.configure(textvariable=self.var_update)
+            self.attach._entry.bind("<Key>", appear)
+            self.attach.set(self.values[0])
+            self.var_update.trace_add('write', self._update)
+            
+        if self.attach.winfo_name().startswith("!ctkentry"):
+            self.attach.configure(textvariable=self.var_update)
+            self.attach.bind("<Key>", appear)
+            self.var_update.trace_add('write', self._update)
+        
+    def fade_out(self):
+        for i in range(100,0,-10):
+            if not self.winfo_exists():
+                break
+            self.attributes("-alpha", i/100)
+            self.update()
+      
+            
+    def fade_in(self):
+        for i in range(0,100,10):
+            if not self.winfo_exists():
+                break
+            self.attributes("-alpha", i/100)
+            self.update()
+  
+            
+    def _init_buttons(self, **button_kwargs):
+        self.i = 0
+        self.widgets = {}
+        for row in self.values:
+            self.widgets[self.i] = ct.CTkButton(self.frame,
+                                                          text=row,
+                                                          height=self.button_height,
+                                                          fg_color=self.button_color,
+                                                          text_color=self.text_color,
+                                                          
+                                                          anchor=self.justify,
+                                                          command=lambda k=row: self._attach_key_press(k), **button_kwargs)
+            self.widgets[self.i].pack(fill="x", pady=2, padx=(5, 0))
+            self.i+=1
+ 
+        self.hide = False
+            
+    def destroy_popup(self):
+        self.destroy()
+        self.disable = True
+
+    def place_dropdown(self):
+        self.x_pos = self.attach.winfo_rootx() if self.x is None else self.x + self.attach.winfo_rootx()
+        self.y_pos = self.attach.winfo_rooty() + self.attach.winfo_reqheight() + 5 if self.y is None else self.y + self.attach.winfo_rooty()
+        self.width_new = self.attach.winfo_width() if self.width is None else self.width
+        
+        if self.resize:
+            if self.button_num<=5:      
+                self.height_new = self.button_height * self.button_num + 55
+            else:
+                self.height_new = self.button_height * self.button_num + 35
+            if self.height_new>self.height:
+                self.height_new = self.height
+
+        self.geometry('{}x{}+{}+{}'.format(self.width_new, self.height_new,
+                                           self.x_pos, self.y_pos))
+        self.fade_in()
+        self.attributes('-alpha', self.alpha)
+        self.attach.focus()
+
+    def _iconify(self):
+        if self.disable: return
+        if self.hide:
+            self.event_generate("<<Opened>>")
+            self._deiconify()        
+            self.focus()
+            self.hide = False
+            self.place_dropdown()
+            if self.focus_something:
+                self.dummy_entry.pack()
+                self.dummy_entry.focus_set()
+                self.after(100, self.dummy_entry.pack_forget)
+        else:
+            self.withdraw()
+            self.hide = True
+            
+    def _attach_key_press(self, k):
+        self.event_generate("<<Selected>>")
+        self.fade = True
+        if self.command:
+            self.command(k)
+        self.fade = False
+        self.fade_out()
+        self.withdraw()
+        self.hide = True
+            
+    def live_update(self, string=None):
+        if not self.appear: return
+        if self.disable: return
+        if self.fade: return
+        if string:
+            string = string.lower()
+            self._deiconify()
+            i=1
+            for key in self.widgets.keys():
+                s = self.widgets[key].cget("text").lower()
+                text_similarity = difflib.SequenceMatcher(None, s[0:len(string)], string).ratio()
+                similar = s.startswith(string) or text_similarity > 0.75
+                if not similar:
+                    self.widgets[key].pack_forget()
+                else:
+                    self.widgets[key].pack(fill="x", pady=2, padx=(self.padding, 0))
+                    i+=1
+                    
+            if i==1:
+                self.no_match.pack(fill="x", pady=2, padx=(self.padding, 0))
+            else:
+                self.no_match.pack_forget()
+            self.button_num = i
+            self.place_dropdown()
+            
+        else:
+            self.no_match.pack_forget()
+            self.button_num = len(self.values)
+            for key in self.widgets.keys():
+                self.widgets[key].destroy()
+            self._init_buttons()
+            self.place_dropdown()
+            
+        self.frame._parent_canvas.yview_moveto(0.0)
+        self.appear = False
+        
+    def insert(self, value, **kwargs):
+        self.widgets[self.i] = ctr.CTkButton(self.frame,
+                                                       text=value,
+                                                       height=self.button_height,
+                                                       fg_color=self.button_color,
+                                                       text_color=self.text_color,
+                                                       anchor=self.justify,
+                                                       command=lambda k=value: self._attach_key_press(k), **kwargs)
+        self.widgets[self.i].pack(fill="x", pady=2, padx=(self.padding, 0))
+        self.i+=1
+        self.values.append(value)
+        
+    def _deiconify(self):
+        if len(self.values)>0:
+            self.deiconify()
+
+    def popup(self, x=None, y=None):
+        self.x = x
+        self.y = y
+        self.hide = True
+        self._iconify()
+        
+    def configure(self, **kwargs):
+        if "height" in kwargs:
+            self.height = kwargs.pop("height")
+            self.height_new = self.height
+            
+        if "alpha" in kwargs:
+            self.alpha = kwargs.pop("alpha")
+            
+        if "width" in kwargs:
+            self.width = kwargs.pop("width")
+            
+        if "fg_color" in kwargs:
+            self.frame.configure(fg_color=kwargs.pop("fg_color"))
+            
+        if "values" in kwargs:
+            self.values = kwargs.pop("values")
+            self.image_values = None
+            self.button_num = len(self.values)
+            for key in self.widgets.keys():
+                self.widgets[key].destroy()
+            self._init_buttons()
+ 
+        if "image_values" in kwargs:
+            self.image_values = kwargs.pop("image_values")
+            self.image_values = None if len(self.image_values)!=len(self.values) else self.image_values
+            if self.image_values is not None:
+                i=0
+                for key in self.widgets.keys():
+                    self.widgets[key].configure(image=self.image_values[i])
+                    i+=1
+                    
+        if "button_color" in kwargs:
+            for key in self.widgets.keys():
+                self.widgets[key].configure(fg_color=kwargs.pop("button_color"))
+                
+        for key in self.widgets.keys():
+            self.widgets[key].configure(**kwargs)
+
+        
+
+        
 
 
 
@@ -117,6 +402,7 @@ class Gui:
         self.inp_formula_var = ct.StringVar()
         self.cat_inp = ct.StringVar()
         self.edit_bool = False
+        self.path = []
   
     def translate(self, text):
         help = 'help'
@@ -778,7 +1064,7 @@ class Gui:
                             if tp[1] == 100:
                                 tp3 = (tp[0] ,cat)
                                 proxil.append(tp3[0])
-            CTkScrollableDropdown(search_inp,values=proxil)    
+            ScrDropDownMod(proxil)    
         
     def edit_formula(self, formula:str):
         self.edit_bool = True
@@ -1083,7 +1369,7 @@ class Gui:
                                     textvariable=self.search_inp)
         search_inp.grid(row = 0, column=1, pady= 5, columnspan=1, sticky='nwe')
  
-        CTkScrollableDropdown(search_inp, values=['s','s'])
+
         
         search_inp.bind('<Return>', lambda Event:self.fuzz_search_formula( Event,self.search_inp.get()))
         
@@ -1413,15 +1699,18 @@ class Gui:
         r_char_json = self.read_json('json_files/formula_char.json')
           
         
-        self.home()
+        #self.home()
         
-        self.sorting(r_formula_json, False)
-        self.menue_buts()
-        root.title(self.translate('formulabook'))
-        self.zoomed()
+        #self.sorting(r_formula_json, False)
+        #self.menue_buts()
+        #root.title(self.translate('formulabook'))
+        #self.zoomed()
         
+        d = ct.CTkEntry(root)
+        d.grid(row=0,column=0)
+   
         
-            
+        ScrDropDownMod(attach=d,values=['2',34,'de'])
         root.mainloop()
 
 if __name__ == '__main__':
