@@ -48,7 +48,7 @@ grey_disa = '#61676C'
 
 
 font1 =("None",15)
-
+h_page = ct.CTkFrame(root, fg_color='transparent')
 #pictures
 sort_name = ['home-category',
              'add-folder',
@@ -86,7 +86,11 @@ class ScrDropDownMod(ct.CTkFrame):
         self.alpha = 0.7
         self.attach = attach
         self.resize  =False
+        self.x = x
+        self.y = y
+
         self.update()
+
         
 
 
@@ -103,7 +107,7 @@ class ScrDropDownMod(ct.CTkFrame):
             
         self.frame = ct.CTkScrollableFrame(self, fg_color=self.fg_color,
                                         scrollbar_button_hover_color=self.scroll_hover_color,
-                                    
+                                        corner_radius=11,
                                        
                                         scrollbar_button_color=self.scroll_button_color,
                                         border_color=self.frame_border_color)
@@ -127,19 +131,12 @@ class ScrDropDownMod(ct.CTkFrame):
         self._init_buttons(**button_kwargs)
 
        
-        self._iconify()
+        self._iconify(self.x,self.y)
                 
         #self.attach.bind("<Destroy>", lambda _: self._destroy(), add="+")
         
         self.update_idletasks()
-        self.x = x
-        self.y = y
-
         
-    
-        
-
-
     def _destroy(self):
         self.after(500, self.destroy_popup)
         
@@ -149,7 +146,7 @@ class ScrDropDownMod(ct.CTkFrame):
         
         self.event_generate("<<Closed>>")
         self.hide = True
-        print(22)
+   
 
     def _update(self, a, b, c):
         self.live_update(self.attach._entry.get())
@@ -207,22 +204,29 @@ class ScrDropDownMod(ct.CTkFrame):
         print('77')
         self.disable = True
 
-    def place_dropdown(self):
-        self.x_pos = self.attach.winfo_x() 
-        self.y_pos = self.attach.winfo_y() 
-        self.width_new = self.attach.winfo_width() -200
+    def place_dropdown(self,x,y):
+        self.x_pos = self.attach.winfo_x() if x is None else x + self.attach.winfo_rootx()
+        self.y_pos = self.attach.winfo_y() + self.attach.winfo_reqheight() + 5 if y is None else y + self.attach.winfo_rooty()
+        self.width_new = self.attach.winfo_width()-45+self.corner if self.width is None else self.width
         
+        if self.resize:
+            if self.button_num<=5:      
+                self.height_new = self.button_height * self.button_num + 55
+            else:
+                self.height_new = self.button_height * self.button_num + 35
+            if self.height_new>self.height:
+                self.height_new = self.height
+ 
         self.frame.configure(width=self.width_new, height=self.height_new)
-        self.place(x=self.x_pos, y=self.y_pos)
+        #self.place(y=self.y_pos,x=self.x_pos)
+        self.grid(row=1,column=1, sticky='enw')
         
-        if sys.platform.startswith("darwin"):
-            self.dummy_entry.pack()
-            self.after(100, self.dummy_entry.pack_forget())
+
             
         self.lift()
         self.attach.focus()
 
-    def _iconify(self):
+    def _iconify(self, x,y):
         print(2)
         if self.disable: return
         if self.hide:
@@ -232,7 +236,7 @@ class ScrDropDownMod(ct.CTkFrame):
             self.focus()
             self.hide = False
           
-            self.place_dropdown()
+            self.place_dropdown(x,y)
             if self.focus_something:
                 self.dummy_entry.pack()
                 self.dummy_entry.focus_set()
@@ -241,7 +245,8 @@ class ScrDropDownMod(ct.CTkFrame):
          
             self.withdraw()
             self.hide = True
-            print(55)
+       
+            
 
     def _attach_key_press(self, k):
         self.event_generate("<<Selected>>")
@@ -353,7 +358,7 @@ class ScrDropDownMod(ct.CTkFrame):
 class Gui:
     def __init__(self):
         self.cal_bool = False
-        self.h_page =  ct.CTkFrame(root, fg_color='transparent')
+        self.h_page =  h_page
         self.c_page =  ct.CTkFrame(root, fg_color='transparent')
         self.s_page =  ct.CTkFrame(root, fg_color='transparent')
         self.a_page =  ct.CTkFrame(root, fg_color='transparent')
@@ -1061,7 +1066,8 @@ class Gui:
                             if tp[1] == 100:
                                 tp3 = (tp[0] ,cat)
                                 proxil.append(tp3)
-            search_inp.place(y=search_inp.winfo_y(),x= search_inp.winfo_x())
+            for child in self.h_page.winfo_children():
+                print(child.grid_info())
             ScrDropDownMod(search_inp,proxil)  
             print(search_inp.winfo_width())
             search_inp.configure(width = search_inp.winfo_width())
@@ -1520,7 +1526,7 @@ class Gui:
         
         lang_them_menu = ct.CTkOptionMenu(self.s_page,values=['t_l'],variable=self.lan_menu_var,text_color= text_col)
      
-        CTkScrollableDropdown(lang_them_menu,values=self.languages)
+        CTkScrollableDropdown(lang_them_menu,values=self.languages, scrollbar=False)
         lang_them_menu.grid(row = 2, column=0,pady=30, padx=5 ,sticky='nwe')
         
         
